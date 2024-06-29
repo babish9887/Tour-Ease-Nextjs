@@ -7,7 +7,7 @@ function page() {
       console.log(session)
   return (
     <div>
-      <button onClick={()=>signIn("google")}>Sign In</button>
+      <h1>Home Page gonna be Here</h1>
     </div>
   )
 }

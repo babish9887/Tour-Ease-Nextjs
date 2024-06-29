@@ -1,11 +1,10 @@
 import React from 'react'
+import Navbar from '../../components/Navbar'
 
 function layout({children}:{children:React.ReactNode}) {
   return (
     <main>
-      <nav className='h-12 bg-gray-300'>
-
-      </nav>
+      <Navbar />
       {children}
     </main>
   )
