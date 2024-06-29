@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+      id String @id @default(auto()) @map("_id") @db.ObjectId
+      name String
+      email String @unique
+      createdAt               DateTime          @default(now())
+      updatedAt               DateTime          @updatedAt
+      isActive Boolean? @default(true)
+      emailVerified Boolean? @default(false)
+      role String? @default("USER")
+
+      reviews Review[]
+      ratings Rating[]
+      image String?
+      account Account[]
+
+      //for guide
+      isVerified Boolean?     
+      languages String[]
+      locations String[]
+      contactNo String?
+
+}
+
+model Account{
+      id String @id @default(auto()) @map("_id") @db.ObjectId
+      userId String @db.ObjectId
+      type String
+      provider String
+      providerAccountId String
+      refresh_token String? @db.String
+      access_token String? @db.String
+      expires_at Int?
+      token_type String?
+      scope String?
+      id_token String? @db.String
+      session_state String?
+
+      user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+      @@unique([provider, providerAccountId])
+}
+
+model Tour{
+      id String @id @default(auto()) @map("_id") @db.ObjectId
+      name String
+      duraton Int
+      description String
+      difficulty String
+      ratings Rating[]
+      averageRating Int?
+      reviews Review[]
+      averageReview Int?
+      images String[]
+      coverImage String
+      locations Location[]
+}
+
+model Location{
+      id String @id @default(auto()) @map("_id") @db.ObjectId
+      name String
+      coordinates String[]
+      image String[]
+      tourId String @db.ObjectId
+      tour Tour @relation(fields: [tourId], references: [id], onDelete: Cascade)
+      // userId String @db.ObjectId
+      // user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+}
+
+model Review{
+      id String @id @default(auto()) @map("_id") @db.ObjectId
+      userId String @db.ObjectId
+      user User @relation(fields: [userId], references: [id], onDelete:Cascade)
+      tourId String @db.ObjectId
+      tour Tour @relation(fields: [tourId], references: [id], onDelete:Cascade)
+      review String
+}
+
+model Rating{
+      id String @id @default(auto()) @map("_id") @db.ObjectId
+      userId String @db.ObjectId
+      user User @relation(fields: [userId], references: [id], onDelete:Cascade)
+      tourId String @db.ObjectId
+      tour Tour @relation(fields: [tourId], references: [id], onDelete:Cascade)
+      rating Int
+}
