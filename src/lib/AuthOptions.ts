@@ -7,9 +7,6 @@ export const AuthOptions = {
       session: {
             strategy:"jwt"
       },
-      pages:{
-            signIn: '/login', 
-      },
 
       providers:[
           GoogleProvider({
@@ -25,7 +22,7 @@ export const AuthOptions = {
 
                   return session
             },
-            async jwt({token ,user}){
+            async jwt({token ,user}:any){
                   const dbUser=await prisma.user.findFirst({
                         where: {
                               email:token.email

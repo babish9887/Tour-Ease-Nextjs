@@ -15,7 +15,7 @@ model User{
       updatedAt               DateTime          @updatedAt
       isActive Boolean? @default(true)
       emailVerified Boolean? @default(false)
-      role String? @default("USER")
+      role String?
 
       reviews Review[]
       ratings Rating[]

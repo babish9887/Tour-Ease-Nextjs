@@ -33,7 +33,11 @@
       --ring: 224 71.4% 4.1%;
 
       --radius: 0.5rem;
+
+      
     }
+
+
 
     .dark {
       --background: 224 71.4% 4.1%;
@@ -64,6 +68,11 @@
       --input: 215 27.9% 16.9%;
       --ring: 216 12.2% 83.9%;
     }
+
+    body::-webkit-scrollbar{
+      display: none
+      
+    }
   }
 
   @layer base {
@@ -72,5 +81,9 @@
     }
     body {
       @apply bg-background text-foreground;
+    }
+
+    .customwidth {
+      width: calc(100vw - 1rem);
     }
   }

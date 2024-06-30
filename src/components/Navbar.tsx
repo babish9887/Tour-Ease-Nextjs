@@ -26,7 +26,7 @@ useEffect(()=>{
 },[session])
 
   return (
-    <nav className="flex w-auto justify-between flex-col sm:flex-row items-center py-2 sticky top-0 mr-2 ml-2 z-50 bg-transparent">
+    <nav className="flex justify-between flex-col sm:flex-row items-center py-2 fixed w-[calc(100vw-2rem)] top-2 mr-4 ml-4 z-50 bg-transparent">
       <div className="flex backdrop-blur-2xl grainy/90 bg-slate-100/40 justify-between w-full sticky top-0 h-[4.5rem] items-center px-4 py-2 rounded-xl shadow-md">
         <Link href={"/"} className="font-bold text-xl uppercase">
           Tour Ease
@@ -79,7 +79,7 @@ useEffect(()=>{
             />
           ) : (
             <div className="flex gap-3">
-                <Button variant={"outline"} className="font-semibold" onClick={()=>signIn("google", {callbackUrl:"http://localhost:3000/user"})}>
+                <Button variant={"outline"} className="font-semibold" onClick={()=>signIn("google", {callbackUrl:"http://localhost:3000/newuser"})}>
                   Sign up
                 </Button>
 
@@ -123,8 +123,8 @@ useEffect(()=>{
                 <LuLogOut className="mr-2 w-4 h-4" /> Logout
               </Button>
           ) : (
-            <div className="flex gap-3" onClick={()=>{signIn("google", {callbackUrl:"/user"})}}>
-                <Button variant={"outline"} className="font-semibold">
+            <div className="flex gap-3" >
+                <Button variant={"outline"} className="font-semibold" onClick={()=>{signIn("google", {callbackUrl:"http://localhost:3000/newuser"})}}>
                   Sign up
                 </Button>
 

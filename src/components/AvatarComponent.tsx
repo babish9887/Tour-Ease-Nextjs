@@ -19,6 +19,7 @@ import { Settings, Settings2Icon } from "lucide-react";
 import Link from "next/link";
 const AvatarComponent = ({ altName, img, list, email }:any) => {
   return (
+      //@ts-ignore
     <DropdownMenu className="w-full flex " >
       <DropdownMenuTrigger className="outline-none border-none" >
         <Avatar>
