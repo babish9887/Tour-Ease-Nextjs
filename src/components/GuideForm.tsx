@@ -1,3 +1,4 @@
+
 "use client";
 import React, {  useRef, useState } from "react";
 import { Button } from "./ui/button";
@@ -105,7 +106,7 @@ const GuideForm = ({ user }: any) => {
           />
         </div>
 
-        <div className="w-full flex flex-col gap-2">
+        <div className="w-full flex flex-col gap-2 z-10">
           <label className="font-semibold" htmlFor="">
             Nationality
           </label>
@@ -154,7 +155,7 @@ const GuideForm = ({ user }: any) => {
           </Popover>
         </div>
 
-        <div className="w-full flex flex-col gap-2">
+        <div className="w-full flex flex-col gap-2 z-10">
           <label className="font-semibold" htmlFor="">
             Languages You Speak
           </label>
@@ -169,7 +170,7 @@ const GuideForm = ({ user }: any) => {
           />
         </div>
 
-        <div className="w-full flex flex-col gap-2">
+        <div className="w-full flex flex-col gap-2 z-0">
           <label className="font-semibold" htmlFor="">
             Select Your Location
           </label>
