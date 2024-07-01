@@ -1,23 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "./ui/button";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
 import Nationalities from "../../Nationalities.json";
 
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 import {
   Command,
@@ -135,6 +125,8 @@ const TouristForm = ({ user }: any) => {
             </PopoverContent>
           </Popover>
         </div>
+
+        
 
         <Button type="button" onClick={handleSubmit}>
           Submit
