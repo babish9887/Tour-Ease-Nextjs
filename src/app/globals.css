@@ -87,3 +87,9 @@
       width: calc(100vw - 1rem);
     }
   }
+
+  .leaflet-container{
+      height:auto;
+      width: full;
+      aspect-ratio: 1/0.6;
+}

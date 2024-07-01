@@ -27,6 +27,7 @@ model User{
       languages String[]
       locations String[]
       contactNo String?
+      nationality String?
 
 }
 

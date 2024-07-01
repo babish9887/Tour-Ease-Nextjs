@@ -8,7 +8,7 @@ function page() {
       console.log(session)
   return (
       <>
-    <div className='w-full gap-y-4  text-white flex flex-col justify-center items-center h-screen bg-slate-400 bg-[url("/assets/12.jpg")] bg-center'>
+    <div className='w-full gap-y-4 p-6 sm:p-0 text-white flex flex-col justify-center items-center h-screen bg-slate-400 bg-[url("/assets/12.jpg")] bg-left-bottom'>
             <h1 className='font-bold text-white text-5xl text-center'>Discover, Explore, and Book with Ease!</h1>
             <h3 className='text-2xl text-center'>Explore the World with a Local Guide</h3>
             <Button className='bg-white text-black'>See Guides</Button>

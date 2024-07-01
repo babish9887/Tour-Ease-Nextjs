@@ -89,7 +89,7 @@ useEffect(()=>{
         </div>
       </div>
       {openMenu ? (
-        <div className="mt-20 flex sm:flex-none absolute z-20 flex-col bg-white w-full items-center justify-between rounded-2xl p-4 gap-2 shadow-md font-semibold sm:hidden animate-navbar-down grainy">
+        <div className="mt-20 flex sm:flex-none absolute z-20 flex-col bg-white/40 backdrop-blur-2xl w-full items-center justify-between rounded-2xl p-4 gap-2 shadow-md font-semibold sm:hidden animate-navbar-down grainy">
           <Link
             href={"/"}
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
