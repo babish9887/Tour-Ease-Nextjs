@@ -47,6 +47,10 @@ const GuideForm = ({ user }: any) => {
   const [loading, setIsLoading] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+  const [position, setPosition]=useState({
+      lat:0,
+      lng:0
+  })
 
   const [selectedOptions, setSelectedOptions] = useState([]);
   const handleLanguageChange = (selectedOptions: any) => {
@@ -65,7 +69,7 @@ const GuideForm = ({ user }: any) => {
     const toastid = toast.loading("Registering User...");
     try {
       const res = await axios
-        .post("/api/register/buyer", { contactNo: number })
+        .post("/api/register/guide", { contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng })
         .then((res) => {
           console.log(res);
           if (res.data.success) {
@@ -88,11 +92,13 @@ const GuideForm = ({ user }: any) => {
   };
 
   return (
-    <div className="w-full mx-auto p-4  h-screen flex flex-col justify-center sm:w-2/3 md:w-3/6 lg:w-2/6">
+    <div className="w-full mx-auto p-4  h-auto min-h-screen flex flex-col justify-center sm:w-2/3 md:w-3/6 lg:w-2/6">
       <h2 className=" font-bold text-2xl">Register your account!</h2>
       <h4 className="  text-md">As a Guide</h4>
 
-      <form className="bg-white p-4 rounded-lg mt-5 flex flex-col gap-y-5">
+      <form className="bg-white w-auto p-4 rounded-lg mt-5 flex flex-col gap-y-5 gap-x-4">
+      <div>
+
         <div className="w-full flex flex-col gap-2">
           <label className="font-semibold" htmlFor="">
             Contact Number
@@ -170,25 +176,26 @@ const GuideForm = ({ user }: any) => {
           />
         </div>
 
+      </div>
+
         <div className="w-full flex flex-col gap-2 z-0">
           <label className="font-semibold" htmlFor="">
             Select Your Location
           </label>
-          <Map />
-        </div>
+          <Map setPosition={setPosition} position={position}/>
 
         <Button type="button" onClick={handleSubmit}>
           Submit
         </Button>
+        </div>
       </form>
     </div>
   );
 };
 
-const Map = () => {
+const Map = ({setPosition, position}:any) => {
   const [maptype, setMaptype] = useState(0);
   const [markers, setMarkers] = useState([]);
-  const [position, setPosition] = useState({ lat: 0, lng: 0 });
   const mapRef = useRef(null);
 
   const customIcon = new Icon({

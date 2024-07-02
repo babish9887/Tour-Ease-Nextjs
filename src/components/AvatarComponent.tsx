@@ -29,7 +29,7 @@ const AvatarComponent = ({ altName, img, list, email }:any) => {
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-auto p-2 mr-4 mt-4 flex flex-col items-center bg-white/40 backdrop-blur-2xl border-none">
+      <DropdownMenuContent className="w-auto  p-2 mr-4 mt-4 flex flex-col items-center bg-white/40 backdrop-blur-2xl border-none">
         <DropdownMenuLabel className="text-sm font-normal truncate text-black">
           {email}
         </DropdownMenuLabel>
@@ -41,8 +41,8 @@ const AvatarComponent = ({ altName, img, list, email }:any) => {
             return <DropdownMenuItem key={i}>{data}</DropdownMenuItem>;
           })}
 
-        <DropdownMenuItem>
-            <div className="gap-y-1 flex flex-col">
+        <DropdownMenuItem className="  bg-transparent hover:bg-transparent focus:bg-transparent">
+            <div className="gap-y-1 flex flex-col ">
             <Button className="text-white w-full" onClick={()=>signOut()}>
               <LuLogOut className="mr-2" /> Logout
             </Button>

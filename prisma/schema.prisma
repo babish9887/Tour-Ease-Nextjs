@@ -25,7 +25,7 @@ model User{
       //for guide
       isVerified Boolean?     
       languages String[]
-      locations String[]
+      locations Float[]
       contactNo String?
       nationality String?
 

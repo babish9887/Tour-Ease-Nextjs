@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaXmark } from "react-icons/fa6";
 import { Button } from "./ui/button";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import AvatarComponent from "./AvatarComponent";
 import { LuLogOut } from "react-icons/lu";
@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 const Navbar = () => {
   const pathName = usePathname();
   const [openMenu, setOpenMenu] = useState(false);
-
+  const router=useRouter()
 const {data:session}=useSession()
 console.log(session)
 
@@ -22,6 +22,9 @@ useEffect(()=>{
       //@ts-ignore
       if(session?.user?.role===null){
             toast.error("Your account signup is incomplete! Please complete the registration process.", {duration:5000})
+            setTimeout(()=>{
+                  router.replace('/newuser')
+            },2000)
       }
 },[session])
 
