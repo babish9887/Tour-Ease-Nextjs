@@ -18,7 +18,7 @@ function GetGuidesPage() {
       if (res.data.success) {
         setGuides(res.data.guides);
       }
-    } catch (error) {
+    } catch (error:any) {
       console.error('Error fetching guides:', error.message);
     }
   }
@@ -41,8 +41,6 @@ function GetGuidesPage() {
 
 const Map = ({ setPosition, position, handleSubmit, guides }:any) => {
   const [maptype, setMaptype] = useState(0);
-  const [markers, setMarkers] = useState([]);
-
   const mapRef = useRef(null);
 
   const customIcon = new Icon({
@@ -66,12 +64,13 @@ const Map = ({ setPosition, position, handleSubmit, guides }:any) => {
   // Function to handle click event on map to set position
   function GetLocation() {
     const map = useMapEvents({
-      click: (e) => {
+      click: (e:any) => {
         const { lat, lng } = e.latlng;
         setPosition({ lat, lng });
       }
     });
 
+    //@ts-ignore
     return <Marker position={position} icon={customIcon}></Marker>;
   }
 
@@ -100,7 +99,7 @@ const Map = ({ setPosition, position, handleSubmit, guides }:any) => {
         />
 
         <MarkerClusterGroup chunkedLoading>
-          {guides.map((marker, i) => (
+          {guides.map((marker:any, i:number) => (
             <Marker key={i} position={[marker.locations[0], marker.locations[1]]} icon={customIcon}>
               <Popup>
                 <h2>{marker.name}</h2>
