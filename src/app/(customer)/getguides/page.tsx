@@ -47,18 +47,18 @@ function GetGuidesPage() {
             if (res.data.success) {
                   toast.success("User is Booked")
             } else
-            toast.error(res.data.message)
+                  toast.error(res.data.message)
 
           } catch (error:any) {
-            console.error('Error fetching guides:', error.message);
+            console.error('Error Booking guide:', error.message);
           }
   }
 
   return (
     <>
       <div className='h-24' />
-      <div className='flex justify-center  flex-col md:flex-row flex-wrap'>
-       <div className='w-full flex flex-col justify-center '>
+      <div className='flex justify-center items-center  flex-col md:flex-row flex-wrap'>
+       <div className='w-full flex flex-col justify-center items-center '>
        <h1 className='font-semibold text-3xl'>Get Guides</h1>
         <h2 className='my-3'>Pin on the Map where you want to visit! Then we will find nearby guides for you.</h2>
 

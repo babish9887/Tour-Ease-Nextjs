@@ -9,8 +9,6 @@ async function touristSignup(request:NextRequest){
       const {guideId, date, duration, endDate}=await request.json()
       try {
             console.log(guideId, date, duration)
-
-            console.log(typeof date)
             const user=await prisma.user.findFirst({
                   where:{
                         email:session?.user?.email
@@ -23,15 +21,6 @@ async function touristSignup(request:NextRequest){
                   }
             })
             console.log(user, guide)
-
-            // const oldBookings=await prisma.booking.findFirst({
-            //       where:{
-            //             AND:[
-            //                   {bookedUser: guideId},
-            //                   {bookingDate:date}
-            //             ]
-            //       }
-            // })
 
             const oldBookings = await prisma.booking.findMany({
                   where: {
