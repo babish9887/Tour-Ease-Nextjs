@@ -28,7 +28,20 @@ model User{
       locations Float[]
       contactNo String?
       nationality String?
+      status String?
 
+}
+
+model Booking{
+
+      id String @id @default(auto()) @map("_id") @db.ObjectId
+      bookedUser String @db.ObjectId
+      bookedBy String @db.ObjectId
+      bookingDate DateTime
+      endDate DateTime
+      duration Int?
+      createdAt               DateTime          @default(now())
+      payment String?
 }
 
 model Account{

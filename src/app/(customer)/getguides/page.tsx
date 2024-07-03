@@ -6,10 +6,20 @@ import { Icon } from 'leaflet';
 import axios from 'axios';
 import "leaflet/dist/leaflet.css";
 import { Button } from '@/components/ui/button';
+import toast from 'react-hot-toast';
 
 function GetGuidesPage() {
   const [position, setPosition] = useState({ lat: 0, lng: 0 });
   const [guides, setGuides] = useState([]);
+  const [showGuide, setShowGuide]=useState(false)
+  const [book, setBook]=useState(false)
+  const [guide, setGuide]=useState({
+      name:"",
+      image:"",
+      languages:[],
+      nationality:"",
+      id:""
+  })
 
   async function handleSubmit() {
     console.log("Submitting...");
@@ -17,29 +27,79 @@ function GetGuidesPage() {
       const res = await axios.post('/api/getguides', { lat: position.lat, lng: position.lng });
       if (res.data.success) {
         setGuides(res.data.guides);
+        console.log(res.data.guides)
       }
     } catch (error:any) {
       console.error('Error fetching guides:', error.message);
     }
   }
 
+  async function handleBookingSubmit(){
+      //@ts-ignore
+      const date=document.getElementById("date").value
+      //@ts-ignore
+      const endDate=document.getElementById("date2").value
+      //@ts-ignore
+      const duration=document.getElementById("duration").value
+
+      try {
+            const res = await axios.post('/api/bookguide', {guideId:guide.id, date, duration, endDate});
+            if (res.data.success) {
+                  toast.success("User is Booked")
+            } else
+            toast.error(res.data.message)
+
+          } catch (error:any) {
+            console.error('Error fetching guides:', error.message);
+          }
+  }
+
   return (
     <>
       <div className='h-24' />
-      <div className='min-h-[calc(100vh-6rem)] w-full flex flex-col justify-center items-center'>
-        <h1 className='font-semibold text-3xl'>Get Guides</h1>
+      <div className='flex justify-center  flex-col md:flex-row flex-wrap'>
+       <div className='w-full flex flex-col justify-center '>
+       <h1 className='font-semibold text-3xl'>Get Guides</h1>
         <h2 className='my-3'>Pin on the Map where you want to visit! Then we will find nearby guides for you.</h2>
 
-        <div className='min-w-[300px] w-auto max-w-[800px] aspect-square'>
-          <Map setPosition={setPosition} position={position} handleSubmit={handleSubmit} guides={guides} />
-        </div>
+       </div>
+      <div className='min-h-[calc(100vh-6rem)] w-auto flex flex-col justify-center items-center'>
 
+        <div className='min-w-[300px] w-auto max-w-[800px] aspect-square'>
+          <Map setGuide={setGuide} setPosition={setPosition} showGuide={showGuide} setShowGuide={setShowGuide} position={position} handleSubmit={handleSubmit} guides={guides} />
+        </div>
       </div>
+      <div className=' w-full md:w-2/5 bg-slate-300 h-72 '>
+            {guide && showGuide && 
+            <div className='flex justify-around items-center flex-col h-auto min-h-32 '>
+                  <div className='flex justify-around items-center gap-y-3'>
+                  <img src={guide?.image} alt={guide.name} className='rounded-full w-16 aspect-square'/>
+                  <h1>{guide.name}</h1>
+                  </div>
+                  <div>
+                        <h2>Lanuages:{guide.languages.join(", ")}</h2>
+                        <h2>Nationality:{guide.nationality}</h2>
+                  </div>
+
+                  <Button type='button' onClick={()=>setBook(true)}>Book This Guide</Button>
+
+                  {book &&
+                  <div>
+                        <input type='date' id="date"/>
+                        <input type='date' id="date2"/>
+
+                        <input type='number' id="duration"/>
+                        <Button type='button' onClick={handleBookingSubmit}>Submit</Button>
+                  </div>}
+            </div>}
+      </div>
+      </div>
+
     </>
   );
 }
 
-const Map = ({ setPosition, position, handleSubmit, guides }:any) => {
+const Map = ({ setPosition, position, handleSubmit, guides, showGuide, setShowGuide, setGuide }:any) => {
   const [maptype, setMaptype] = useState(0);
   const mapRef = useRef(null);
 
@@ -89,6 +149,12 @@ const Map = ({ setPosition, position, handleSubmit, guides }:any) => {
     );
   }
 
+  const handlePopupClick=async(e:any,marker:any)=>{
+      e.stopPropagation()
+      setShowGuide(true)
+      setGuide(marker)
+  }
+
   // Render the map component
   return (
     <div className='h-auto w-full overflow-hidden z-10'>
@@ -99,12 +165,15 @@ const Map = ({ setPosition, position, handleSubmit, guides }:any) => {
         />
 
         <MarkerClusterGroup chunkedLoading>
-          {guides.map((marker:any, i:number) => (
+          {guides && guides.map((marker:any, i:number) => (
             <Marker key={i} position={[marker.locations[0], marker.locations[1]]} icon={customIcon}>
-              <Popup>
-                <h2>{marker.name}</h2>
+              <Popup >
+                  <div className='cursor-pointer flex justify-between items-center gap-x-3' onClick={(e)=>handlePopupClick(e,marker)}>
+                  <img src={marker.image} alt={marker.name} className='w-12 aspect-square rounded-full'/>
+                <h2 className='font-semibold text-xl'>{marker.name}</h2>
+                  </div>
               </Popup>
-              <Tooltip>{marker.name}</Tooltip>
+              {/* <Tooltip>{marker.name}</Tooltip> */}
             </Marker>
           ))}
         </MarkerClusterGroup>
