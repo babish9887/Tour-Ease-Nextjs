@@ -1,13 +1,12 @@
+const { NextURL } = require("next/dist/server/web/next-url")
 import { getServerSession } from "next-auth";
-import prisma from "../../../../db/dbconfig";
+import prisma from "../../../db/dbconfig";
 import { NextRequest, NextResponse } from "next/server";
 
 
-async function guideSignup(request:NextRequest){
+async function touristSignup(request:NextRequest){
       const session=await getServerSession()
-      const {contactNo, nationality, languages, lat, lng}=await request.json();
-      console.log(contactNo, nationality, languages, lat, lng)
-
+      const {contactNo, nationality}=await request.json()
       try {
             
             const user=await prisma.user.findFirst({
@@ -15,32 +14,29 @@ async function guideSignup(request:NextRequest){
                         email:session?.user?.email
                   }
             })
-            
-            console.log(user)
-            if(user.role==="GUIDE" || user.role=="USER"){
+         
+            if(user.role==="USER"){
                   return NextResponse.json(
-                        { success: false, message: "User with this email already Exists" },
+                        { success: false, message: "Buyer already Exists" },
                         { status: 200 }
                       );
             }
 
             console.log(user)
-            const guide =await prisma.user.update({
+            const Tourist =await prisma.user.update({
                   where:{
                         id:user.id
                   },
                   data:{
                         contactNo,
                         nationality,
-                        role:"GUIDE",
-                        languages,
-                        locations:[lat, lng]
+                        role:"USER"
                   }
             })
-            console.log(guide)
-            if(guide){
+            console.log(Tourist)
+            if(Tourist){
                   return NextResponse.json(
-                        { success: true, message: "Guide Registered Successfully" },
+                        { success: true, message: "Buyer Registered Successfully" },
                         { status: 200 }
                       );
             }
@@ -57,4 +53,4 @@ async function guideSignup(request:NextRequest){
                 );
       }
 }
-export {guideSignup as POST}
+export {touristSignup as POST}

@@ -1,9 +1,9 @@
 import { getServerSession } from "next-auth";
-import prisma from "../../../../db/dbconfig";
+import prisma from "../../../db/dbconfig";
 import { NextRequest, NextResponse } from "next/server";
 
 
-async function guideSignup(request:NextRequest){
+async function updataGuide(request:NextRequest){
       const session=await getServerSession()
       const {contactNo, nationality, languages, lat, lng}=await request.json();
       console.log(contactNo, nationality, languages, lat, lng)
@@ -16,13 +16,13 @@ async function guideSignup(request:NextRequest){
                   }
             })
             
-            console.log(user)
-            if(user.role==="GUIDE" || user.role=="USER"){
-                  return NextResponse.json(
-                        { success: false, message: "User with this email already Exists" },
-                        { status: 200 }
-                      );
-            }
+            // console.log(user)
+            // if(user.role==="GUIDE"){
+            //       return NextResponse.json(
+            //             { success: false, message: "User with this email already Exists" },
+            //             { status: 200 }
+            //           );
+            // }
 
             console.log(user)
             const guide =await prisma.user.update({
@@ -40,12 +40,12 @@ async function guideSignup(request:NextRequest){
             console.log(guide)
             if(guide){
                   return NextResponse.json(
-                        { success: true, message: "Guide Registered Successfully" },
+                        { success: true, message: "Guide Updated Successfully" },
                         { status: 200 }
                       );
             }
             return NextResponse.json(
-                  { success: false, message: "Buyer Register Failed " },
+                  { success: false, message: "Guide Update Failed " },
                   { status: 400 }
                 );
 
@@ -57,4 +57,4 @@ async function guideSignup(request:NextRequest){
                 );
       }
 }
-export {guideSignup as POST}
+export {updataGuide as POST}
