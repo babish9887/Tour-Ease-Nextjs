@@ -6,9 +6,9 @@ import { BookUser } from "lucide-react";
 
 async function touristSignup(request:NextRequest){
       const session=await getServerSession()
-      const {guideId, date, duration, endDate}=await request.json()
+      const {guideId, date,  endDate}=await request.json()
       try {
-            console.log(guideId, date, duration)
+            console.log(guideId, date)
             const user=await prisma.user.findFirst({
                   where:{
                         email:session?.user?.email
@@ -24,14 +24,25 @@ async function touristSignup(request:NextRequest){
 
             const oldBookings = await prisma.booking.findMany({
                   where: {
-                      bookingDate: {
-                          gte: new Date(date+"T00:00:00"),
-                          lte: new Date(endDate+"T00:00:00"),
-                      }
+                      OR: [
+                          {
+                              bookingDate: {
+                                  gte: new Date(date + "T00:00:00"),
+                                  lte: new Date(endDate + "T00:00:00"),
+                              }
+                          },
+                          {
+                              endDate: {
+                                  gte: new Date(date + "T00:00:00"),
+                                  lte: new Date(endDate + "T00:00:00"),
+                              }
+                          }
+                      ]
                   }
               });
+              
             
-            if(oldBookings){
+            if(oldBookings.length>0){
                   return NextResponse.json(
                         { success: false, message: "Guide is Already booked" },
                         { status: 200 }
@@ -43,8 +54,7 @@ async function touristSignup(request:NextRequest){
                         bookedUser:guideId,
                         bookedBy: user.id,
                         bookingDate:new Date(date+"T00:00:00"),
-                        endDate: new Date(endDate+"T00:00:00"),
-                        duration:Number(duration)
+                        endDate: new Date(endDate+"T00:00:00")
                   }
             })
 

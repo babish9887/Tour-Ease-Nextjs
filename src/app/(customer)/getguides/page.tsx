@@ -43,7 +43,7 @@ function GetGuidesPage() {
       const duration=document.getElementById("duration").value
 
       try {
-            const res = await axios.post('/api/bookguide', {guideId:guide.id, date, duration, endDate});
+            const res = await axios.post('/api/bookguide', {guideId:guide.id, date, endDate});
             if (res.data.success) {
                   toast.success("User is Booked")
             } else
@@ -63,20 +63,20 @@ function GetGuidesPage() {
         <h2 className='my-3'>Pin on the Map where you want to visit! Then we will find nearby guides for you.</h2>
 
        </div>
-      <div className='min-h-[calc(100vh-6rem)] w-auto flex flex-col justify-center items-center'>
+      <div className='min-h-[calc(100vh-12rem)] w-full flex flex-col md:flex-row justify-center items-start relative'>
 
-        <div className='min-w-[300px] w-auto max-w-[800px] aspect-square'>
-          <Map setGuide={setGuide} setPosition={setPosition} showGuide={showGuide} setShowGuide={setShowGuide} position={position} handleSubmit={handleSubmit} guides={guides} />
-        </div>
-      </div>
-      <div className=' w-full md:w-2/5 bg-slate-300 h-72 '>
+            <div className='w-full md:w-1/2 h-full p-4'>
+                  <Map setGuide={setGuide} setPosition={setPosition} showGuide={showGuide} setShowGuide={setShowGuide} position={position} handleSubmit={handleSubmit} guides={guides} />
+
+            </div>
+            <div className='w-full md:w-1/2 h-full p-4 md:py-10 md:px-4 '>
             {guide && showGuide && 
             <div className='flex justify-around items-center flex-col h-auto min-h-32 '>
-                  <div className='flex justify-around items-center gap-y-3'>
+                  <div className='flex justify-around items-center gap-y-3 gap-x-2'>
                   <img src={guide?.image} alt={guide.name} className='rounded-full w-16 aspect-square'/>
-                  <h1>{guide.name}</h1>
+                  <h1 className='text-3xl'>{guide.name}</h1>
                   </div>
-                  <div>
+                  <div className='mb-4'>
                         <h2>Lanuages:{guide.languages.join(", ")}</h2>
                         <h2>Nationality:{guide.nationality}</h2>
                   </div>
@@ -84,16 +84,24 @@ function GetGuidesPage() {
                   <Button type='button' onClick={()=>setBook(true)}>Book This Guide</Button>
 
                   {book &&
-                  <div>
-                        <input type='date' id="date"/>
-                        <input type='date' id="date2"/>
+                  <div className=' mt-6 flex flex-col items-center justify-center w-full h-auto gap-y-2'>
+                       <div className='flex gap-2 items-center'>
+                       <span className='text-xl'>Start Date</span>
+                       <input type='date' id="date"  className="border-2 border-gray-200 outline-none px-2 rounded-md focus:border-gray-300"/>
+                       </div>
 
-                        <input type='number' id="duration"/>
+                       <div className='flex gap-2 items-center'>
+                       <label className='text-xl'>End Date</label>
+                       <input type='date' id="date2"  className="border-2 border-gray-200 outline-none px-2 rounded-md focus:border-gray-300"/>
+                       </div>
                         <Button type='button' onClick={handleBookingSubmit}>Submit</Button>
                   </div>}
             </div>}
+            </div>
       </div>
+      
       </div>
+
 
     </>
   );
@@ -109,16 +117,16 @@ const Map = ({ setPosition, position, handleSubmit, guides, showGuide, setShowGu
   });
 
   const maptypes = [
+        {
+          name: "default",
+          url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        },
     {
       name: "WorldImagery",
       url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
       attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
     },
-    {
-      name: "default",
-      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }
   ];
 
   // Function to handle click event on map to set position
@@ -183,8 +191,18 @@ const Map = ({ setPosition, position, handleSubmit, guides, showGuide, setShowGu
       </MapContainer>
 
 <div className='mt-4 mb-4 flex flex-wrap gap-y-4 gap-x-2'>
-      <input type='text' value={position.lat.toFixed(3)} style={{ color: "black" }} readOnly  className='border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300'/>
-      <input type='text' value={position.lng.toFixed(3)} style={{ color: "black" }} readOnly className='border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300'/>
+      <div className='w-full flex'>
+
+     <div className='w-1/2'>
+      <label>Lat: </label>
+     <input type='text' value={position.lat.toFixed(3)} style={{ color: "black" }} readOnly  className='border-2 w-4/5 border-gray-200 outline-none px-2 py-1 rounded-md focus:border-gray-300'/>
+     </div>
+
+     <div className='w-1/2'>
+      <label>Lng: </label>
+      <input type='text' value={position.lng.toFixed(3)} style={{ color: "black" }} readOnly className='border-2 w-4/5 border-gray-200 outline-none px-2 py-1 rounded-md focus:border-gray-300'/>
+     </div>
+      </div>
       <Button type='button' variant="secondary" className='mx-2' onClick={handleClick}>Get Current Position</Button>
 
       <Button type='button' variant="secondary" onClick={() => setMaptype(maptype === 1 ? 0 : 1)} className=''>

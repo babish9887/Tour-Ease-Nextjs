@@ -92,4 +92,15 @@
       height:auto;
       width: full;
       aspect-ratio: 1/0.6;
+      border-radius: 10px;
+        
 }
+
+@media screen and (max-width: 768px) {
+      .leaflet-container{
+            width: full;
+            height: auto;
+            aspect-ratio: 1/1;
+      }
+      /* Your CSS rules for screens wider than 768px go here */
+  }

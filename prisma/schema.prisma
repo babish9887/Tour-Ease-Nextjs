@@ -39,7 +39,6 @@ model Booking{
       bookedBy String @db.ObjectId
       bookingDate DateTime
       endDate DateTime
-      duration Int?
       createdAt               DateTime          @default(now())
       payment String?
 }

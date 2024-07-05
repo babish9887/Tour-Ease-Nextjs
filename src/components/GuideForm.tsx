@@ -204,19 +204,17 @@ const Map = ({setPosition, position}:any) => {
   });
 
   const maptypes = [
-    {
-      name: "WorldImagery",
-      url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-      attribution:
-        "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
-    },
-    {
+      {
       name: "default",
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    },
-  ];
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      },
+      {
+            name: "WorldImagery",
+            url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+      },
+];
 
   function GetLocation() {
     const map = useMapEvents({
@@ -259,6 +257,7 @@ const Map = ({setPosition, position}:any) => {
         <MarkerClusterGroup chunkedLoading>
           {markers && markers.map((marker: any, i: Number) => (
               <Marker
+              //@ts-ignore
                 key={i}
                 position={[marker.geocode[0], marker.geocode[1]]}
                 icon={customIcon}

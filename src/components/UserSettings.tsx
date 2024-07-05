@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -61,6 +61,21 @@ const UserSettings = ({ user }: any) => {
                   setIsLoading(false);
             }
       };
+
+      useEffect(() => {
+            async function getUser(){
+                  await axios.get('/api/getUser')
+                  .then((res)=>{
+                        if(res.data.success){
+                              console.log(res.data.user)
+                              setNumber(res.data.user.contactNo)
+                              setValue(res.data.user.nationality)
+                        }
+                  })
+            }
+      
+            getUser()
+        }, [number])
 
       return (
             <div className="w-full mx-auto p-4  h-screen flex flex-col justify-center sm:w-2/3 md:w-3/6 lg:w-2/6">

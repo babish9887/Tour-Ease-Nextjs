@@ -1,6 +1,6 @@
 
 "use client";
-import React, {  useRef, useState } from "react";
+import React, {  useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -91,6 +91,24 @@ const GuideSettings = ({ user }: any) => {
     }
   };
 
+
+  useEffect(() => {
+      async function getUser(){
+            await axios.get('/api/getUser')
+            .then((res)=>{
+                  if(res.data.success){
+                        console.log(res.data.user)
+                        setNumber(res.data.user.contactNo)
+                        setPosition({...position, lat:res.data.user.locations[0], lng:res.data.user.locations[1]})
+                        setValue(res.data.user.nationality)
+                        setSelectedOptions(res.data.user.languages)
+                  }
+            })
+      }
+
+      getUser()
+  }, [number])
+
   return (
     <div className="w-full mx-auto p-4  h-auto min-h-screen flex flex-col justify-center sm:w-2/3 md:w-3/6 lg:w-2/6">
       <h2 className=" font-bold text-2xl">Account Settings</h2>
@@ -139,7 +157,7 @@ const GuideSettings = ({ user }: any) => {
                     {Nationalities.map((nationality, i) => (
                       <CommandItem
                         key={i}
-                        value={nationality}
+                        value={value}
                         onSelect={(currentValue) => {
                           setValue(currentValue === value ? "" : currentValue);
                           setOpen(false);
@@ -204,19 +222,17 @@ const Map = ({setPosition, position}:any) => {
   });
 
   const maptypes = [
-    {
-      name: "WorldImagery",
-      url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-      attribution:
-        "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
-    },
-    {
+      {
       name: "default",
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    },
-  ];
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      },
+      {
+            name: "WorldImagery",
+            url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+      },
+];
 
   function GetLocation() {
     const map = useMapEvents({
@@ -259,6 +275,7 @@ const Map = ({setPosition, position}:any) => {
         <MarkerClusterGroup chunkedLoading>
           {markers && markers.map((marker: any, i: Number) => (
               <Marker
+              //@ts-ignore
                 key={i}
                 position={[marker.geocode[0], marker.geocode[1]]}
                 icon={customIcon}
