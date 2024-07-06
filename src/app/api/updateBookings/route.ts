@@ -4,25 +4,22 @@ import { NextRequest, NextResponse } from "next/server";
 import { BookUser } from "lucide-react";
 
 
-async function touristSignup(request:NextRequest){
+async function updateBookings(request:NextRequest){
       const session=await getServerSession()
-      const {guideId, date,  endDate}=await request.json()
+      const {createdAt, date,  endDate}=await request.json()
+      console.log(date, endDate)
+
       try {
-            console.log(guideId, date)
+           
             const user=await prisma.user.findFirst({
                   where:{
                         email:session?.user?.email
                   }
             })
          
-            const guide=await prisma.user.findFirst({
-                  where:{
-                        id:guideId
-                  }
-            })
-            console.log(user, guide)
+           
 
-            const oldBookings = await prisma.booking.findMany({
+            const oldBookingstemp = await prisma.booking.findMany({
                   where: {
                       OR: [
                           {
@@ -40,34 +37,35 @@ async function touristSignup(request:NextRequest){
                       ]
                   }
               });
+
+              const oldBookings=oldBookingstemp.filter((booking)=>booking.createdAt==createdAt)
+
               
             
             if(oldBookings.length>0){
                   return NextResponse.json(
-                        { success: false, message: "Guide is Already booked" },
+                        { success: false, message: "Guide is Already booked at these Date" },
                         { status: 200 }
                       );
             }
+            const bookingte=await prisma.booking.findFirst({
+                  where:{
+                        createdAt
+                  }
+            })
+            console.log(bookingte)
 
-            const booking=await prisma.booking.create({
+            const booking=await prisma.booking.update({
+                  where:{
+                        id:bookingte.id
+                  },
                   data:{
-                        bookedUser:guideId,
-                        bookedBy: user.id,
                         bookingDate:new Date(date),
-                        endDate: new Date(endDate)
+                        endDate: new Date(endDate),
                   }
             })
 
             console.log(booking)
-            const Tourist =await prisma.user.update({
-                  where:{
-                        id:guideId
-                  },
-                  data:{
-                       status:"BOOKED"
-                  }
-            })
-            console.log(Tourist)
             if(booking){
                   return NextResponse.json(
                         { success: true, message: "Guide Booked Successfully" },
@@ -87,4 +85,4 @@ async function touristSignup(request:NextRequest){
                 );
       }
 }
-export {touristSignup as POST}
+export {updateBookings as POST}

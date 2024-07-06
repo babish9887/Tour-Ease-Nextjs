@@ -11,7 +11,7 @@ async function getUser(){
       if(user){
             return NextResponse.json({success: true, mesage:"Got User", user}, {status:200})
       }
-      return NextResponse.json({success: true, mesage:"Failed to Get User"}, {status:200})
+      return NextResponse.json({success: false, mesage:"Failed to Get User"}, {status:200})
 
 }
 

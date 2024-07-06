@@ -51,7 +51,7 @@ useEffect(()=>{
         <div className="sm:flex md:gap-6 sm:gap-2 items-center hidden font-semibold">
           <Link
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
-              pathName === "/" ? "text-[#FF5315]" : null
+              pathName === "/" ? "text-green-600" : null
             }`}
             href={"/"}
           >
@@ -59,7 +59,7 @@ useEffect(()=>{
           </Link>
           <Link
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
-              pathName === "/getguides" ? "text-[#FF5315]" : null
+              pathName === "/getguides" ? "text-green-600" : null
             }`}
             href={"/getguides"}
           >
@@ -67,7 +67,7 @@ useEffect(()=>{
           </Link>
           <Link
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
-              pathName === "/mybookings" ? "text-[#FF5315]" : null
+              pathName === "/mybookings" ? "text-green-600" : null
             }`}
             href={"/mybookings"}
           >
@@ -96,7 +96,7 @@ useEffect(()=>{
           <Link
             href={"/"}
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
-              pathName === "/" ? "text-[#FF5315]" : null
+              pathName === "/" ? "text-green-600" : null
             }`}
             onClick={() => setOpenMenu(false)}
           >
@@ -105,7 +105,7 @@ useEffect(()=>{
           <Link
             href={"/getguides"}
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
-              pathName === "/getguides" ? "text-[#FF5315]" : null
+              pathName === "/getguides" ? "text-green-600" : null
             }`}
             onClick={() => setOpenMenu(false)}
           >
@@ -114,7 +114,7 @@ useEffect(()=>{
           <Link
             href={"/mybookings"}
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
-              pathName === "/mybookings" ? "text-[#FF5315]" : null
+              pathName === "/mybookings" ? "text-green-600" : null
             }`}
             onClick={() => setOpenMenu(false)}
           >

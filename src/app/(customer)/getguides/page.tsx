@@ -39,9 +39,11 @@ function GetGuidesPage() {
       const date=document.getElementById("date").value
       //@ts-ignore
       const endDate=document.getElementById("date2").value
-      //@ts-ignore
-      const duration=document.getElementById("duration").value
 
+      if(new Date(date)> new Date(endDate)){
+            return toast.error("Starting Date can't be more than Ending Date")
+      }
+ 
       try {
             const res = await axios.post('/api/bookguide', {guideId:guide.id, date, endDate});
             if (res.data.success) {
@@ -79,6 +81,7 @@ function GetGuidesPage() {
                   <div className='mb-4'>
                         <h2>Lanuages:{guide.languages.join(", ")}</h2>
                         <h2>Nationality:{guide.nationality}</h2>
+                        <h2>Avg Rating: N/A</h2>
                   </div>
 
                   <Button type='button' onClick={()=>setBook(true)}>Book This Guide</Button>
@@ -94,7 +97,7 @@ function GetGuidesPage() {
                        <label className='text-xl'>End Date</label>
                        <input type='date' id="date2"  className="border-2 border-gray-200 outline-none px-2 rounded-md focus:border-gray-300"/>
                        </div>
-                        <Button type='button' onClick={handleBookingSubmit}>Submit</Button>
+                        <Button type='button' onClick={handleBookingSubmit} className='bg-green-500'>Submit</Button>
                   </div>}
             </div>}
             </div>
@@ -117,17 +120,17 @@ const Map = ({ setPosition, position, handleSubmit, guides, showGuide, setShowGu
   });
 
   const maptypes = [
-        {
-          name: "default",
-          url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        },
-    {
-      name: "WorldImagery",
-      url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-      attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
-    },
-  ];
+      {
+      name: "default",
+      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      },
+      {
+            name: "WorldImagery",
+            url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+      },
+];
 
   // Function to handle click event on map to set position
   function GetLocation() {
@@ -203,15 +206,15 @@ const Map = ({ setPosition, position, handleSubmit, guides, showGuide, setShowGu
       <input type='text' value={position.lng.toFixed(3)} style={{ color: "black" }} readOnly className='border-2 w-4/5 border-gray-200 outline-none px-2 py-1 rounded-md focus:border-gray-300'/>
      </div>
       </div>
-      <Button type='button' variant="secondary" className='mx-2' onClick={handleClick}>Get Current Position</Button>
+      <Button type='button' variant="secondary" className='mx-2 text-green-600 hover:text-green-700' onClick={handleClick}>Get Current Position</Button>
 
-      <Button type='button' variant="secondary" onClick={() => setMaptype(maptype === 1 ? 0 : 1)} className=''>
+      <Button type='button' variant="secondary" onClick={() => setMaptype(maptype === 1 ? 0 : 1)} className=' text-green-600 hover:text-green-700'>
         Change Map Style
       </Button>
 
 </div>
 
-      <Button type='button' onClick={handleSubmit}>Submit</Button>
+      <Button type='button' onClick={handleSubmit} className='bg-green-500 hover:bg-green-600'>Submit</Button>
 
     </div>
   );
