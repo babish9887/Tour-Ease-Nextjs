@@ -31,7 +31,7 @@ useEffect(()=>{
   return (
     <nav className="flex justify-between flex-col sm:flex-row items-center py-2 fixed w-[calc(100vw-2rem)] top-2 mr-4 ml-4 z-50 bg-transparent">
       <div className="flex backdrop-blur-2xl grainy/90 bg-slate-100/40 justify-between w-full sticky top-0 h-[4.5rem] items-center px-4 py-2 rounded-xl shadow-md">
-        <Link href={"/"} className="font-bold text-xl uppercase">
+        <Link href={"/"} className=" font-extrabold text-xl uppercase text-green-600">
           Tour Ease
         </Link>
         <div className="cursor-pointer">

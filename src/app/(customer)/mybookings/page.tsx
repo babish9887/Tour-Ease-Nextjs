@@ -20,14 +20,13 @@ import { Label } from "@/components/ui/label"
 import toast from "react-hot-toast";
 import { PulseLoader } from "react-spinners";
 import StarRating from '@/components/StarRating'
+import { Trash2Icon } from "lucide-react";
 
 
 
 function MyBookingsPage() {
   const [bookings, setBookings] = useState(null);
   const [loading, setLoading] = useState(false);
-  const[isEditing, setIsEditing]=useState(false);
-  const[isReviewing, setIsReviewing]=useState(false);
   const[rating, setRating]=useState(0);
 
   useEffect(() => {
@@ -74,7 +73,12 @@ function MyBookingsPage() {
       try {
             await axios.post("/api/guidereview", {id:booking.bookedUser, rating, review})
             .then((res) => {
-                  console.log(res.data)
+                  if(res.data.success){
+                        toast.success("Review Submitted Successfully")
+                  }
+                  else{
+                        toast.error(res.data.message)
+                  }
             })
       } catch (error:any) {
             toast.error(error.message)
@@ -82,6 +86,28 @@ function MyBookingsPage() {
       setLoading(false)
 }
   }
+
+  async function handleCancelBooking(booking:any){
+      setLoading(true)
+       //@ts-ignore
+       const reason=document.getElementById('reason').value
+       console.log(reason)
+      try {
+            await axios.post("/api/cancelbooking", {id:booking.id,reason})
+            .then((res) => {
+                  if(res.data.success){
+                        toast.success("Booking Canceled Successfully")
+                  }
+                  else{
+                        toast.error(res.data.message)
+                  }
+            })
+      } catch (error:any) {
+            toast.error(error.message)
+      } finally {
+      setLoading(false)
+  }
+}
 
   if(bookings===null){
       return <div className="flex justify-center items-center h-screen"><PulseLoader size={24} /></div>
@@ -150,13 +176,13 @@ function MyBookingsPage() {
                          </div>
                        </div>
                        <DialogFooter>
-                         <Button type="button" variant={"default"}  onClick={()=>handleSubmit(booking)}>Submit Review</Button>
+                         <Button  disabled={loading} type="button" variant={"default"}  onClick={()=>handleSubmit(booking)}>Submit Review</Button>
                        </DialogFooter>
                      </DialogContent>
                    </Dialog>
 
                    :
-
+                        <div className="flex gap-3">
 
                               <Dialog>
                               <DialogTrigger asChild>
@@ -194,12 +220,42 @@ function MyBookingsPage() {
                                   </div>
                                 </div>
                                 <DialogFooter>
-                                  <Button type="button" onClick={()=>handleBookingChange(booking)}>Submit Changes</Button>
+                                  <Button  disabled={loading} type="button" onClick={()=>handleBookingChange(booking)}>Submit Changes</Button>
                                 </DialogFooter>
                               </DialogContent>
                             </Dialog>
                 
-                
+                            <Dialog>
+                              <DialogTrigger asChild>
+                            <Button variant={"destructive"} className="text-white py-0"><Trash2Icon /></Button>
+                              
+                              </DialogTrigger>
+                              <DialogContent className="sm:max-w-[425px]">
+                                <DialogHeader>
+                                  <DialogTitle>Are Your Sure to Cancel Booking?</DialogTitle>
+                                </DialogHeader>
+                                <div className="grid gap-4 py-4">
+                                  <div className="grid grid-cols-1 items-center gap-4">
+                                    <Label htmlFor="username" className="text">
+                                      Why are you cancelling the booking?
+                                    </Label>
+                                    <Textarea
+                                      id="reason"
+                                      placeholder="Write reason to cancel"
+                                      className="col-span-3"
+                                    />
+                                  </div>
+                                </div>
+                                <DialogFooter>
+                                  <Button disabled={loading} type="button" variant={"destructive"} onClick={()=>handleCancelBooking(booking)}>Submit</Button>
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
+
+
+
+                            </div>
+
                 
                 
                 }

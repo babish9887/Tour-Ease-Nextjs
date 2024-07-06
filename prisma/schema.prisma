@@ -43,6 +43,17 @@ model Booking{
       payment String?
 }
 
+model canceledBooking{
+      id String @id @default(auto()) @map("_id") @db.ObjectId
+      bookedUser String @db.ObjectId
+      bookedBy String @db.ObjectId
+      bookingDate DateTime
+      endDate DateTime
+      createdAt               DateTime          @default(now())
+      payment String?
+      reason String?
+}
+
 model Account{
       id String @id @default(auto()) @map("_id") @db.ObjectId
       userId String @db.ObjectId
@@ -106,3 +117,4 @@ model Rating{
       tour Tour @relation(fields: [tourId], references: [id], onDelete:Cascade)
       rating Int
 }
+
