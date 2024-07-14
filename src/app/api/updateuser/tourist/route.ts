@@ -1,12 +1,13 @@
 const { NextURL } = require("next/dist/server/web/next-url")
 import { getServerSession } from "next-auth";
-import prisma from "../../../db/dbconfig";
+import prisma from "../../../../db/dbconfig";
 import { NextRequest, NextResponse } from "next/server";
 
 
-async function touristSignup(request:NextRequest){
+async function updatetourist(request:NextRequest){
       const session=await getServerSession()
       const {contactNo, nationality}=await request.json()
+      console.log(contactNo, nationality)
       try {
             
             const user=await prisma.user.findFirst({
@@ -15,13 +16,6 @@ async function touristSignup(request:NextRequest){
                   }
             })
          
-            if(user.role==="USER"){
-                  return NextResponse.json(
-                        { success: false, message: "Buyer already Exists" },
-                        { status: 200 }
-                      );
-            }
-
             console.log(user)
             const Tourist =await prisma.user.update({
                   where:{
@@ -30,18 +24,17 @@ async function touristSignup(request:NextRequest){
                   data:{
                         contactNo,
                         nationality,
-                        role:"USER"
                   }
             })
             console.log(Tourist)
             if(Tourist){
                   return NextResponse.json(
-                        { success: true, message: "Buyer Registered Successfully" },
+                        { success: true, message: "Buyer Updated Successfully" },
                         { status: 200 }
                       );
             }
             return NextResponse.json(
-                  { success: false, message: "Buyer Register Failed " },
+                  { success: false, message: "Buyer Update failed " },
                   { status: 400 }
                 );
 
@@ -53,4 +46,4 @@ async function touristSignup(request:NextRequest){
                 );
       }
 }
-export {touristSignup as POST}
+export {updatetourist as POST}

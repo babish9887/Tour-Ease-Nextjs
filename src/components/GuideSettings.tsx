@@ -69,11 +69,11 @@ const GuideSettings = ({ user }: any) => {
     const toastid = toast.loading("Registering User...");
     try {
       const res = await axios
-        .post("/api/updateguide", { contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng })
+        .post("/api/updateuser/guide", { contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng })
         .then((res) => {
           console.log(res);
           if (res.data.success) {
-            toast.success("User Registered", { id: toastid });
+            toast.success("Guide Updated Successfully", { id: toastid });
             setTimeout(() => {
               router.replace("/");
             }, 3000);
@@ -111,8 +111,7 @@ const GuideSettings = ({ user }: any) => {
 
   return (
     <div className="w-full mx-auto p-4  h-auto min-h-screen flex flex-col justify-center sm:w-2/3 md:w-3/6 lg:w-2/6">
-      <h2 className=" font-bold text-2xl">Account Settings</h2>
-      <h4 className="  text-md">As a Guide</h4>
+      <h2 className=" font-bold text-2xl">Guide Settings</h2>
 
       <form className="bg-white w-auto p-4 rounded-lg mt-5 flex flex-col gap-y-5 gap-x-4">
       <div>

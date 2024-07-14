@@ -21,4 +21,4 @@ export default withAuth(
   },
 )
 
-export const config = { matcher: ["/getguides"] }
+export const config = { matcher: ["/getguides", "/mybookings"] }

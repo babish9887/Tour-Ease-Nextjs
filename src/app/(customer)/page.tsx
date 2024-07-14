@@ -1,12 +1,9 @@
 "use client"
 import { Button } from '@/components/ui/button'
-import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React from 'react'
 
 function page() {
-      const {data:session}=useSession()
-      console.log(session)
   return (
       <div className=' h-screen overflow-hidden relative '>
 

@@ -11,7 +11,7 @@ import { LuLogOut } from "react-icons/lu";
 import { signIn, signOut, useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 
-const Navbar = () => {
+const SellerNavbar = () => {
   const pathName = usePathname();
   const [openMenu, setOpenMenu] = useState(false);
   const router=useRouter()
@@ -57,15 +57,15 @@ useEffect(()=>{
           >
             Home
           </Link>
-        {session?.user?.role!=="GUIDE" && <Link
+          {/* <Link
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
               pathName === "/getguides" ? "text-green-600" : null
             }`}
             href={"/getguides"}
           >
             Get Guides
-          </Link>}
-          {session?.user?.role!=="GUIDE" ? <Link
+          </Link> */}
+          <Link
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
               pathName === "/mybookings" ? "text-green-600" : null
             }`}
@@ -73,16 +73,6 @@ useEffect(()=>{
           >
             My Bookings
           </Link>
-          :
-          <Link
-            className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
-              pathName === "/mybookings" ? "text-green-600" : null
-            }`}
-            href={"/guide/mybookings"}
-          >
-            My Bookings
-          </Link>
-          }
          
           {session?.user ? (
             <AvatarComponent
@@ -112,32 +102,24 @@ useEffect(()=>{
           >
             Home
           </Link>
-          {session?.user?.role!=="GUIDE" && <Link
+          <Link
+            href={"/getguides"}
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
               pathName === "/getguides" ? "text-green-600" : null
             }`}
-            href={"/getguides"}
+            onClick={() => setOpenMenu(false)}
           >
-            Get Guides
-          </Link>}
-          {session?.user?.role!=="GUIDE" ? <Link
-            className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
-              pathName === "/mybookings" ? "text-green-600" : null
-            }`}
+            My Bookings
+          </Link>
+          {/* <Link
             href={"/mybookings"}
-          >
-            My Bookings
-          </Link>
-          :
-          <Link
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
               pathName === "/mybookings" ? "text-green-600" : null
             }`}
-            href={"/guide/mybookings"}
+            onClick={() => setOpenMenu(false)}
           >
-            My Bookings
-          </Link>
-          }
+           
+          </Link> */}
           {session?.user ? (
               <Button onClick={()=>signOut()}>
                 {" "}
@@ -158,4 +140,4 @@ useEffect(()=>{
   );
 };
 
-export default Navbar;
+export default SellerNavbar;

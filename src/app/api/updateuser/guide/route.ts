@@ -1,12 +1,13 @@
-const { NextURL } = require("next/dist/server/web/next-url")
 import { getServerSession } from "next-auth";
 import prisma from "../../../../db/dbconfig";
 import { NextRequest, NextResponse } from "next/server";
 
 
-async function touristSignup(request:NextRequest){
+async function updateguide(request:NextRequest){
       const session=await getServerSession()
-      const {contactNo, nationality}=await request.json()
+      const {contactNo, nationality, languages, lat, lng}=await request.json();
+      console.log(contactNo, nationality, languages, lat, lng)
+
       try {
             
             const user=await prisma.user.findFirst({
@@ -14,34 +15,27 @@ async function touristSignup(request:NextRequest){
                         email:session?.user?.email
                   }
             })
-         
-            if(user.role==="GUIDE" || user.role=="USER"){
-                  return NextResponse.json(
-                        { success: false, message: "User with this email already Exists" },
-                        { status: 200 }
-                      );
-            }
-
-            console.log(user)
-            const Tourist =await prisma.user.update({
+            
+            const guide =await prisma.user.update({
                   where:{
                         id:user.id
                   },
                   data:{
                         contactNo,
                         nationality,
-                        role:"USER"
+                        languages,
+                        locations:[lat, lng]
                   }
             })
-            console.log(Tourist)
-            if(Tourist){
+            console.log(guide)
+            if(guide){
                   return NextResponse.json(
-                        { success: true, message: "Buyer Registered Successfully" },
+                        { success: true, message: "Guide Updated Successfully" },
                         { status: 200 }
                       );
             }
             return NextResponse.json(
-                  { success: false, message: "Buyer Register Failed " },
+                  { success: false, message: "Buyer Update Failed " },
                   { status: 400 }
                 );
 
@@ -53,4 +47,4 @@ async function touristSignup(request:NextRequest){
                 );
       }
 }
-export {touristSignup as POST}
+export {updateguide as POST}

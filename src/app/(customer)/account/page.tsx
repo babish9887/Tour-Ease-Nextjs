@@ -5,10 +5,20 @@ import {PulseLoader} from 'react-spinners'
 
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 function AccountPage() {
       const{data:session}=useSession()
       const [loading, setLoading]=useState(true)
+      const router=useRouter()
+      useEffect(() => {
+            async function getUser(){
+                  if(session?.user===null || session?.user==undefined)
+                        router.replace('/')
+            }
+            getUser()
+
+      },[])
       
   return (
 <>
