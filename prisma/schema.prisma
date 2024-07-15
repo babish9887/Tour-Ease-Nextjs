@@ -41,6 +41,7 @@ model Booking{
       endDate DateTime
       createdAt               DateTime          @default(now())
       payment String?
+      cancelRequests RequestCancel[]
 }
 
 model canceledBooking{
@@ -116,5 +117,13 @@ model Rating{
       tourId String @db.ObjectId
       tour Tour @relation(fields: [tourId], references: [id], onDelete:Cascade)
       rating Int
+}
+
+
+model RequestCancel{
+      id String @id @default(auto()) @map("_id") @db.ObjectId
+      bookingId String @db.ObjectId
+      booking Booking @relation(fields: [bookingId], references: [id], onDelete:Cascade)
+      reason String
 }
 

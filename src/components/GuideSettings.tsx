@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Languages from "../../Languages.json";
+import { Switch } from "@/components/ui/switch"
 
 import {
   MapContainer,
@@ -47,6 +48,7 @@ const GuideSettings = ({ user }: any) => {
   const [loading, setIsLoading] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+  const [available, setAvailable]=useState(true)
   const [position, setPosition]=useState({
       lat:0,
       lng:0
@@ -66,22 +68,18 @@ const GuideSettings = ({ user }: any) => {
     if (number.length !== 10) return console.log("Number should be 10 digit");
 
     setIsLoading(true);
-    const toastid = toast.loading("Registering User...");
+    const toastid = toast.loading("Updating Data...");
     try {
       const res = await axios
-        .post("/api/updateuser/guide", { contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng })
+        .post("/api/updateuser/guide", { contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng, isActive:available })
         .then((res) => {
           console.log(res);
           if (res.data.success) {
             toast.success("Guide Updated Successfully", { id: toastid });
-            setTimeout(() => {
-              router.replace("/");
-            }, 3000);
+           
           } else {
             toast.error(res.data.message, { id: toastid });
-            setTimeout(() => {
-              router.replace("/");
-            }, 3000);
+           
           }
         });
     } catch (error) {
@@ -102,6 +100,7 @@ const GuideSettings = ({ user }: any) => {
                         setPosition({...position, lat:res.data.user.locations[0], lng:res.data.user.locations[1]})
                         setValue(res.data.user.nationality)
                         setSelectedOptions(res.data.user.languages)
+                        setAvailable(res.data.user.isActive)
                   }
             })
       }
@@ -115,6 +114,15 @@ const GuideSettings = ({ user }: any) => {
 
       <form className="bg-white w-auto p-4 rounded-lg mt-5 flex flex-col gap-y-5 gap-x-4">
       <div>
+
+      <div className="w-full flex flex-col gap-2 mb-2">
+        
+            <div className="flex items-center space-x-2">
+            <Switch id="available" checked={available} onCheckedChange={()=>{setAvailable(!available); console.log(!available)}}/>
+            <label htmlFor="available">Available for Booking</label>
+            </div>
+        </div>
+
 
         <div className="w-full flex flex-col gap-2">
           <label className="font-semibold" htmlFor="">

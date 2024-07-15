@@ -19,7 +19,7 @@ async function getGuides(request:NextRequest){
 
             console.log(users)
             const guides=users.filter((user:any)=>
-                  (user.locations[0]>minlat && user.locations[0]<maxlat) && (user.locations[1]>minlng && user.locations[1]<maxlng)
+                  (user.locations[0]>minlat && user.locations[0]<maxlat) && (user.locations[1]>minlng && user.locations[1]<maxlng) && (user.isActive===true)
             )
             console.log(guides)
 

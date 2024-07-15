@@ -28,11 +28,14 @@ function GetGuidesPage() {
     try {
       const res = await axios.post('/api/getguides', { lat: position.lat, lng: position.lng });
       if (res.data.success) {
+            if(res.data.guides.length===0){
+                  return toast.error("No guides found in this area.")
+            }
         setGuides(res.data.guides);
-        console.log(res.data.guides)
       }
     } catch (error:any) {
       console.error('Error fetching guides:', error.message);
+      toast.error("Error fetching guides.")
     } finally {
       setLoading(false)
     }
@@ -90,6 +93,7 @@ function GetGuidesPage() {
 
             </div>
             <div className='w-full md:w-1/2 h-full p-4 md:py-10 md:px-4 '>
+            {/* {guides.length===0 && guide && <div>No guides Available</div>} */}
             {guide && showGuide && 
             <div className='flex justify-around items-center flex-col h-auto min-h-32 '>
                   <div className='flex justify-around items-center gap-y-3 gap-x-2'>

@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 import { usePathname, useRouter } from "next/navigation";
 
 import AvatarComponent from "./AvatarComponent";
-import { LuLogOut } from "react-icons/lu";
+import { LuLogOut, LuSettings2 } from "react-icons/lu";
 import { signIn, signOut, useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 
@@ -139,10 +139,16 @@ useEffect(()=>{
           </Link>
           }
           {session?.user ? (
-              <Button onClick={()=>signOut()}>
-                {" "}
-                <LuLogOut className="mr-2 w-4 h-4" /> Logout
-              </Button>
+                  <div className="gap-y-1 flex flex-col ">
+                  <Button className="text-white w-full" onClick={()=>signOut()}>
+                  <LuLogOut className="mr-2" /> Logout
+                  </Button>
+                  <Link href="/account">
+                  <Button className="text-white w-full">
+                  <LuSettings2 className="mr-2" /> Settings
+                  </Button>
+                  </Link>
+                  </div>
           ) : (
             <div className="flex gap-3" >
                 <Button variant={"outline"} className="font-semibold" onClick={()=>{signIn("google", {callbackUrl:"http://localhost:3000/newuser"})}}>
