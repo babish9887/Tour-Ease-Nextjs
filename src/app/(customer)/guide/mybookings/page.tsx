@@ -93,10 +93,10 @@ function MyBookingsPage() {
        const reason=document.getElementById('reason').value
        console.log(reason)
       try {
-            await axios.post("/api/cancelbooking", {id:booking.id,reason})
+            await axios.post("/api/requestcancel", {id:booking.id,reason})
             .then((res) => {
                   if(res.data.success){
-                        toast.success("Booking Canceled Successfully")
+                        toast.success("Booking Cancel requested Successfully")
                   }
                   else{
                         toast.error(res.data.message)
@@ -146,52 +146,19 @@ function MyBookingsPage() {
                     {/* Edit Button */}
                   </div>
                     {booking.isEnded ? 
-                     <Dialog>
-                     <DialogTrigger asChild>
-                       <Button variant="outline">See More Details  </Button>
-                     </DialogTrigger>
-                     <DialogContent className="sm:max-w-[425px]">
-                       <DialogHeader>
-                         <DialogTitle>Give Your Review</DialogTitle>
-                         <DialogDescription>
-                              About Guide and Your Experience
-                         </DialogDescription>
-                       </DialogHeader>
-                       <div className="grid gap-4 py-4">
-                         <div className="grid grid-cols-2 items-center gap-2">
-                           <Label htmlFor="name" className="text-left">
-                             How was your experience ? 
-                           </Label>
-                         <StarRating maxRating={5} color="green" size={24} onSetRating={setRating} />
-                         </div>
-                         <div className="grid grid-cols-1 items-center gap-4">
-                           <Label htmlFor="username" className="text-left">
-                             Write Your Review
-                           </Label>
-                           <Textarea
-                             id="review"
-                             placeholder="Type your review here. "
-                             className="col-span-3"
-                           />
-                         </div>
-                       </div>
-                       <DialogFooter>
-                         <Button  disabled={loading} type="button" variant={"default"}  onClick={()=>handleSubmit(booking)}>Submit Review</Button>
-                       </DialogFooter>
-                     </DialogContent>
-                   </Dialog>
+                 
+                  <div>Ended</div>
 
                    :
                         <div className="flex gap-3">
                             <Dialog>
                               <DialogTrigger asChild>
-                            {/* <Button variant={"destructive"} className="text-white py-0"><Trash2Icon /></Button> */}
-                              Request Cancel
+                            <Button variant={"destructive"} className="text-white py-0">Request Cancel</Button>
                               
                               </DialogTrigger>
                               <DialogContent className="sm:max-w-[425px]">
                                 <DialogHeader>
-                                  <DialogTitle>Are Your Sure to Cancel Booking?</DialogTitle>
+                                  <DialogTitle>Request Cancel for Booking</DialogTitle>
                                 </DialogHeader>
                                 <div className="grid gap-4 py-4">
                                   <div className="grid grid-cols-1 items-center gap-4">

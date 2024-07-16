@@ -14,7 +14,7 @@ async function getMyBookings(){
             }
       })
       console.log(bookings)
-      const guidesId=bookings.map((booking)=>booking.bookedUser)
+      const guidesId=bookings.map((booking:any)=>booking.bookedUser)
       const guides=await prisma.user.findMany({
             where: {
                   id:{
@@ -33,9 +33,9 @@ async function getMyBookings(){
       //       }
       // })
 
-      const bookingwithdetails = guides.map((guide) => {
-            const guideBookings = bookings.filter(booking => booking.bookedUser === guide.id);
-            const details = guideBookings.map(booking => ({
+      const bookingwithdetails = guides.map((guide:any) => {
+            const guideBookings = bookings.filter((booking:any )=> booking.bookedUser === guide.id);
+            const details = guideBookings.map((booking:any )=> ({
                   ...guide,
                   ...booking,
                   isEnded: booking.endDate < new Date(Date.now())
@@ -44,9 +44,18 @@ async function getMyBookings(){
       }).flat();
       
       console.log(bookingwithdetails)
+      const bookingsId=bookingwithdetails.map((booking:any)=>booking.id)
+      const cancelRequests=await prisma.RequestCancel.findMany({
+            where:{
+                  bookingId:{
+                        in: bookingsId
+                  }
+            }
+      })
+      console.log(cancelRequests)
 
       if(bookings){
-            return NextResponse.json({success: true, mesage:"Got bookings", bookings:bookingwithdetails}, {status:200})
+            return NextResponse.json({success: true, mesage:"Got bookings", bookings:bookingwithdetails, cancelRequests}, {status:200})
       }
       return NextResponse.json({success: false, mesage:"Failed to Get bookings"}, {status:200})
 

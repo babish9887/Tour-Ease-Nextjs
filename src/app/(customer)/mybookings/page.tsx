@@ -26,6 +26,8 @@ import { Trash2Icon } from "lucide-react";
 
 function MyBookingsPage() {
   const [bookings, setBookings] = useState(null);
+  const [cancelRequests, setCancelRequests] = useState([]);
+
   const [loading, setLoading] = useState(false);
   const[rating, setRating]=useState(0);
 
@@ -33,7 +35,10 @@ function MyBookingsPage() {
     async function getMyBookings() {
       await axios.get("/api/getMyBookings").then((res) => {
         console.log(res.data.bookings);
-        if (res.data.success) setBookings(res.data.bookings);
+        if (res.data.success) {
+            setBookings(res.data.bookings)
+            setCancelRequests(res.data.cancelRequests)
+      };
       });
     }
     getMyBookings();
@@ -140,6 +145,12 @@ function MyBookingsPage() {
                       <p className="text-xs">Booked on: {booking.createdAt.split('T')[0]}</p>
                       <p className="text-xs">From <span>{booking.bookingDate.split('T')[0]}</span> To <span>{booking.endDate.split('T')[0]}</span></p>
                      
+                     {cancelRequests.length>0 &&cancelRequests.some(cancelRequest => cancelRequest.bookingId === booking.id) && 
+                     <div>
+                        <p className="text-sm">Guide Requested for Cancel</p>
+                        <p className="text-xs">Reason: {cancelRequests.find(cancelRequest => cancelRequest.bookingId === booking.id).reason}</p>
+                     </div>
+                     }
               
                     </div>
                     
@@ -262,16 +273,8 @@ function MyBookingsPage() {
                 </div>
             ))
            }
-        
-
-
-
-
           
         </div>
-
-
-
       </div>
     </>
   );

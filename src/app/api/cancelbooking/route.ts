@@ -3,12 +3,20 @@ import prisma from '../../../db/dbconfig'
 async function cancelBooking(request:NextRequest){
       const {id, reason}=await request.json()
       console.log(id)
-      const booking=await prisma.booking.delete({
+      const booking=await prisma.booking.findFirst({
             where:{
                   id
             }
       })
-      const canceledBooking=await prisma.canceledBooking.create({
+      const oldRequest=await prisma.RequestCancel.findFirst({
+            where:{
+                  bookingId:booking.id
+            }
+      })
+      if(oldRequest){
+            return NextResponse.json({success: false, mesage:"Booking Cancel already Requested"}, {status:200})
+      }
+      const canceledBooking=await prisma.RequestCancel.create({
             data:{
                   ...booking, 
                   reason

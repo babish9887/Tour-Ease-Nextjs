@@ -14,7 +14,7 @@ async function getguidebookings(){
             }
       })
       console.log(bookings)
-      const usersId=bookings.map((booking)=>booking.bookedBy)
+      const usersId=bookings.map((booking:any)=>booking.bookedBy)
       const users=await prisma.user.findMany({
             where: {
                   id:{
@@ -33,9 +33,9 @@ async function getguidebookings(){
       //       }
       // })
 
-      const bookingwithdetails = users.map((guide) => {
-            const guideBookings = bookings.filter(booking => booking.bookedBy === guide.id);
-            const details = guideBookings.map(booking => ({
+      const bookingwithdetails = users.map((guide:any) => {
+            const guideBookings = bookings.filter((booking:any) => booking.bookedBy === guide.id);
+            const details = guideBookings.map((booking:any) => ({
                   ...guide,
                   ...booking,
                   isEnded: booking.endDate < new Date(Date.now())
