@@ -153,7 +153,7 @@ function MyBookingsPage() {
                         <div className="flex gap-3">
                             <Dialog>
                               <DialogTrigger asChild>
-                            <Button variant={"destructive"} className="text-white py-0">Request Cancel</Button>
+                            <Button variant={"destructive"} className="text-white py-0" disabled={booking.cancelRequest!==undefined}>{booking.cancelRequest===undefined?"Request Cancel":"Cancel Requested"}</Button>
                               
                               </DialogTrigger>
                               <DialogContent className="sm:max-w-[425px]">

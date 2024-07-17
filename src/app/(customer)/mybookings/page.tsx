@@ -148,7 +148,7 @@ function MyBookingsPage() {
                      {cancelRequests.length>0 &&cancelRequests.some(cancelRequest => cancelRequest.bookingId === booking.id) && 
                      <div>
                         <p className="text-sm">Guide Requested for Cancel</p>
-                        <p className="text-xs">Reason: {cancelRequests.find(cancelRequest => cancelRequest.bookingId === booking.id).reason}</p>
+                        <p className="text-xs">Reason: {cancelRequests.find(cancelRequest => cancelRequest.bookingId === booking.id).reason} (Delete to Cancel)</p>
                      </div>
                      }
               

@@ -22,17 +22,6 @@ async function getguidebookings(){
                   }
             }
       })
-
-      // const bookingwithdetails=guides.map((guide)=>{
-      //       const booking=bookings.find(booking=>booking.booked=guide.id)
-      //       const isEnded=booking.endDate<new Date(Date.now())
-      //       return{
-      //             ...guide,
-      //             ...booking,
-      //             isEnded
-      //       }
-      // })
-
       const bookingwithdetails = users.map((guide:any) => {
             const guideBookings = bookings.filter((booking:any) => booking.bookedBy === guide.id);
             const details = guideBookings.map((booking:any) => ({
@@ -42,11 +31,24 @@ async function getguidebookings(){
             }));
             return details;
       }).flat();
-      
-      console.log(bookingwithdetails)
+
+      const bookingIds=bookingwithdetails.map((booking:any)=>booking.id)
+
+      const cancelRequests = await prisma.RequestCancel.findMany({
+            where: {
+              bookingId: {
+                in: bookingIds
+              }
+            }
+          });
+
+      const finalbookingwithdetails=bookingwithdetails.map((booking:any)=>{
+            const cancelRequest=cancelRequests.find((cancelRequest:any)=>cancelRequest.bookingId===booking.id)
+            return{...booking, cancelRequest}
+      })
 
       if(bookings){
-            return NextResponse.json({success: true, mesage:"Got bookings", bookings:bookingwithdetails}, {status:200})
+            return NextResponse.json({success: true, mesage:"Got bookings", bookings:finalbookingwithdetails}, {status:200})
       }
       return NextResponse.json({success: false, mesage:"Failed to Get bookings"}, {status:200})
 
