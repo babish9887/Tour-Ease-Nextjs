@@ -209,7 +209,7 @@ const GuideSettings = ({ user }: any) => {
           </label>
           <Map setPosition={setPosition} position={position}/>
 
-        <Button type="button" onClick={handleSubmit}>
+        <Button type="button" onClick={handleSubmit} disabled={loading}>
           Submit
         </Button>
         </div>

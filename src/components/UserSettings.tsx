@@ -36,9 +36,9 @@ const UserSettings = ({ user }: any) => {
       const handleSubmit = async () => {
             if (number.length !== 10) return console.log("Number should be 10 digit");
 
-            setIsLoading(true);
-            const toastid = toast.loading("Registering...");
+            const toastid = toast.loading("Updating User...");
             try {
+                  setIsLoading(true);
                   await axios
                         .post("/api/updateuser/tourist", { contactNo: number, nationality:value })
                         .then((res) => {
@@ -138,7 +138,7 @@ const UserSettings = ({ user }: any) => {
                               </Popover>
                         </div>
 
-                        <Button type="button" onClick={handleSubmit}>
+                        <Button type="button" onClick={handleSubmit} disabled={loading}>
                               Submit
                         </Button>
                   </form>

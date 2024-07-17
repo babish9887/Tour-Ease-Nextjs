@@ -128,7 +128,7 @@ const TouristForm = ({ user }: any) => {
                               </Popover>
                         </div>
 
-                        <Button type="button" onClick={handleSubmit}>
+                        <Button type="button" onClick={handleSubmit} disabled={loading}>
                               Submit
                         </Button>
                   </form>
