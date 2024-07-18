@@ -148,7 +148,7 @@ function MyBookingsPage() {
                      {cancelRequests.length>0 &&cancelRequests.some(cancelRequest => cancelRequest.bookingId === booking.id) && 
                      <div>
                         <p className="text-sm">Guide Requested for Cancel</p>
-                        <p className="text-xs">Reason: {cancelRequests.find(cancelRequest => cancelRequest.bookingId === booking.id).reason} (Delete to Cancel)</p>
+                        <p className="text-xs">Reason: {cancelRequests.find((cancelRequest:any) => cancelRequest.bookingId === booking.id).reason} (Delete to Cancel)</p>
                      </div>
                      }
               
@@ -187,7 +187,7 @@ function MyBookingsPage() {
                          </div>
                        </div>
                        <DialogFooter>
-                         <Button  disabled={loading} type="button" variant={"default"}  onClick={()=>handleSubmit(booking)}>Submit Review</Button>
+                         <Button  disabled={loading} type="button" variant={"default"}  onClick={()=>handleSubmit(booking)} >Submit Review</Button>
                        </DialogFooter>
                      </DialogContent>
                    </Dialog>
@@ -262,18 +262,11 @@ function MyBookingsPage() {
                                 </DialogFooter>
                               </DialogContent>
                             </Dialog>
-
-
-
                             </div>
-
-                
-                
                 }
                 </div>
             ))
            }
-          
         </div>
       </div>
     </>

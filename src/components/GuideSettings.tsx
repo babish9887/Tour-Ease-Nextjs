@@ -41,7 +41,6 @@ import {
 } from "@/components/ui/popover";
 
 const GuideSettings = ({ user }: any) => {
-  console.log(user);
   const animatedComponents = makeAnimated();
   const [number, setNumber] = useState("");
   const router = useRouter();
@@ -58,7 +57,6 @@ const GuideSettings = ({ user }: any) => {
   const handleLanguageChange = (selectedOptions: any) => {
     setSelectedOptions(selectedOptions.map((o: any) => o.value));
   };
-  console.log(selectedOptions);
   const options = Languages.map((language) => ({
     value: language,
     label: language,

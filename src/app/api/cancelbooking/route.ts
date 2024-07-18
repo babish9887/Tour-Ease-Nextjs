@@ -8,24 +8,23 @@ async function cancelBooking(request:NextRequest){
                   id
             }
       })
-      const oldRequest=await prisma.RequestCancel.findFirst({
-            where:{
-                  bookingId:booking.id
-            }
-      })
-      if(oldRequest){
-            return NextResponse.json({success: false, mesage:"Booking Cancel already Requested"}, {status:200})
-      }
-      const canceledBooking=await prisma.RequestCancel.create({
+
+      const canceledBooking=await prisma.canceledBooking.create({
             data:{
-                  ...booking, 
+                 ...booking,
                   reason
             }
       })
-      if(canceledBooking){
-            return NextResponse.json({success: true, mesage:"Booking Canceled"}, {status:200})
+      const deletedBooking=await prisma.booking.delete({
+            where:{
+                  id:booking.id
+            }
+      })
+      if(canceledBooking && deletedBooking){
+            
+            return NextResponse.json({success: true, message:"Booking Canceled"}, {status:200})
       }
-      return NextResponse.json({success: false, mesage:"Booking can't be canceled"}, {status:200})
+      return NextResponse.json({success: false, message:"Booking can't be canceled"}, {status:200})
 
 }
 

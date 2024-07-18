@@ -27,7 +27,6 @@ import { Trash2Icon } from "lucide-react";
 function MyBookingsPage() {
   const [bookings, setBookings] = useState(null);
   const [loading, setLoading] = useState(false);
-  const[rating, setRating]=useState(0);
 
   useEffect(() => {
     async function getMyBookings() {
@@ -39,53 +38,6 @@ function MyBookingsPage() {
     getMyBookings();
   }, []);
 
-  async function handleBookingChange(booking:any){
-      setLoading(true)
-      //@ts-ignore
-      const startDate=document.getElementById('startdate').value
-      //@ts-ignore
-      const endDate=document.getElementById('enddate').value
-      if(new Date(startDate)> new Date(endDate)){
-            return toast.error("Starting Date can't be more than Ending Date")
-      }
-      try {
-            
-      await axios.post("/api/updateBookings", {date:startDate, endDate, createdAt:booking.createdAt}).then((res) => {
-            if(res.data.success){
-                  toast.success("Booking Updated Successfully")
-            }
-            else{
-                  toast.error(res.data.message)
-            }
-      })
-      } catch (error:any) {
-                  toast.error(error.message)
-      } finally {
-            setLoading(false)
-      }
-  }
-
-  async function handleSubmit(booking:any){
-      setLoading(true)
-       //@ts-ignore
-       const review=document.getElementById('review').value
-       console.log(review)
-      try {
-            await axios.post("/api/guidereview", {id:booking.bookedUser, rating, review})
-            .then((res) => {
-                  if(res.data.success){
-                        toast.success("Review Submitted Successfully")
-                  }
-                  else{
-                        toast.error(res.data.message)
-                  }
-            })
-      } catch (error:any) {
-            toast.error(error.message)
-      } finally {
-      setLoading(false)
-}
-  }
 
   async function handleCancelBooking(booking:any){
       setLoading(true)

@@ -71,7 +71,6 @@ const GuideForm = ({ user }: any) => {
       const res = await axios
         .post("/api/register/guide", { contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng })
         .then((res) => {
-          console.log(res);
           if (res.data.success) {
             toast.success("User Registered", { id: toastid });
             setTimeout(() => {
