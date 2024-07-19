@@ -24,11 +24,13 @@ function GetGuidesPage() {
 
   async function handleSubmit() {
       setLoading(true)
+      setGuides([])
     console.log("Submitting...");
     try {
       const res = await axios.post('/api/getguides', { lat: position.lat, lng: position.lng });
       if (res.data.success) {
             if(res.data.guides.length===0){
+                  setShowGuide(false)
                   return toast.error("No guides found in this area.")
             }
         setGuides(res.data.guides);
@@ -47,7 +49,9 @@ function GetGuidesPage() {
       const date=document.getElementById("date").value
       //@ts-ignore
       const endDate=document.getElementById("date2").value
-
+      if(new Date(date)<new Date(Date.now()) || new Date(endDate)<new Date(Date.now()))
+            return toast.error("Starting Date can't be less than Today's Date")
+            
       if(new Date(date)> new Date(endDate)){
             return toast.error("Starting Date can't be more than Ending Date")
       }
@@ -138,7 +142,7 @@ const Map = ({ setPosition, position, handleSubmit, guides, showGuide, setShowGu
 
   const customIcon = new Icon({
     iconUrl: "/pin2.png",
-    iconSize: [38, 38]
+    iconSize: [32, 32]
   });
 
   const maptypes = [
@@ -159,7 +163,7 @@ const Map = ({ setPosition, position, handleSubmit, guides, showGuide, setShowGu
     const map = useMapEvents({
       click: (e:any) => {
         const { lat, lng } = e.latlng;
-        setPosition({ lat, lng });
+        setPosition({ lat:lat+0.0001, lng });
       }
     });
 

@@ -57,6 +57,7 @@ useEffect(()=>{
           >
             Home
           </Link>
+          
         {session?.user?.role!=="GUIDE" && <Link
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
               pathName === "/getguides" ? "text-green-600" : null
