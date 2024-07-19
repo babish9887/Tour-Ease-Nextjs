@@ -21,12 +21,20 @@ import toast from "react-hot-toast";
 import { PulseLoader } from "react-spinners";
 import StarRating from '@/components/StarRating'
 import { Trash2Icon } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 
 
 function MyBookingsPage() {
   const [bookings, setBookings] = useState(null);
   const [cancelRequests, setCancelRequests] = useState([]);
+
+  //redirect if User is GUIDE
+  const {data:session}=useSession()
+  const router=useRouter()
+  if(session?.user?.role=="GUIDE")
+      router.replace('/guide/mybookings')
 
   const [loading, setLoading] = useState(false);
   const[rating, setRating]=useState(0);
@@ -144,6 +152,8 @@ function MyBookingsPage() {
                     <div className="flex flex-col mb-4">
                       <p className="text-xs">Booked on: {booking.createdAt.split('T')[0]}</p>
                       <p className="text-xs">From <span>{booking.bookingDate.split('T')[0]}</span> To <span>{booking.endDate.split('T')[0]}</span></p>
+                      <p className="text-xs">Contact No: {booking.contactNo}</p>
+
                      
                      {cancelRequests.length>0 &&cancelRequests.some(cancelRequest => cancelRequest.bookingId === booking.id) && 
                      <div>

@@ -21,12 +21,19 @@ import toast from "react-hot-toast";
 import { PulseLoader } from "react-spinners";
 import StarRating from '@/components/StarRating'
 import { Trash2Icon } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 
 
 function MyBookingsPage() {
   const [bookings, setBookings] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const {data:session}=useSession()
+  const router=useRouter()
+  if(session?.user?.role=="USER")
+      router.replace('/mybookings')
 
   useEffect(() => {
     async function getMyBookings() {

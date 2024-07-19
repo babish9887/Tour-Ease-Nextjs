@@ -7,6 +7,8 @@ import axios from 'axios';
 import "leaflet/dist/leaflet.css";
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 function GetGuidesPage() {
   const [position, setPosition] = useState({ lat: 0, lng: 0 });
@@ -14,6 +16,12 @@ function GetGuidesPage() {
   const [showGuide, setShowGuide]=useState(false)
   const [book, setBook]=useState(false)
   const [loading, setLoading]=useState(false)
+
+  const {data:session}=useSession()
+  const router=useRouter()
+  if(session?.user?.role=="GUIDE")
+      router.replace('/')
+
   const [guide, setGuide]=useState({
       name:"",
       image:"",
