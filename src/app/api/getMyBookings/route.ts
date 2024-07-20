@@ -8,12 +8,12 @@ async function getMyBookings(){
                   email:session?.user?.email
             }
       })
+      console.log(user)
       const bookings=await prisma.booking.findMany({
             where:{
                   bookedBy:user.id
             }
       })
-      console.log(bookings)
       const guidesId=bookings.map((booking:any)=>booking.bookedUser)
       const guides=await prisma.user.findMany({
             where: {

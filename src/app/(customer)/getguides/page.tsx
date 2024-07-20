@@ -7,7 +7,7 @@ import axios from 'axios';
 import "leaflet/dist/leaflet.css";
 import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 function GetGuidesPage() {
@@ -118,7 +118,12 @@ function GetGuidesPage() {
                         <h2>Avg Rating: N/A</h2>
                   </div>
 
-                  <Button type='button' onClick={()=>setBook(true)} >Book This Guide</Button>
+                  {(session?.user===undefined || session?.user===null) ?
+
+                  <Button onClick={()=>signIn("google")}>Sign In to Book Guide</Button>
+                  
+                  
+                  :<Button type='button' onClick={()=>setBook(true)} >Book This Guide</Button>}
 
                   {book &&
                   <div className=' mt-6 flex flex-col items-center justify-center w-full h-auto gap-y-2'>
