@@ -121,8 +121,6 @@ function GetGuidesPage() {
                   {(session?.user===undefined || session?.user===null) ?
 
                   <Button onClick={()=>signIn("google")}>Sign In to Book Guide</Button>
-                  
-                  
                   :<Button type='button' onClick={()=>setBook(true)} >Book This Guide</Button>}
 
                   {book &&

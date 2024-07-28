@@ -132,6 +132,7 @@ console.log(session?.user)
   if(session?.user===null || session?.user==undefined){
       return<div className="flex justify-center items-center h-screen flex-col gap-3"><h1>Sign In to Get Your Bookings</h1><Button onClick={()=>signIn("google")}>Sign In</Button></div>
   }
+  
   return (
     <>
       <div className="h-24" />
