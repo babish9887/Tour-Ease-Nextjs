@@ -93,11 +93,21 @@ useEffect(()=>{
             />
           ) : (
             <div className="flex gap-3">
-                <Button variant={"outline"} className="font-semibold" onClick={()=>signIn("google", {callbackUrl:"http://localhost:3000/newuser"})}>
+                {/* <Button variant={"outline"} className="font-semibold" onClick={()=>signIn("google", {callbackUrl:"http://localhost:3000/newuser"})}>
                   Sign up
                 </Button>
 
-                <Button onClick={()=>signIn("google")}>Sign in</Button>
+                <Button onClick={()=>signIn("google")}>Sign in</Button> */}
+
+            <Link href={"/newuser"}>
+               <Button variant={"outline"} className="font-semibold">
+                  Sign up
+                </Button>
+               </Link>
+
+                <Link href={'/user/login'}>
+                  <Button>Sign in</Button>
+                  </Link>
             </div>
           )}
         </div>
@@ -152,11 +162,15 @@ useEffect(()=>{
                   </div>
           ) : (
             <div className="flex gap-3" >
-                <Button variant={"outline"} className="font-semibold" onClick={()=>{signIn("google", {callbackUrl:"http://localhost:3000/newuser"})}}>
+               <Link href={"/newuser/signup"}>
+               <Button variant={"outline"} className="font-semibold">
                   Sign up
                 </Button>
+               </Link>
 
-                <Button onClick={()=>{signIn("google")}}>Sign in</Button>
+                <Link href={'/newuser/login'}>
+                  <Button>Sign in</Button>
+                  </Link>
             </div>
           )}
         </div>

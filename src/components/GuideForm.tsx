@@ -1,6 +1,6 @@
 
 "use client";
-import React, {  useRef, useState } from "react";
+import React, {  useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -38,9 +38,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { signIn, useSession } from "next-auth/react";
 
 const GuideForm = ({ user }: any) => {
-  console.log(user);
+  const {data:session, status}=useSession()
+// const [session, setSession]=useState(undefined)
   const animatedComponents = makeAnimated();
   const [number, setNumber] = useState("");
   const router = useRouter();
@@ -51,12 +53,27 @@ const GuideForm = ({ user }: any) => {
       lat:0,
       lng:0
   })
+  const [sessionState, setSessionState] = useState(null);
+console.log(sessionState)
+  useEffect(() => {
+      if (status === 'loading') {
+        // Optionally, show a loading spinner or message while the session is being loaded
+        return;
+      }
+      
+      if (status === 'authenticated') {
+        setSessionState(session);
+      } 
+    }, [status, session, router]);
+
+  const [name, setName]=useState("")
+  const [email, setEmail]=useState("")
+  const [password, setPassword]=useState("")
 
   const [selectedOptions, setSelectedOptions] = useState([]);
   const handleLanguageChange = (selectedOptions: any) => {
     setSelectedOptions(selectedOptions.map((o: any) => o.value));
   };
-  console.log(selectedOptions);
   const options = Languages.map((language) => ({
     value: language,
     label: language,
@@ -68,6 +85,7 @@ const GuideForm = ({ user }: any) => {
     setIsLoading(true);
     const toastid = toast.loading("Registering User...");
     try {
+      if(session?.user){
       const res = await axios
         .post("/api/register/guide", { contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng })
         .then((res) => {
@@ -82,13 +100,37 @@ const GuideForm = ({ user }: any) => {
               router.replace("/");
             }, 3000);
           }
-        });
+        });}
+        else {
+            const res = await axios
+            .post("/api/credential/guide", {name, email, password, contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng })
+            .then((res) => {
+              if (res.data.success) {
+                toast.success("User Registered! Check Your Email for Verification!", { id: toastid });
+                setTimeout(() => {
+                  router.replace("/");
+                }, 3000);
+              } else {
+                toast.error(res.data.message, { id: toastid });
+                setTimeout(() => {
+                  router.replace("/");
+                }, 3000);
+              }
+            });}
     } catch (error) {
       toast.error("Something went Wrong!", { id: toastid });
     } finally {
       setIsLoading(false);
     }
   };
+  console.log(session?.user)
+console.log(user)
+  if(session?.user && user.emailVerified!==null){
+      router.push('/')
+      return <div className="w-full mx-auto p-4  h-auto min-h-screen flex flex-col justify-center sm:w-2/3 md:w-4/6 lg:w-3/6">
+            <h1>User With The Email Already and Verified. Redirecting to Home Page</h1>
+      </div>
+  }
 
   return (
     <div className="w-full mx-auto p-4  h-auto min-h-screen flex flex-col justify-center sm:w-2/3 md:w-3/6 lg:w-2/6">
@@ -96,8 +138,47 @@ const GuideForm = ({ user }: any) => {
       <h4 className="  text-md">As a Guide</h4>
 
       <form className="bg-white w-auto p-4 rounded-lg mt-5 flex flex-col gap-y-5 gap-x-4">
+      {session?.user==null && 
+                        <>
+                        <div className="w-full flex flex-col gap-2">
+                              <label className="font-semibold" htmlFor="">
+                                    Full Name
+                              </label>
+                              <input
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    type="text"
+                                    className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
+                                    disabled={loading}
+                              />
+                        </div>
+                        <div className="w-full flex flex-col gap-2">
+                              <label className="font-semibold" htmlFor="">
+                                    Email
+                              </label>
+                              <input
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    type="text"
+                                    className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
+                                    disabled={loading}
+                              />
+                        </div>
+                        <div className="w-full flex flex-col gap-2">
+                              <label className="font-semibold" htmlFor="">
+                                    Password
+                              </label>
+                              <input
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    type="password"
+                                    className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
+                                    disabled={loading}
+                              />
+                        </div>
+                        </>
+                        }
       <div>
-
         <div className="w-full flex flex-col gap-2">
           <label className="font-semibold" htmlFor="">
             Contact Number
@@ -183,10 +264,19 @@ const GuideForm = ({ user }: any) => {
           </label>
           <Map setPosition={setPosition} position={position}/>
 
+          {session?.user==null && 
+                        <>
+                        <Button type="button" onClick={()=>signIn("google", {callbackUrl:"http://localhost:3000/newuser/guideSignup"})} disabled={loading} variant="ghost">
+                              Continue with Google
+                        </Button>
+                        
+            </>}
         <Button type="button" onClick={handleSubmit} disabled={loading}>
           Submit
         </Button>
+        
         </div>
+
       </form>
     </div>
   );
@@ -309,6 +399,7 @@ const Map = ({setPosition, position}:any) => {
         type="number"
         className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
       />
+       
     </div>
   );
 };

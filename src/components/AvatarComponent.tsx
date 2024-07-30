@@ -24,7 +24,7 @@ const AvatarComponent = ({ altName, img, list, email }:any) => {
       <DropdownMenuTrigger className="outline-none border-none" >
         <Avatar>
           <AvatarImage src={img} />
-          <AvatarFallback className="bg-orange-500 text-white">
+          <AvatarFallback className="bg-green-500 text-white">
             {altName && altName.charAt(0)}
           </AvatarFallback>
         </Avatar>

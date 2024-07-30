@@ -12,35 +12,33 @@ function NewUserPage() {
       const router = useRouter();
       const [isBuyer, setIsBuyer] = useState(true);
       const [isLoading, setIsLoading]=useState(true);
-      const {data:session} = useSession()
-      console.log(session)
       const handleClick = () => {
         if (isBuyer) {
-          router.push("/newuser/newTourist");
+          router.push("/newuser/touristSignup");
         } else {
-          router.push("/newuser/newGuide");
+          router.push("/newuser/guideSignup");
         }
       };
     
-      useEffect(()=>{
-          async function GetUser(){
-             if(session){
-                  //@ts-ignore
-                if(session?.user?.role!==null){
-                        //@ts-ignore
-                      toast.error(` User With this email already exists as a ${session?.user?.role} `)
-                      setTimeout(()=>{
-                            router.replace('/')
-                      },2000)
-                }
-                else{
-                      setIsLoading(false)
-                }
-             }
-          }
+      // useEffect(()=>{
+      //     async function GetUser(){
+      //        if(session){
+      //             //@ts-ignore
+      //           if(session?.user?.role!==null){
+      //                   //@ts-ignore
+      //                 toast.error(` User With this email already exists as a ${session?.user?.role} `)
+      //                 setTimeout(()=>{
+      //                       router.replace('/')
+      //                 },2000)
+      //           }
+      //           else{
+      //                 setIsLoading(false)
+      //           }
+      //        }
+      //     }
     
-          GetUser()
-      },[session])
+      //     GetUser()
+      // },[session])
       return (
             <div className="w-11/12 lg:w-1/3 md:w-2/3 h-screen flex justify-center items-center mx-auto ">
               <div className="flex flex-col">
@@ -82,7 +80,7 @@ function NewUserPage() {
                     <IoIosArrowForward className="w-6 h-6 justify-self-end" />
                   </div>
         
-                  <Button className="text-md text-white" onClick={() => handleClick()} disabled={isLoading}>
+                  <Button className="text-md text-white" onClick={() => handleClick()} >
                     Continue <IoIosArrowForward className="w-6 h-6 ml-2" />
                   </Button>
                 </div>

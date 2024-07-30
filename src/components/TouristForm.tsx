@@ -22,14 +22,20 @@ import {
       PopoverContent,
       PopoverTrigger,
 } from "@/components/ui/popover";
+import { signIn, useSession } from "next-auth/react";
 
 const TouristForm = ({ user }: any) => {
-      console.log(user);
+      const {data:session}=useSession()
+      console.log(session)
       const router = useRouter();
       const [loading, setIsLoading] = useState(false);
       const [open, setOpen] = useState(false);
-
+      
       //input values
+      const [name, setName]=useState("")
+      const [email, setEmail]=useState("")
+      const [password, setPassword]=useState("")
+
       const [number, setNumber] = useState("");
       const [value, setValue] = useState("");
 
@@ -39,8 +45,27 @@ const TouristForm = ({ user }: any) => {
             setIsLoading(true);
             const toastid = toast.loading("Registering...");
             try {
+                 if(session?.user){
                   await axios
-                        .post("/api/register/tourist", { contactNo: number, nationality:value })
+                  .post("/api/register/tourist", { contactNo: number, nationality:value })
+                  .then((res) => {
+                        console.log(res);
+                        if (res.data.success) {
+                              toast.success("User Registered", { id: toastid });
+                              setTimeout(() => {
+                                    router.replace("/");
+                              }, 3000);
+                        } else {
+                              toast.error(res.data.message, { id: toastid });
+                              setTimeout(() => {
+                                    router.replace("/");
+                              }, 3000);
+                        }
+                  });
+                  }
+                  else {
+                        await axios
+                        .post("/api/credential/tourist", {name, email, password, contactNo: number, nationality:value })
                         .then((res) => {
                               console.log(res);
                               if (res.data.success) {
@@ -55,17 +80,66 @@ const TouristForm = ({ user }: any) => {
                                     }, 3000);
                               }
                         });
+                  }
+
             } catch (error) {
                   toast.error("Something went Wrong!", { id: toastid });
             } finally {
                   setIsLoading(false);
             }
       };
-      console.log(user)
+
+      if(session?.user && user.emailVerified!==null){
+            router.push('/')
+            return <div className="w-full mx-auto p-4  h-auto min-h-screen flex flex-col justify-center sm:w-2/3 md:w-4/6 lg:w-3/6">
+                  <h1>User With The Email Already and Verified. Redirecting to Home Page</h1>
+            </div>
+        }
+      
       return (
             <div className="w-full mx-auto p-4  h-screen flex flex-col justify-center sm:w-2/3 md:w-3/6 lg:w-2/6">
                   <h2 className=" font-bold text-2xl">{user? "Register your account!" : "Sign Up" }</h2>
                   <form className="bg-white p-4 rounded-lg mt-5 flex flex-col gap-y-5">
+                        {session?.user==null && 
+                        <>
+                        <div className="w-full flex flex-col gap-2">
+                              <label className="font-semibold" htmlFor="">
+                                    Full Name
+                              </label>
+                              <input
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    type="text"
+                                    className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
+                                    disabled={loading}
+                              />
+                        </div>
+                        <div className="w-full flex flex-col gap-2">
+                              <label className="font-semibold" htmlFor="">
+                                    Email
+                              </label>
+                              <input
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    type="text"
+                                    className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
+                                    disabled={loading}
+                              />
+                        </div>
+                        <div className="w-full flex flex-col gap-2">
+                              <label className="font-semibold" htmlFor="">
+                                    Password
+                              </label>
+                              <input
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    type="password"
+                                    className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
+                                    disabled={loading}
+                              />
+                        </div>
+                        </>
+                        }
                         <div className="w-full flex flex-col gap-2">
                               <label className="font-semibold" htmlFor="">
                                     Contact Number
@@ -127,6 +201,14 @@ const TouristForm = ({ user }: any) => {
                                     </PopoverContent>
                               </Popover>
                         </div>
+
+                        {session?.user==null && 
+                        <>
+                        <Button type="button" onClick={()=>signIn("google", {callbackUrl:"http://localhost:3000/newuser/touristSignup"})} disabled={loading} variant="ghost">
+                              Continue with Google
+                        </Button>
+                        
+                        </>}
 
                         <Button type="button" onClick={handleSubmit} disabled={loading}>
                               Submit

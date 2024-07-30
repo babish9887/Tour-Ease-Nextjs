@@ -1,18 +1,17 @@
 import { getServerSession } from "next-auth";
-import prisma from "../../../db/dbconfig";
+import prisma from "../../../../db/dbconfig";
 import { NextRequest, NextResponse } from "next/server";
 
-
+import bcrypt from 'bcrypt'
 async function updataGuide(request:NextRequest){
-      const session=await getServerSession()
-      const {contactNo, nationality, languages, lat, lng}=await request.json();
-      console.log(contactNo, nationality, languages, lat, lng)
+      const {contactNo, nationality, languages, lat, lng, name, email, password}=await request.json();
+      console.log(contactNo, nationality, languages, lat, lng, name, email, password)
 
       try {
             
-            const user=await prisma.user.findFirst({
+            const oldUser=await prisma.user.findFirst({
                   where:{
-                        email:session?.user?.email
+                        email
                   }
             })
             
@@ -23,30 +22,32 @@ async function updataGuide(request:NextRequest){
             //             { status: 200 }
             //           );
             // }
-
-            console.log(user)
-            const guide =await prisma.user.update({
-                  where:{
-                        id:user.id
-                  },
+            if(oldUser)
+                  return NextResponse.json({success:false, message:"User already Exists"}, {status:200})
+      
+            const hash=await bcrypt.hash(password, 12);
+            const guide =await prisma.user.create({
                   data:{
                         contactNo,
                         nationality,
                         role:"GUIDE",
                         languages,
                         locations:[lat, lng],
-                        emailVerified:true
+                        emailVerified:false,
+                        name,
+                        email, 
+                        password:hash
                   }
             })
             console.log(guide)
             if(guide){
                   return NextResponse.json(
-                        { success: true, message: "Guide Updated Successfully" },
+                        { success: true, message: "Guide Created Successfully" },
                         { status: 200 }
                       );
             }
             return NextResponse.json(
-                  { success: false, message: "Guide Update Failed " },
+                  { success: false, message: "Guide Create Failed " },
                   { status: 400 }
                 );
 
