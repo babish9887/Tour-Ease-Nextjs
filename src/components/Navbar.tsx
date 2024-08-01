@@ -162,13 +162,13 @@ useEffect(()=>{
                   </div>
           ) : (
             <div className="flex gap-3" >
-               <Link href={"/newuser/signup"}>
+               <Link href={"/newuser"}>
                <Button variant={"outline"} className="font-semibold">
                   Sign up
                 </Button>
                </Link>
 
-                <Link href={'/newuser/login'}>
+                <Link href={'/user/login'}>
                   <Button>Sign in</Button>
                   </Link>
             </div>

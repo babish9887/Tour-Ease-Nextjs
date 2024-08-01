@@ -23,6 +23,14 @@ model User{
       image String?
       account Account[]
 
+       verifyToken String?
+      verifyTokenExpiry DateTime?
+
+      forgotPasswordToken String?
+      forgotPasswordTokenExpiry DateTime?
+
+
+
       //for guide
       isVerified Boolean?     
       languages String[]

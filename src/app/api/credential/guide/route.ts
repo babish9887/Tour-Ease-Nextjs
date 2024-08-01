@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import prisma from "../../../../db/dbconfig";
 import { NextRequest, NextResponse } from "next/server";
+import { sendEmail } from "@/app/lib/mailer"
 
 import bcrypt from 'bcrypt'
 async function updataGuide(request:NextRequest){
@@ -14,15 +15,18 @@ async function updataGuide(request:NextRequest){
                         email
                   }
             })
+            if(oldUser.role==null){
+                  const user=await prisma.user.update({
+                        where:{
+                              email
+                        },
+                        data:{
+                              contactNo,nationality, languages, lat, lng, password
+                        }
+                  })
+            }
             
-            // console.log(user)
-            // if(user.role==="GUIDE"){
-            //       return NextResponse.json(
-            //             { success: false, message: "User with this email already Exists" },
-            //             { status: 200 }
-            //           );
-            // }
-            if(oldUser)
+            else {if(oldUser)
                   return NextResponse.json({success:false, message:"User already Exists"}, {status:200})
       
             const hash=await bcrypt.hash(password, 12);
@@ -39,8 +43,9 @@ async function updataGuide(request:NextRequest){
                         password:hash
                   }
             })
-            console.log(guide)
+            console.log(guide)}
             if(guide){
+                  const res=sendEmail({email, emailType: "VERIFY", userId: guide.id})
                   return NextResponse.json(
                         { success: true, message: "Guide Created Successfully" },
                         { status: 200 }

@@ -41,7 +41,6 @@ import {
 import { signIn, useSession } from "next-auth/react";
 
 const GuideForm = ({ user }: any) => {
-  const {data:session, status}=useSession()
 // const [session, setSession]=useState(undefined)
   const animatedComponents = makeAnimated();
   const [number, setNumber] = useState("");
@@ -54,17 +53,8 @@ const GuideForm = ({ user }: any) => {
       lng:0
   })
   const [sessionState, setSessionState] = useState(null);
-console.log(sessionState)
-  useEffect(() => {
-      if (status === 'loading') {
-        // Optionally, show a loading spinner or message while the session is being loaded
-        return;
-      }
-      
-      if (status === 'authenticated') {
-        setSessionState(session);
-      } 
-    }, [status, session, router]);
+  const {data:session}=useSession()
+  console.log(session)
 
   const [name, setName]=useState("")
   const [email, setEmail]=useState("")
@@ -123,9 +113,7 @@ console.log(sessionState)
       setIsLoading(false);
     }
   };
-  console.log(session?.user)
-console.log(user)
-  if(session?.user && user.emailVerified!==null){
+  if((session?.user && user.emailVerified!==null) && session?.user?.role!==null){
       router.push('/')
       return <div className="w-full mx-auto p-4  h-auto min-h-screen flex flex-col justify-center sm:w-2/3 md:w-4/6 lg:w-3/6">
             <h1>User With The Email Already and Verified. Redirecting to Home Page</h1>

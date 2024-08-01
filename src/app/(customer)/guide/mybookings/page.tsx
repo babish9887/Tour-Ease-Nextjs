@@ -19,8 +19,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import toast from "react-hot-toast";
 import { PulseLoader } from "react-spinners";
-import StarRating from '@/components/StarRating'
-import { Trash2Icon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 

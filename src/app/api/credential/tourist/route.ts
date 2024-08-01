@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from 'bcrypt'
 import prisma from '../../../../db/dbconfig'
+import { sendEmail } from "../../../../lib/mailer"
+
 async function touristSignup(request:NextRequest){
       const {nationality, contactNo, name, email , password}=await request.json()
       console.log(email)
@@ -10,7 +12,16 @@ async function touristSignup(request:NextRequest){
                   email
             }
       })
-
+      if(oldUser.role==null){
+            const user=await prisma.user.update({
+                  where:{
+                        email
+                  },
+                  data:{
+                        contactNo,nationality,  password
+                  }
+            })
+      }
       if(oldUser)
             return NextResponse.json({success:false, message:"User already Exists"}, {status:200})
 
@@ -25,6 +36,8 @@ async function touristSignup(request:NextRequest){
                   password:hash,
             }
       })
+      const res=sendEmail({email, emailType: "VERIFY", userId: user.id})
+
       return NextResponse.json({success:true, message:"User Created Successfully", user}, {status:200})
      } catch (error) {
             console.log(error)
