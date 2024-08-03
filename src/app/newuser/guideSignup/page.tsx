@@ -13,10 +13,7 @@ const page = async () => {
       })
   return (
     <div className='w-full grainy'>
-      <AuthContext>
-
         <GuideForm user={user}/>
-      </AuthContext>
     </div>
   )
 }

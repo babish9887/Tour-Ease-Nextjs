@@ -26,8 +26,10 @@ const LoginForm = ({ user }: any) => {
             }
             if (res?.ok && !res?.error) {
                 toast.success('Logged in! Please Refresh!', { id: toastid });
-                router.refresh();
                 router.replace('/');
+                setTimeout(() => {
+                  window.location.reload();
+              }, 100);
             }
         } catch (error) {
             toast.error("Something went wrong!");

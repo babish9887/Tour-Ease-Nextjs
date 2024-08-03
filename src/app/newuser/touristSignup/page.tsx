@@ -13,10 +13,8 @@ const page = async () => {
       })
   return (
     <div className='w-full grainy'>
-      <AuthContext>
 
         <TouristForm user={user}/>
-      </AuthContext>
     </div>
   )
 }

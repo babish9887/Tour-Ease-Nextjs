@@ -43,7 +43,7 @@ export const AuthOptions = {
       callbacks: {
             async session({token, session}:any){
                   if(token){
-                        return {...session, user:{...session.user, role:token.role}}
+                        return {...session, user:{...session.user, role:token.role,  emailVerified: token.emailVerified,}}
                   }
 
                   return session
@@ -64,7 +64,8 @@ export const AuthOptions = {
                         name:dbUser.name,
                         role:dbUser.role,
                         email:dbUser.email,
-                        picture:dbUser.image
+                        picture:dbUser.image,
+                        emailVerified:dbUser.emailVerified
                   }
             }
       }

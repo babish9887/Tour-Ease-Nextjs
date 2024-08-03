@@ -15,18 +15,8 @@ async function updataGuide(request:NextRequest){
                         email
                   }
             })
-            if(oldUser.role==null){
-                  const user=await prisma.user.update({
-                        where:{
-                              email
-                        },
-                        data:{
-                              contactNo,nationality, languages, lat, lng, password
-                        }
-                  })
-            }
-            
-            else {if(oldUser)
+        
+           if(oldUser)
                   return NextResponse.json({success:false, message:"User already Exists"}, {status:200})
       
             const hash=await bcrypt.hash(password, 12);
@@ -43,7 +33,7 @@ async function updataGuide(request:NextRequest){
                         password:hash
                   }
             })
-            console.log(guide)}
+            console.log(guide)
             if(guide){
                   const res=sendEmail({email, emailType: "VERIFY", userId: guide.id})
                   return NextResponse.json(

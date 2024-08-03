@@ -14,6 +14,9 @@ async function touristSignup(request:NextRequest){
                         email:session?.user?.email
                   }
             })
+            if(!user.emailVerified){
+                  return  NextResponse.json({success:false, message:"Email not verified! Please Check your mail to Verify"}, {status:401})
+            }
          
             const guide=await prisma.user.findFirst({
                   where:{

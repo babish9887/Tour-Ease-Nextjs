@@ -12,16 +12,7 @@ async function touristSignup(request:NextRequest){
                   email
             }
       })
-      if(oldUser.role==null){
-            const user=await prisma.user.update({
-                  where:{
-                        email
-                  },
-                  data:{
-                        contactNo,nationality,  password
-                  }
-            })
-      }
+    
       if(oldUser)
             return NextResponse.json({success:false, message:"User already Exists"}, {status:200})
 

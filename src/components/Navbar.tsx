@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaXmark } from "react-icons/fa6";
 import { Button } from "./ui/button";
@@ -18,15 +18,38 @@ const Navbar = () => {
 const {data:session}=useSession()
 console.log(session)
 
-useEffect(()=>{
-      //@ts-ignore
-      if(session?.user?.role===null){
-            toast.error("Your account signup is incomplete! Please complete the registration process.", {duration:5000})
-            setTimeout(()=>{
-                  router.replace('/newuser')
-            },2000)
-      }
-},[session])
+// useEffect(()=>{
+//       //@ts-ignore
+//       if(session?.user?.role===null){
+//             toast.error("Your account signup is incomplete! Please complete the registration process.", {duration:5000})
+//             setTimeout(()=>{
+//                   router.replace('/newuser')
+//             },2000)
+//       }
+//       if(!session?.user?.emailVerified)
+//             toast.error("Your account is Not Verified! Check your Email to Verify", {duration:5000})
+
+// },[session])
+
+
+const hasRunRef = useRef(false);
+
+useEffect(() => {
+  if (hasRunRef.current) return;
+  //@ts-ignore
+  if (session?.user?.role === null) {
+        hasRunRef.current = true;
+    toast.error("Your account signup is incomplete! Please complete the registration process.", { duration: 5000 });
+    setTimeout(() => {
+      router.replace('/newuser');
+    }, 2000);
+  }
+  //@ts-ignore
+  if (session?.user && session?.user?.emailVerified===false) {
+      hasRunRef.current = true;
+    toast.error("Your account is Not Verified! Check your Email to Verify", { duration: 5000 });
+  }
+}, [session]);
 
   return (
     <nav className="flex justify-between flex-col sm:flex-row items-center py-2 fixed w-[calc(100vw-2rem)] top-2 mr-4 ml-4 z-50 bg-transparent">
@@ -57,7 +80,7 @@ useEffect(()=>{
           >
             Home
           </Link>
-          
+
         {session?.user?.role!=="GUIDE" && <Link
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
               pathName === "/getguides" ? "text-green-600" : null

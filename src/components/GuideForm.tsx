@@ -53,7 +53,7 @@ const GuideForm = ({ user }: any) => {
       lng:0
   })
   const [sessionState, setSessionState] = useState(null);
-  const {data:session}=useSession()
+  const {data:session, update}=useSession()
   console.log(session)
 
   const [name, setName]=useState("")
@@ -78,9 +78,16 @@ const GuideForm = ({ user }: any) => {
       if(session?.user){
       const res = await axios
         .post("/api/register/guide", { contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng })
-        .then((res) => {
+        .then(async (res) => {
           if (res.data.success) {
-            toast.success("User Registered", { id: toastid });
+            toast.success("Guide Registered", { id: toastid });
+            await update({
+                  ...session,
+                  user:{
+                        ...session.user,
+                        role:"GUIDE"
+                  }
+            })
             setTimeout(() => {
               router.replace("/");
             }, 3000);

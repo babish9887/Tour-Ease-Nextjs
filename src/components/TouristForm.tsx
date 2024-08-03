@@ -25,7 +25,7 @@ import {
 import { signIn, useSession } from "next-auth/react";
 
 const TouristForm = ({ user }: any) => {
-      const {data:session}=useSession()
+      const {data:session , update}=useSession()
       console.log(session)
       const router = useRouter();
       const [loading, setIsLoading] = useState(false);
@@ -48,10 +48,17 @@ const TouristForm = ({ user }: any) => {
                  if(session?.user){
                   await axios
                   .post("/api/register/tourist", { contactNo: number, nationality:value })
-                  .then((res) => {
+                  .then(async (res) => {
                         console.log(res);
                         if (res.data.success) {
                               toast.success("User Registered", { id: toastid });
+                              await update({
+                                    ...session,
+                                    user:{
+                                          ...session.user,
+                                          role:"USER"
+                                    }
+                              })
                               setTimeout(() => {
                                     router.replace("/");
                               }, 3000);
@@ -72,17 +79,23 @@ const TouristForm = ({ user }: any) => {
                                     toast.success("User Registered", { id: toastid });
                                     setTimeout(() => {
                                           router.replace("/");
+                                          
+                                          window.location.reload();
+
                                     }, 3000);
                               } else {
                                     toast.error(res.data.message, { id: toastid });
                                     setTimeout(() => {
                                           router.replace("/");
+                                           window.location.reload();
+
                                     }, 3000);
                               }
                         });
                   }
 
             } catch (error) {
+                  console.log(error);
                   toast.error("Something went Wrong!", { id: toastid });
             } finally {
                   setIsLoading(false);
