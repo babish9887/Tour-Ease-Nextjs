@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
+import Link from "next/link";
 
 const LoginForm = ({ user }: any) => {
     const { data: session } = useSession();
@@ -110,7 +111,7 @@ const LoginForm = ({ user }: any) => {
 
     return (
         <div className="w-full mx-auto p-4 h-screen flex flex-col justify-center sm:w-2/3 md:w-3/6 lg:w-2/6">
-            <h2 className="font-bold text-2xl">{!resetPassword ? "Login your Account" : "Reset Your Password"}</h2>
+            <h2 className="font-bold text-2xl self-center">{!resetPassword ? "Login your Account" : "Reset Your Password"}</h2>
             {!resetPassword ? (
                 <form className="bg-white p-4 rounded-lg mt-5 flex flex-col gap-y-5">
                     <div className="w-full flex flex-col gap-2">
@@ -154,6 +155,10 @@ const LoginForm = ({ user }: any) => {
                     >
                         Submit
                     </Button>
+                    <div className="flex text-sm text-center gap-1 justify-center">
+                        <p>Don't have an Account? </p>
+                    <Link href={'/newuser'} className="hover:text-green-500"> Sign Up</Link>
+                    </div>
                 </form>
             ) : (
                 <form className="bg-white p-4 rounded-lg mt-5 flex flex-col gap-y-5">

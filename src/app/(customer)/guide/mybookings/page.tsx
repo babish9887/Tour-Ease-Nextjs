@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
+import { signIn } from "next-auth/react";
 
 import { Button } from "@/components/ui/button"
 import { Textarea} from "@/components/ui/textarea"
@@ -21,6 +21,7 @@ import toast from "react-hot-toast";
 import { PulseLoader } from "react-spinners";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 
 
@@ -71,7 +72,16 @@ function MyBookingsPage() {
   }
 
   if(session?.user===null || session?.user==undefined){
-      return<div className="flex justify-center items-center h-screen flex-col gap-3"><h1>Sign In to Get Your Bookings</h1><Button onClick={()=>signIn("google")}>Sign In</Button></div>
+      return<div className="flex justify-center items-center h-screen flex-col gap-3"><h1>Sign In to Get Your Bookings</h1>
+      <div className="flex gap-4">
+            <Link href='/user/login'>
+                  <Button>Sign In</Button>
+            </Link>
+            <Link href='/newuser'>
+                  <Button variant="secondary" className="text-black hover:text-black border border-gray-200">Sign Up</Button>
+            </Link>
+      </div>
+      </div>
   }
   
   return (
