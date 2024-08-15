@@ -43,7 +43,16 @@ export const MyAuthOptions:AuthOptions = {
       callbacks: {
             async session({token, session}:any){
                   if(token){
-                        return {...session, user:{...session.user, role:token.role,  emailVerified: token.emailVerified,}}
+                        const sessiona={
+                              ...session,
+                              user:{
+                                    ...session.user,
+                                    role:token.role,
+                                    emailVerified:token.emailVerified
+                              }
+                        }
+                        return sessiona
+                        // return {...session, user:{...session.user, role:token.role,  emailVerified: token.emailVerified,}}
                   }
 
                   return session
