@@ -38,7 +38,7 @@ async function updateBookings(request:NextRequest){
                   }
               });
 
-              const oldBookings=oldBookingstemp.filter((booking)=>booking.createdAt==createdAt)
+              const oldBookings=oldBookingstemp.filter((booking:any)=>booking.createdAt==createdAt)
 
               
             

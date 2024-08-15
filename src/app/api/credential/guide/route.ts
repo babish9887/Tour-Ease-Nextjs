@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import prisma from "../../../../db/dbconfig";
 import { NextRequest, NextResponse } from "next/server";
-import { sendEmail } from "@/app/lib/mailer"
+import { sendEmail } from "../../../../lib/mailer"
 
 import bcrypt from 'bcrypt'
 async function updataGuide(request:NextRequest){

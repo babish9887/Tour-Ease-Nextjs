@@ -23,15 +23,17 @@ import StarRating from '@/components/StarRating'
 import { Trash2Icon } from "lucide-react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import {Session, CancelRequest} from '../.../../../../lib/schema'
+import Link from "next/link";
 
 
 
 function MyBookingsPage() {
   const [bookings, setBookings] = useState(null);
-  const [cancelRequests, setCancelRequests] = useState([]);
+  const [cancelRequests, setCancelRequests]= useState<CancelRequest[]>([]);
 
-  //redirect if User is GUIDE
-  const {data:session}=useSession()
+  const {data:session}:{data:Session | null | undefined}=useSession()
+
   const router=useRouter()
   if(session?.user?.role=="GUIDE")
       router.replace('/guide/mybookings')
@@ -130,7 +132,15 @@ console.log(session?.user)
 
 
   if(session?.user===null || session?.user==undefined){
-      return<div className="flex justify-center items-center h-screen flex-col gap-3"><h1>Sign In to Get Your Bookings</h1><Button onClick={()=>signIn("google")}>Sign In</Button></div>
+      return<div className="flex justify-center items-center h-screen flex-col gap-3"><h1>Sign In to Get Your Bookings</h1>
+       <div className="flex gap-4">
+            <Link href='/user/login'>
+                  <Button>Sign In</Button>
+            </Link>
+            <Link href='/newuser'>
+                  <Button variant="secondary" className="text-black hover:text-black border border-gray-200">Sign Up</Button>
+            </Link>
+      </div></div>
   }
   
   return (
@@ -163,10 +173,10 @@ console.log(session?.user)
                       <p className="text-xs">Contact No: {booking.contactNo}</p>
 
                      
-                     {cancelRequests.length>0 &&cancelRequests.some(cancelRequest => cancelRequest.bookingId === booking.id) && 
+                     {cancelRequests.length>0 &&cancelRequests.some((cancelRequest:CancelRequest) => cancelRequest.bookingId === booking.id) && 
                      <div>
                         <p className="text-sm">Guide Requested for Cancel</p>
-                        <p className="text-xs">Reason: {cancelRequests.find((cancelRequest:any) => cancelRequest.bookingId === booking.id).reason} (Delete to Cancel)</p>
+                        <p className="text-xs">Reason: { cancelRequests.filter((cancelRequest:CancelRequest) => cancelRequest.bookingId === booking.id)[0].reason} (Delete to Cancel)</p>
                      </div>
                      }
               
@@ -191,7 +201,7 @@ console.log(session?.user)
                            <Label htmlFor="name" className="text-left">
                              How was your experience ? 
                            </Label>
-                         <StarRating maxRating={5} color="green" size={24} onSetRating={setRating} />
+                         <StarRating messages={[]} className="" maxRating={5} color="green" size={24} onSetRating={setRating} defaultRating={2} />
                          </div>
                          <div className="grid grid-cols-1 items-center gap-4">
                            <Label htmlFor="username" className="text-left">

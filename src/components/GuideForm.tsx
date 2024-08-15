@@ -39,6 +39,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { signIn, useSession } from "next-auth/react";
+import { Session  } from "@/lib/schema";
 
 const GuideForm = ({ user }: any) => {
 // const [session, setSession]=useState(undefined)
@@ -53,8 +54,9 @@ const GuideForm = ({ user }: any) => {
       lng:0
   })
   const [sessionState, setSessionState] = useState(null);
-  const {data:session, update}=useSession()
-  console.log(session)
+  const {data, update}=useSession()
+  const session:Session | null=data
+  console.log(update)
 
   const [name, setName]=useState("")
   const [email, setEmail]=useState("")

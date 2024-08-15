@@ -28,12 +28,21 @@ export default function StarRating({
   className = "",
   messages = [],
   defaultRating = 0,
-  onSetRating,
+  onSetRating
+}:{
+      onSetRating:(rating:number)=>void,
+maxRating:number,
+color:string,
+size:number,
+className:string,
+messages:[],
+defaultRating:number
+
 }) {
   const [rating, setRating] = useState(defaultRating);
   const [tempRating, setTempRating] = useState(0);
 
-  function handleRating(rating) {
+  function handleRating(rating:number) {
     setRating(rating);
     onSetRating(rating);
   }
@@ -69,7 +78,14 @@ export default function StarRating({
   );
 }
 
-function Star({ onRate, full, onHoverIn, onHoverOut, color, size }) {
+function Star({ onRate, full, onHoverIn, onHoverOut, color, size }:{
+      onRate:()=>void,
+      full:boolean,
+      onHoverIn:()=>void,
+      onHoverOut:()=>void,
+      color:string,
+      size:number
+}) {
   const starStyle = {
     width: `${size}px`,
     height: `${size}px`,

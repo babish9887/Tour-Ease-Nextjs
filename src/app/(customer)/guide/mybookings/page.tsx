@@ -22,6 +22,7 @@ import { PulseLoader } from "react-spinners";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import {Session} from '../../../../lib/schema'
 
 
 
@@ -29,7 +30,8 @@ function MyBookingsPage() {
   const [bookings, setBookings] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const {data:session}=useSession()
+  const {data:session}:{data:Session | null | undefined}=useSession()
+
   const router=useRouter()
   if(session?.user?.role=="USER")
       router.replace('/mybookings')

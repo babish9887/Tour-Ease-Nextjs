@@ -19,26 +19,6 @@ function NewUserPage() {
           router.push("/newuser/guideSignup");
         }
       };
-    
-      // useEffect(()=>{
-      //     async function GetUser(){
-      //        if(session){
-      //             //@ts-ignore
-      //           if(session?.user?.role!==null){
-      //                   //@ts-ignore
-      //                 toast.error(` User With this email already exists as a ${session?.user?.role} `)
-      //                 setTimeout(()=>{
-      //                       router.replace('/')
-      //                 },2000)
-      //           }
-      //           else{
-      //                 setIsLoading(false)
-      //           }
-      //        }
-      //     }
-    
-      //     GetUser()
-      // },[session])
       return (
             <div className="w-11/12 lg:w-1/3 md:w-2/3 h-screen flex justify-center items-center mx-auto ">
               <div className="flex flex-col">

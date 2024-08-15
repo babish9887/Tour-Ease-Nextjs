@@ -3,8 +3,8 @@ import prisma from '../db/dbconfig'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcrypt'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-
-export const AuthOptions = {
+import { AuthOptions } from 'next-auth'
+export const MyAuthOptions:AuthOptions = {
       adapter:PrismaAdapter(prisma),
       session: {
             strategy:"jwt"

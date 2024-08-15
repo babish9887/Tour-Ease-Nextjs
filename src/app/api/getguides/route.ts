@@ -6,12 +6,12 @@ async function getGuides(request:NextRequest){
       try {
 
             console.log(lat, lng)
-            const minlat=(lat-0.1000).toFixed(4)
-            const maxlat=(lat+0.1000).toFixed(4)
+            const minlat=(lat-0.0500).toFixed(4)
+            const maxlat=(lat+0.0500).toFixed(4)
             console.log(minlat, maxlat)
 
-            const minlng=(lng-0.1000).toFixed(4)
-            const maxlng=(lng+0.1000).toFixed(4)
+            const minlng=(lng-0.0500).toFixed(4)
+            const maxlng=(lng+0.0500).toFixed(4)
             console.log(minlng, maxlng)
 
 

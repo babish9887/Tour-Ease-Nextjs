@@ -10,28 +10,15 @@ import AvatarComponent from "./AvatarComponent";
 import { LuLogOut, LuSettings2 } from "react-icons/lu";
 import { signIn, signOut, useSession } from "next-auth/react";
 import toast from "react-hot-toast";
+import {Session} from  '../lib/schema'
 
 const Navbar = () => {
   const pathName = usePathname();
   const [openMenu, setOpenMenu] = useState(false);
   const router=useRouter()
-const {data:session}=useSession()
+  const {data:session}:{data:Session | null | undefined}=useSession()
+
 console.log(session)
-
-// useEffect(()=>{
-//       //@ts-ignore
-//       if(session?.user?.role===null){
-//             toast.error("Your account signup is incomplete! Please complete the registration process.", {duration:5000})
-//             setTimeout(()=>{
-//                   router.replace('/newuser')
-//             },2000)
-//       }
-//       if(!session?.user?.emailVerified)
-//             toast.error("Your account is Not Verified! Check your Email to Verify", {duration:5000})
-
-// },[session])
-
-
 const hasRunRef = useRef(false);
 
 useEffect(() => {
