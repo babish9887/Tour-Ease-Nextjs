@@ -32,6 +32,7 @@ model User{
 
 
       //for guide
+      description String?
       isVerified Boolean?     
       languages String[]
       locations Float[]
@@ -90,7 +91,9 @@ model Review{
       user User @relation(fields: [userId], references: [id], onDelete:Cascade)
       tourId String @db.ObjectId
       tour Tour @relation(fields: [tourId], references: [id], onDelete:Cascade)
+      guideId String? @db.ObjectId
       review String
+       createdAt               DateTime          @default(now())
 }
 
 model Rating{
@@ -100,6 +103,7 @@ model Rating{
       tourId String @db.ObjectId
       tour Tour @relation(fields: [tourId], references: [id], onDelete:Cascade)
       rating Int
+       createdAt               DateTime          @default(now())
 }
 
 

@@ -26,7 +26,7 @@ async function guideReview(request:NextRequest){
             }
       })
       if(oldreviews.length>0 || oldRatings.length>0){
-            return NextResponse.json({success: false, mesage:"You Have already Reviewed this Guide"}, {status:200})
+            return NextResponse.json({success: false, message:"You Have already Reviewed this Guide"}, {status:200})
 
       }
       const ratingt=await prisma.rating.create({
@@ -45,9 +45,9 @@ async function guideReview(request:NextRequest){
       })
       console.log(ratingt, reviewt)
       if(ratingt && reviewt){
-            return NextResponse.json({success: true, mesage:"Reviewed"}, {status:200})
+            return NextResponse.json({success: true, message:"Reviewed"}, {status:200})
       }
-      return NextResponse.json({success: false, mesage:"Failed to Get User"}, {status:200})
+      return NextResponse.json({success: false, message:"Failed to Get User"}, {status:200})
 
 }
 

@@ -18,7 +18,6 @@ const Navbar = () => {
   const router=useRouter()
   const {data:session}:{data:Session | null | undefined}=useSession()
 
-console.log(session)
 const hasRunRef = useRef(false);
 
 useEffect(() => {

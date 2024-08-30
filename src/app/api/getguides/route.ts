@@ -17,18 +17,116 @@ async function getGuides(request:NextRequest){
 
             const users=await prisma.user.findMany()
 
-            console.log(users)
+            // console.log(users)
             const guides=users.filter((user:any)=>
                   (user.locations[0]>minlat && user.locations[0]<maxlat) && (user.locations[1]>minlng && user.locations[1]<maxlng) && (user.isActive===true)
             )
-            console.log(guides)
+            // console.log(guides)
 
-            if(guides){
+            // if(guides){
+            //       const updatedGuidesPromises=guides.map(async (guide:any)=>{
+            //             const ratings=await prisma.rating.findMany({
+            //                   where:{
+            //                         tourId:guide.id
+            //                   }
+            //             })
+            //             const totalRatings = ratings.reduce((sum:Number, obj:any) => sum + obj.rating, 0);
+            //             const averageRating=totalRatings/ratings.length
+
+            //             const reviews=await prisma.review.findMany({
+            //                   where:{
+            //                         tourId:guide.id
+            //                   }
+            //             })
+            //             const updatedReviews=reviews.map(async review=>{
+            //                   const rating=ratings.find((rating)=>rating.tourId=review.tourId)
+            //                   const user=await prisma.user.findUnique({
+            //                         where:{
+            //                               id:review.userId
+            //                         }
+            //                   })
+            //                   return{
+            //                         ...review,rating,
+            //                         name:user.name,
+            //                         image:user.image
+            //                   }
+            //             })
+            //             return{
+            //                   ...guide,
+            //                   rating:averageRating,
+            //                   reviews:updatedReviews
+                              
+            //             }
+            //       })
+            //       const updatedGuides = await Promise.all(updatedGuidesPromises);
+            //       console.log(updatedGuides)
+            //       return NextResponse.json(
+            //             { success: true, message: "Guides Fetched Successfully", guides:updatedGuides},
+            //             { status: 200 }
+            //           );
+            // }
+
+
+
+            if (guides) {
+                  const updatedGuidesPromises = guides.map(async (guide: any) => {
+                    const ratings = await prisma.rating.findMany({
+                      where: {
+                        tourId: guide.id
+                      }
+                    });
+                
+                    const totalRatings = ratings.reduce((sum: number, obj: any) => sum + obj.rating, 0);
+                    const averageRating = ratings.length > 0 ? totalRatings / ratings.length : 0; // Handle division by zero
+                
+                    const reviews = await prisma.review.findMany({
+                      where: {
+                        tourId: guide.id
+                      }
+                    });
+                
+                    const updatedReviewsPromises = reviews.map(async (review: any) => {
+                      const rating = ratings.find((rating: any) => rating.tourId === review.tourId); // Fix assignment to comparison
+                
+                      const user = await prisma.user.findUnique({
+                        where: {
+                          id: review.userId
+                        }
+                      });
+                
+                      return {
+                        ...review,
+                        rating:rating.rating,
+                        name: user?.name, 
+                        image: user?.image
+                      };
+                    });
+                
+                    const updatedReviews = await Promise.all(updatedReviewsPromises);
+                    
+                    const tours=await prisma.booking.findMany({
+                        where:{
+                              bookedUser:guide.id,
+                              createdAt: {lt: new Date(Date.now())}
+                        }
+                    })
+                    return {
+                      ...guide,
+                      rating: averageRating,
+                      reviews: updatedReviews,
+                      tours:tours.length
+                    };
+                  });
+                
+                  const updatedGuides = await Promise.all(updatedGuidesPromises);
+                
+                  console.log(updatedGuides);
                   return NextResponse.json(
-                        { success: true, message: "Guides Fetched Successfully", guides},
-                        { status: 200 }
-                      );
-            }
+                    { success: true, message: "Guides Fetched Successfully", guides: updatedGuides },
+                    { status: 200 }
+                  );
+                }
+                
             return NextResponse.json(
                   { success: false, message: "Guides fetch Failed " },
                   { status: 400 }

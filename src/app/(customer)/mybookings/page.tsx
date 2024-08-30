@@ -31,7 +31,7 @@ import Link from "next/link";
 function MyBookingsPage() {
   const [bookings, setBookings] = useState(null);
   const [cancelRequests, setCancelRequests]= useState<CancelRequest[]>([]);
-
+const [isOpen, setIsOpen]=useState(false)
   const {data:session}:{data:Session | null | undefined}=useSession()
 
   const router=useRouter()
@@ -91,6 +91,7 @@ function MyBookingsPage() {
             .then((res) => {
                   if(res.data.success){
                         toast.success("Review Submitted Successfully")
+                        setIsOpen(false)
                   }
                   else{
                         toast.error(res.data.message)
@@ -100,6 +101,7 @@ function MyBookingsPage() {
             toast.error(error.message)
       } finally {
       setLoading(false)
+      setIsOpen(false)
 }
   }
 
@@ -185,9 +187,9 @@ console.log(session?.user)
                     {/* Edit Button */}
                   </div>
                     {booking.isEnded ? 
-                     <Dialog>
+                     <Dialog open={isOpen}>
                      <DialogTrigger asChild>
-                       <Button variant="outline">Review  </Button>
+                       <Button variant="outline" onClick={()=>setIsOpen(true)}>Review  </Button>
                      </DialogTrigger>
                      <DialogContent className="sm:max-w-[425px]">
                        <DialogHeader>
