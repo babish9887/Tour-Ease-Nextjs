@@ -22,6 +22,7 @@ async function touristSignup(request:NextRequest){
                   nationality,
                   contactNo,
                   role:"USER",
+                  emailVerified:false,
                   name,
                   email,
                   password:hash,

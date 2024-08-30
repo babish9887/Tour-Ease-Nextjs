@@ -30,7 +30,8 @@ async function touristSignup(request:NextRequest){
                   data:{
                         contactNo,
                         nationality,
-                        role:"USER"
+                        role:"USER",
+                        emailVerified:true
                   }
             })
             console.log(Tourist)

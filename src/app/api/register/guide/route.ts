@@ -34,7 +34,8 @@ async function guideSignup(request:NextRequest){
                         nationality,
                         role:"GUIDE",
                         languages,
-                        locations:[lat, lng]
+                        locations:[lat, lng],
+                        emailVerified:true
                   }
             })
             console.log(guide)
