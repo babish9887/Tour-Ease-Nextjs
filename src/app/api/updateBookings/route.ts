@@ -7,7 +7,6 @@ import { BookUser } from "lucide-react";
 async function updateBookings(request:NextRequest){
       const session=await getServerSession()
       const {createdAt, date,  endDate}=await request.json()
-      console.log(date, endDate)
 
       try {
            
@@ -53,7 +52,6 @@ async function updateBookings(request:NextRequest){
                         createdAt
                   }
             })
-            console.log(bookingte)
 
             const booking=await prisma.booking.update({
                   where:{
@@ -65,7 +63,6 @@ async function updateBookings(request:NextRequest){
                   }
             })
 
-            console.log(booking)
             if(booking){
                   return NextResponse.json(
                         { success: true, message: "Guide Booked Successfully" },

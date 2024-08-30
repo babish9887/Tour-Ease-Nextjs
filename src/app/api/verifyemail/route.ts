@@ -6,7 +6,6 @@ import { sendEmail } from "../../../lib/mailer"
 export async function POST(request: Request){
       try{
       const {token}= await request.json()
-            console.log(token)
       if(!token)
             return new NextResponse('Missing info', {status: 400})
             const res= await prisma.user.updateMany({
@@ -24,7 +23,6 @@ export async function POST(request: Request){
                         verifyTokenExpiry:null
                   }
             })
-            console.log(res)
             if(res.count===1)
                   return NextResponse.json({status:true, message:"Email Verified"},{status:200})
             else

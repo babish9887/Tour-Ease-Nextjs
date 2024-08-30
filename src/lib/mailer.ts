@@ -7,7 +7,6 @@ export const sendEmail = async({email, emailType, userId}:any) => {
     try {
         // create a hased token
         const hashedToken = await bcryptjs.hash(userId.toString(), 10)
-      console.log('send email')
         if (emailType === "VERIFY") {
             await prisma.user.update({
                   where: {
@@ -61,7 +60,6 @@ export const sendEmail = async({email, emailType, userId}:any) => {
         const mailresponse = await transporter.sendMail
         (mailOptions);
         return mailresponse;
-        console.log(mailresponse)
     } catch (error:any) {
       console.log(error.message)
         throw new Error(error.message);

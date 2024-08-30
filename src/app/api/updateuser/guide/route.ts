@@ -6,7 +6,6 @@ import { NextRequest, NextResponse } from "next/server";
 async function updateguide(request:NextRequest){
       const session=await getServerSession()
       const {contactNo, nationality, languages, lat, lng, isActive}=await request.json();
-      console.log(contactNo, nationality, languages, lat, lng, isActive)
 
       try {
             
@@ -28,7 +27,6 @@ async function updateguide(request:NextRequest){
                         isActive:isActive
                   }
             })
-            console.log(guide)
             if(guide){
                   return NextResponse.json(
                         { success: true, message: "Guide Updated Successfully" },

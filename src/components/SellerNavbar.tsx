@@ -16,7 +16,6 @@ const SellerNavbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const router=useRouter()
 const {data:session}=useSession()
-console.log(session)
 
 useEffect(()=>{
       //@ts-ignore

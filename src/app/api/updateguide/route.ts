@@ -6,7 +6,6 @@ import { NextRequest, NextResponse } from "next/server";
 async function updataGuide(request:NextRequest){
       const session=await getServerSession()
       const {contactNo, nationality, languages, lat, lng}=await request.json();
-      console.log(contactNo, nationality, languages, lat, lng)
 
       try {
             
@@ -24,7 +23,6 @@ async function updataGuide(request:NextRequest){
             //           );
             // }
 
-            console.log(user)
             const guide =await prisma.user.update({
                   where:{
                         id:user.id
@@ -38,7 +36,6 @@ async function updataGuide(request:NextRequest){
                         emailVerified:true
                   }
             })
-            console.log(guide)
             if(guide){
                   return NextResponse.json(
                         { success: true, message: "Guide Updated Successfully" },

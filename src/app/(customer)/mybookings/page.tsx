@@ -47,7 +47,6 @@ const [isOpen, setIsOpen]=useState(false)
             return
       }
       await axios.get("/api/getMyBookings").then((res) => {
-        console.log(res.data.bookings);
             setBookings(res.data.bookings)
             setCancelRequests(res.data.cancelRequests)
       });
@@ -85,7 +84,6 @@ const [isOpen, setIsOpen]=useState(false)
       setLoading(true)
        //@ts-ignore
        const review=document.getElementById('review').value
-       console.log(review)
       try {
             await axios.post("/api/guidereview", {id:booking.bookedUser, rating, review})
             .then((res) => {
@@ -109,7 +107,6 @@ const [isOpen, setIsOpen]=useState(false)
       setLoading(true)
        //@ts-ignore
        const reason=document.getElementById('reason').value
-       console.log(reason)
       try {
             await axios.post("/api/cancelbooking", {id:booking.id,reason})
             .then((res) => {
@@ -126,7 +123,6 @@ const [isOpen, setIsOpen]=useState(false)
       setLoading(false)
   }
 }
-console.log(session?.user)
 
   if(bookings===null){
       return <div className="flex justify-center items-center h-screen"><PulseLoader size={24} /></div>
@@ -149,13 +145,13 @@ console.log(session?.user)
     <>
       <div className="h-24" />
 
-      <div className="min-h-[calc(100vh-6rem)] h-auto w-full">
-        <h1 className="text-2xl font-semibold">Here Are your bookings</h1>
-        <div className="flex flex-col gap-y-2 p-3 ">
+      <div className="min-h-[calc(100vh-6rem)] h-auto w-full flex flex-col justify-start items-center">
+        <h1 className="text-2xl lg:text-3xl font-bold mt-4">Here Are your bookings</h1>
+        <div className=" grid xl:grid-cols-3 grid-cols-1 lg:grid-cols-2 gap-y-2 p-3 max-w-[1600px]">
           {bookings && 
           //@ts-ignore
             bookings.map((booking:any)=>(
-                  <div key={booking.id} className="flex justify-center items-center w-[26rem] p-4 border rounded-md bg-slate-100 border-slate-500">
+                  <div key={booking.id} className="flex justify-center items-center w-[26rem] p-4 m-4 border rounded-md bg-slate-100 border-slate-500">
                   {/* Guide Image */}
                   <img
                     src={booking.image}

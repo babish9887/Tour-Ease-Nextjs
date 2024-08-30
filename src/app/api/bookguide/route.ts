@@ -59,7 +59,6 @@ async function touristSignup(request:NextRequest){
                   }
             })
 
-            console.log(booking)
             const Tourist =await prisma.user.update({
                   where:{
                         id:guideId
@@ -68,7 +67,6 @@ async function touristSignup(request:NextRequest){
                        status:"BOOKED"
                   }
             })
-            console.log(Tourist)
             if(booking){
                   return NextResponse.json(
                         { success: true, message: "Guide Booked Successfully" },

@@ -43,7 +43,6 @@ async function guideReview(request:NextRequest){
                   review
             }
       })
-      console.log(ratingt, reviewt)
       if(ratingt && reviewt){
             return NextResponse.json({success: true, message:"Reviewed"}, {status:200})
       }

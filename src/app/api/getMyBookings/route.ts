@@ -8,7 +8,6 @@ async function getMyBookings(){
                   email:session?.user?.email
             }
       })
-      console.log(user)
       const bookings=await prisma.booking.findMany({
             where:{
                   bookedBy:user.id
@@ -43,7 +42,6 @@ async function getMyBookings(){
             return details;
       }).flat();
       
-      console.log(bookingwithdetails)
       const bookingsId=bookingwithdetails.map((booking:any)=>booking.id)
       const cancelRequests=await prisma.RequestCancel.findMany({
             where:{
@@ -52,7 +50,6 @@ async function getMyBookings(){
                   }
             }
       })
-      console.log(cancelRequests)
 
       if(bookings){
             return NextResponse.json({success: true, mesage:"Got bookings", bookings:bookingwithdetails, cancelRequests}, {status:200})

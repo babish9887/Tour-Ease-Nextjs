@@ -6,7 +6,6 @@ import { NextRequest, NextResponse } from "next/server";
 async function guideSignup(request:NextRequest){
       const session=await getServerSession()
       const {contactNo, nationality, languages, lat, lng}=await request.json();
-      console.log(contactNo, nationality, languages, lat, lng)
 
       try {
             
@@ -16,7 +15,6 @@ async function guideSignup(request:NextRequest){
                   }
             })
             
-            console.log(user)
             if(user.role==="GUIDE" || user.role=="USER"){
                   return NextResponse.json(
                         { success: false, message: "User with this email already Exists" },
@@ -24,7 +22,6 @@ async function guideSignup(request:NextRequest){
                       );
             }
 
-            console.log(user)
             const guide =await prisma.user.update({
                   where:{
                         id:user.id
@@ -38,7 +35,6 @@ async function guideSignup(request:NextRequest){
                         emailVerified:true
                   }
             })
-            console.log(guide)
             if(guide){
                   return NextResponse.json(
                         { success: true, message: "Guide Registered Successfully" },

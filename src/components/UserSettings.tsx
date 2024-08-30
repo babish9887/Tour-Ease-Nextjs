@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/popover";
 
 const UserSettings = ({ user }: any) => {
-      console.log(user);
       const router = useRouter();
       const [loading, setIsLoading] = useState(false);
       const [open, setOpen] = useState(false);
@@ -42,7 +41,6 @@ const UserSettings = ({ user }: any) => {
                   await axios
                         .post("/api/updateuser/tourist", { contactNo: number, nationality:value })
                         .then((res) => {
-                              console.log(res);
                               if (res.data.success) {
                                     toast.success("User Updated Successfully", { id: toastid });
                                   
@@ -62,7 +60,6 @@ const UserSettings = ({ user }: any) => {
                   await axios.get('/api/getUser')
                   .then((res)=>{
                         if(res.data.success){
-                              console.log(res.data.user)
                               setNumber(res.data.user.contactNo)
                               setValue(res.data.user.nationality)
                         }

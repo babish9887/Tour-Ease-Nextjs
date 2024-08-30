@@ -64,7 +64,6 @@ export const MyAuthOptions:AuthOptions = {
                         },
 
                   })
-                  console.log(dbUser)
                   if(!dbUser){
                         return token
                   }

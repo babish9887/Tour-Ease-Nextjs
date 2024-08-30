@@ -5,7 +5,6 @@ import { sendEmail } from "../../../../lib/mailer"
 
 async function touristSignup(request:NextRequest){
       const {nationality, contactNo, name, email , password}=await request.json()
-      console.log(email)
      try {
       const oldUser=await prisma.user.findFirst({
             where:{

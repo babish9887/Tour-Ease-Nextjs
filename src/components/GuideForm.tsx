@@ -56,7 +56,6 @@ const GuideForm = ({ user }: any) => {
   const [sessionState, setSessionState] = useState(null);
   const {data, update}=useSession()
   const session:Session | null=data
-  console.log(update)
 
   const [name, setName]=useState("")
   const [email, setEmail]=useState("")
@@ -306,7 +305,6 @@ const Map = ({setPosition, position}:any) => {
     const map = useMapEvents({
       click: (e:any) => {
         const { lat, lng } = e.latlng;
-        console.log(e);
         setPosition({ lat, lng });
       },
     });

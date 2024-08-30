@@ -7,7 +7,6 @@ import { NextRequest, NextResponse } from "next/server";
 async function updatetourist(request:NextRequest){
       const session=await getServerSession()
       const {contactNo, nationality}=await request.json()
-      console.log(contactNo, nationality)
       try {
             
             const user=await prisma.user.findFirst({
@@ -16,7 +15,6 @@ async function updatetourist(request:NextRequest){
                   }
             })
          
-            console.log(user)
             const Tourist =await prisma.user.update({
                   where:{
                         id:user.id
@@ -26,7 +24,6 @@ async function updatetourist(request:NextRequest){
                         nationality,
                   }
             })
-            console.log(Tourist)
             if(Tourist){
                   return NextResponse.json(
                         { success: true, message: "Buyer Updated Successfully" },

@@ -104,7 +104,6 @@ const LoginForm = ({ user }: any) => {
         if (urlToken?.length > 20) {
             setResetPassword(true);
         } else {
-            console.log("nothing")
             setResetPassword(false)
         }
     }, [resetPassword, router]);

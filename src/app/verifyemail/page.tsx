@@ -11,7 +11,6 @@ function VerifyEmailPage() {
       const [verifying, setVerifying]=useState(false);
       const [isVerified, setIsVerified]=useState(false)
       const [token, setToken]=useState("");
-      console.log(token)
       const router=useRouter();
       useEffect( () => {
             const urlToken = window.location.search.split("=")[1];
@@ -23,10 +22,7 @@ function VerifyEmailPage() {
             try{
                   await axios.post('/api/verifyemail',{token})
                   .then((res)=>{
-                        console.log(res)
                         if(res?.data.status){
-                              console.log("Email is verified")
-                              
                               setVerifying(false)
                               setIsVerified(true)
                         }
@@ -38,7 +34,6 @@ function VerifyEmailPage() {
                   })
                   .catch((e)=>{
                         toast.error("Something went wrong!")
-                        console.log(e.message)
                   }).finally(()=>{
                         setVerifying(false)
                         // setIsVerified(true)
@@ -49,7 +44,6 @@ function VerifyEmailPage() {
                   setIsVerified(false)
             }
       }
-      console.log(isVerified, verifying)
   return (
         
         <div className='h-screen w-screen flex justify-center gap-4 flex-col items-center bg-slate-200'>

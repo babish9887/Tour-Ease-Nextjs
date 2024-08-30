@@ -5,23 +5,18 @@ async function getGuides(request:NextRequest){
       const {lat, lng}=await request.json();
       try {
 
-            console.log(lat, lng)
             const minlat=(lat-0.0500).toFixed(4)
             const maxlat=(lat+0.0500).toFixed(4)
-            console.log(minlat, maxlat)
 
             const minlng=(lng-0.0500).toFixed(4)
             const maxlng=(lng+0.0500).toFixed(4)
-            console.log(minlng, maxlng)
 
 
             const users=await prisma.user.findMany()
 
-            // console.log(users)
             const guides=users.filter((user:any)=>
                   (user.locations[0]>minlat && user.locations[0]<maxlat) && (user.locations[1]>minlng && user.locations[1]<maxlng)
             )
-            // console.log(guides)
 
             // if(guides){
             //       const updatedGuidesPromises=guides.map(async (guide:any)=>{
@@ -104,12 +99,15 @@ async function getGuides(request:NextRequest){
                 
                     const updatedReviews = await Promise.all(updatedReviewsPromises);
                     
-                    const tours=await prisma.booking.findMany({
-                        where:{
-                              bookedUser:guide.id,
-                              createdAt: {lt: new Date(Date.now())}
+                    const tours = await prisma.booking.findMany({
+                        where: {
+                          bookedUser: guide.id,
+                          endDate: {
+                            lt: new Date()
+                          }
                         }
-                    })
+                      });
+                      
                     return {
                       ...guide,
                       rating: averageRating,
@@ -120,7 +118,6 @@ async function getGuides(request:NextRequest){
                 
                   const updatedGuides = await Promise.all(updatedGuidesPromises);
                 
-                  console.log(updatedGuides);
                   return NextResponse.json(
                     { success: true, message: "Guides Fetched Successfully", guides: updatedGuides },
                     { status: 200 }

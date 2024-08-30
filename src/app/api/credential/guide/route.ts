@@ -6,7 +6,6 @@ import { sendEmail } from "../../../../lib/mailer"
 import bcrypt from 'bcrypt'
 async function updataGuide(request:NextRequest){
       const {contactNo, nationality, languages, lat, lng, name, email, password}=await request.json();
-      console.log(contactNo, nationality, languages, lat, lng, name, email, password)
 
       try {
             
@@ -33,7 +32,6 @@ async function updataGuide(request:NextRequest){
                         password:hash
                   }
             })
-            console.log(guide)
             if(guide){
                   const res=sendEmail({email, emailType: "VERIFY", userId: guide.id})
                   return NextResponse.json(

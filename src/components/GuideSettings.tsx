@@ -71,7 +71,6 @@ const GuideSettings = ({ user }: any) => {
       const res = await axios
         .post("/api/updateuser/guide", { contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng, isActive:available })
         .then((res) => {
-          console.log(res);
           if (res.data.success) {
             toast.success("Guide Updated Successfully", { id: toastid });
            
@@ -93,7 +92,6 @@ const GuideSettings = ({ user }: any) => {
             await axios.get('/api/getUser')
             .then((res)=>{
                   if(res.data.success){
-                        console.log(res.data.user)
                         setNumber(res.data.user.contactNo)
                         setPosition({...position, lat:res.data.user.locations[0], lng:res.data.user.locations[1]})
                         setValue(res.data.user.nationality)
@@ -116,7 +114,7 @@ const GuideSettings = ({ user }: any) => {
       <div className="w-full flex flex-col gap-2 mb-2">
         
             <div className="flex items-center space-x-2">
-            <Switch id="available" checked={available} onCheckedChange={()=>{setAvailable(!available); console.log(!available)}}/>
+            <Switch id="available" checked={available} onCheckedChange={()=>{setAvailable(!available);}}/>
             <label htmlFor="available">Available for Booking</label>
             </div>
         </div>
@@ -243,7 +241,6 @@ const Map = ({setPosition, position}:any) => {
     const map = useMapEvents({
       click: (e:any) => {
         const { lat, lng } = e.latlng;
-        console.log(e);
         setPosition({ lat, lng });
       },
     });

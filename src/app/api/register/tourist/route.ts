@@ -22,7 +22,6 @@ async function touristSignup(request:NextRequest){
                       );
             }
 
-            console.log(user)
             const Tourist =await prisma.user.update({
                   where:{
                         id:user.id
@@ -34,7 +33,6 @@ async function touristSignup(request:NextRequest){
                         emailVerified:true
                   }
             })
-            console.log(Tourist)
             if(Tourist){
                   return NextResponse.json(
                         { success: true, message: "Buyer Registered Successfully" },

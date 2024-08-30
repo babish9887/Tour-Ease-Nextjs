@@ -41,7 +41,6 @@ function MyBookingsPage() {
   useEffect(() => {
     async function getMyBookings() {
       await axios.get("/api/getguidebookings").then((res) => {
-        console.log(res.data.bookings);
         if (res.data.success) setBookings(res.data.bookings);
       });
     }
@@ -53,7 +52,6 @@ function MyBookingsPage() {
       setLoading(true)
        //@ts-ignore
        const reason=document.getElementById('reason').value
-       console.log(reason)
       try {
             await axios.post("/api/requestcancel", {id:booking.id,reason})
             .then((res) => {

@@ -26,7 +26,6 @@ import { signIn, useSession } from "next-auth/react";
 
 const TouristForm = ({ user }: any) => {
       const {data:session , update}=useSession()
-      console.log(session)
       const router = useRouter();
       const [loading, setIsLoading] = useState(false);
       const [open, setOpen] = useState(false);
@@ -49,7 +48,6 @@ const TouristForm = ({ user }: any) => {
                   await axios
                   .post("/api/register/tourist", { contactNo: number, nationality:value })
                   .then(async (res) => {
-                        console.log(res);
                         if (res.data.success) {
                               toast.success("User Registered", { id: toastid });
                               await update({
@@ -74,7 +72,6 @@ const TouristForm = ({ user }: any) => {
                         await axios
                         .post("/api/credential/tourist", {name, email, password, contactNo: number, nationality:value })
                         .then((res) => {
-                              console.log(res);
                               if (res.data.success) {
                                     toast.success("User Registered", { id: toastid });
                                     setTimeout(() => {
