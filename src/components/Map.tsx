@@ -11,11 +11,14 @@ type MapProps = {
       handleSubmit: () => void;
       guides: any[];
       showGuide: boolean;
+      loading:boolean,
       setShowGuide: (show: boolean) => void;
       setGuide: (guide: any) => void;
+      setLoading: (guide: any) => void;
+
     };
 
-export const Map:React.FC<MapProps> = ({  setPosition, position, handleSubmit, guides, showGuide, setShowGuide, setGuide }: any) => {
+export const Map:React.FC<MapProps> = ({  setPosition, position, handleSubmit, guides, showGuide, setShowGuide, setGuide, loading:upperLoading, setLoading:UpperSetLoading }: any) => {
   const [maptype, setMaptype] = useState(0);
   const mapRef = useRef(null);
   const [isClient, setIsClient] = useState(false);
@@ -77,6 +80,7 @@ export const Map:React.FC<MapProps> = ({  setPosition, position, handleSubmit, g
 
   const handlePopupClick = (e: any, marker: any) => {
     e.stopPropagation();
+    if(!marker.isActive) return;
     setShowGuide(true);
     setGuide(marker);
   };
@@ -95,9 +99,9 @@ export const Map:React.FC<MapProps> = ({  setPosition, position, handleSubmit, g
           {guides && guides.map((marker: any, i: number) => (
             <Marker key={i} position={[marker.locations[0], marker.locations[1]]} icon={customIcon}>
               <Popup>
-                <div className='cursor-pointer flex justify-between items-center gap-x-3' onClick={(e) => handlePopupClick(e, marker)}>
-                  <img src={marker.image} alt={marker.name} className='w-12 aspect-square rounded-full' />
-                  <h2 className='font-semibold text-xl'>{marker.name}</h2>
+                <div className='cursor-pointer flex justify-between items-center gap-x-3 ' onClick={(e) => handlePopupClick(e, marker)}>
+                  <img src={marker.image} alt={marker.name} className={`w-12 aspect-square rounded-full filter ${marker.isActive? "": "filter grayscale"}`} />
+                  <h2 className='font-semibold text-lg'>{marker.name}</h2>
                 </div>
               </Popup>
             </Marker>
@@ -130,7 +134,7 @@ export const Map:React.FC<MapProps> = ({  setPosition, position, handleSubmit, g
         </Button>
       </div>
 
-      <Button disabled={loading} type='button' onClick={handleSubmit} className='bg-green-500 hover:bg-green-600'>Submit</Button>
+      <Button disabled={upperLoading} type='button' onClick={handleSubmit} className='bg-green-500 hover:bg-green-600'>{upperLoading? "Submitting...":"Submit"}</Button>
     </div>
   );
 }

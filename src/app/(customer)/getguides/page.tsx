@@ -98,9 +98,9 @@ function GetGuidesPage() {
     tours:null
   });
   async function handleSubmit() {
+      const getGuidesToast=toast.loading("Getting Guides...")
     setLoading(true);
     setGuides([]);
-    console.log("Submitting...");
     try {
       const res = await axios.post("/api/getguides", {
         lat: position.lat,
@@ -109,14 +109,14 @@ function GetGuidesPage() {
       if (res.data.success) {
         if (res.data.guides.length === 0) {
           setShowGuide(false);
-          return toast.error("No guides found in this area.");
+          return toast.error("No guides found in this area.", {id:getGuidesToast});
         }
         setGuides(res.data.guides);
-        console.log(res.data.guides);
+        return toast.success("Got the Guides!", {id:getGuidesToast})
       }
     } catch (error: any) {
       console.error("Error fetching guides:", error.message);
-      toast.error("Error fetching guides.");
+      toast.error("Error fetching guides.",{id:getGuidesToast});
     } finally {
       setLoading(false);
     }
@@ -187,6 +187,8 @@ function GetGuidesPage() {
                 position={position}
                 handleSubmit={handleSubmit}
                 guides={guides}
+                loading={loading}
+                setLoading={setLoading}
               />
             </div>
             <div className="w-full md:w-1/2 h-full p-4 md:py-4 md:px-4">

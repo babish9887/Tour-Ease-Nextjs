@@ -29,6 +29,8 @@ import {Session} from '../../../../lib/schema'
 function MyBookingsPage() {
   const [bookings, setBookings] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+
 
   const {data:session}:{data:Session | null | undefined}=useSession()
 
@@ -66,6 +68,7 @@ function MyBookingsPage() {
             toast.error(error.message)
       } finally {
       setLoading(false)
+      setOpen(false)
   }
 }
 
@@ -125,9 +128,9 @@ function MyBookingsPage() {
 
                    :
                         <div className="flex gap-3">
-                            <Dialog>
+                            <Dialog open={open}>
                               <DialogTrigger asChild>
-                            <Button variant={"destructive"} className="text-white py-0" disabled={booking.cancelRequest!==undefined}>{booking.cancelRequest===undefined?"Request Cancel":"Cancel Requested"}</Button>
+                            <Button onClick={()=>setOpen(true)} variant={"destructive"} className="text-white py-0" disabled={booking.cancelRequest!==undefined}>{booking.cancelRequest===undefined?"Request Cancel":"Cancel Requested"}</Button>
                               
                               </DialogTrigger>
                               <DialogContent className="sm:max-w-[425px]">
