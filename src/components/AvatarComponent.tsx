@@ -25,7 +25,7 @@ const AvatarComponent = ({ altName, img, list, email }:any) => {
         <Avatar>
           <AvatarImage src={img} />
           <AvatarFallback className="bg-green-500 text-white">
-            {altName && altName.charAt(0)}
+            {altName && altName.charAt(0)}{altName.split("")[1] && altName.split(" ")[1].charAt(0)}
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

@@ -102,7 +102,12 @@ export const Map:React.FC<MapProps> = ({  setPosition, position, handleSubmit, g
             <Marker key={i} position={[marker.locations[0], marker.locations[1]]} icon={customIcon}>
               <Popup>
                 <div className='cursor-pointer flex justify-between items-center gap-x-3 ' onClick={(e) => handlePopupClick(e, marker)}>
-                  <img src={marker.image} alt={marker.name} className={`w-12 aspect-square rounded-full filter ${marker.isActive? "": "filter grayscale"}`} />
+                 {marker.image  ? <img src={marker.image} alt={marker.name} className={`w-12 aspect-square rounded-full filter ${marker.isActive? "": "filter grayscale"}`} />
+                 :
+                 <div className="w-12 mr-4 text-white text-center text-xl font-bold flex justify-center items-center rounded-full aspect-square bg-green-500">
+                 {marker.name.charAt(0)}{marker.name.split("")[1] && marker.name.split(" ")[1].charAt(0)}
+             </div>
+                 }
                   <h2 className='font-semibold text-lg'>{marker.name}</h2>
                 </div>
               </Popup>
@@ -121,25 +126,25 @@ export const Map:React.FC<MapProps> = ({  setPosition, position, handleSubmit, g
 
 <div className='sm:mt-4 bg-white sm:p-2 md:p-3 rounded-lg'>
 
-      <div className='mt-4 mb-4 flex flex-wrap gap-y-4 gap-x- '>
-        <div className='w-full flex'>
-          <div className='w-1/2'>
+      <div className='mt-4 mb-4 flex flex-wrap gap-y-4 '>
+        <div className='w-full flex gap-x-2 mx-1'>
+          <div className=' flex justify-start items-center gap-x-2'>
             <label>Lat: </label>
-            <input type='text' value={position.lat.toFixed(3)} style={{ color: "black" }} readOnly className='border-2 w-4/5 border-gray-200 outline-none px-2 py-1 rounded-md focus:border-gray-300' />
+            <input type='text' value={position.lat.toFixed(3)} style={{ color: "black" }} readOnly className='border-2 w-4/5 border-gray-200 outline-none px-2 py-1 rounded-md focus:border-gray-300 flex-1 max-w-32' />
           </div>
 
-          <div className='w-1/2'>
+          <div className=' flex justify-start items-center gap-x-2'>
             <label>Lng: </label>
-            <input type='text' value={position.lng.toFixed(3)} style={{ color: "black" }} readOnly className='border-2 w-4/5 border-gray-200 outline-none px-2 py-1 rounded-md focus:border-gray-300' />
+            <input type='text' value={position.lng.toFixed(3)} style={{ color: "black" }} readOnly className='border-2 w-4/5 border-gray-200 outline-none px-2 py-1 rounded-md focus:border-gray-300 flex-1 max-w-32' />
           </div>
         </div>
-        <Button type='button' variant="outline" className='mx-2 text-green-600 hover:text-green-700' onClick={handleClick}>Get Current Position</Button>
+        <Button type='button' variant="outline" className='mx-2 text-green-600 hover:text-green-700' onClick={handleClick}>Get Current Location</Button>
         <Button type='button' variant="outline" onClick={() => setMaptype(maptype === 1 ? 0 : 1)} className=' text-green-600 hover:text-green-700'>
           Change Map Style
         </Button>
       </div>
 
-      <Button disabled={upperLoading} type='button' onClick={handleSubmit} className='bg-green-500 hover:bg-green-600'>Submit</Button>
+      <Button disabled={upperLoading} type='button' onClick={handleSubmit} className='bg-green-500 hover:bg-green-600 w-full lg:w-48 '>Submit</Button>
 </div>
     </div>
   );

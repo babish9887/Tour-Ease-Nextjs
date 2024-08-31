@@ -114,7 +114,7 @@ function GetGuidesPage() {
           className="absolute left-[calc(50%)] aspect-[1155/678] w-[48rem] -z-50 -translate-x-1/2 rotate-[80deg] md:rotate-[30deg] bg-gradient-to-tr from-[#59e68f] to-[#30d3bd] opacity-70 sm:opacity-30 sm:left-[calc(20%)] sm:w-[60rem] md:w-[80rem] md:-top-12 lg:w-[120rem] lg:-top-10 "
         /> */}
 
-        <div className="flex justify-center items-center max-w-[1400px] w-full flex-col md:flex-row flex-wrap  relative overflow-hidden  bg-white/50">
+        <div className="flex justify-center items-center max-w-[1400px] w-full flex-col md:flex-row flex-wrap  relative overflow-hidden ">
           <div className="w-full flex flex-col justify-center items-center">
             <h1 className="font-semibold text-3xl sm:mt-3">Get Guides</h1>
             <h2 className="my-2 md:my-4 px-2">
@@ -122,8 +122,8 @@ function GetGuidesPage() {
               guides for you.
             </h2>
           </div>
-          <div className=" min-h-[calc(100vh-12rem)] w-full flex flex-col md:flex-row justify-center items-start relative">
-            <div className="w-full md:w-1/2 h-full p-4 backdrop-blur-3xl bg-white/60 rounded-2xl">
+          <div className=" min-h-[calc(100vh-12rem)] w-full flex flex-col gap-y-4 md:flex-row justify-center items-start relative">
+            <div className="w-full md:w-1/2 h-full p-4 backdrop-blur-3xl bg-white/60 shadow-lg rounded-2xl min-h-[25rem] sm:min-h[20rem] lg:min-h-[30rem] xl:min-h-[38rem] md:min-h-[30rem]">
               <Map
                 setGuide={setGuide}
                 setPosition={setPosition}
@@ -136,16 +136,21 @@ function GetGuidesPage() {
                 setLoading={setLoading}
               />
             </div>
-            <div className="w-full md:w-1/2 h-full p-4 rounded-2xl overflow-hidden">
+            <div className="w-full md:w-1/2 h-full px-4 rounded-2xl overflow-hidden">
               {guide && showGuide && (
-                <div className="flex flex-col backdrop-blur-2xl grainy/90 bg-white/60 shadow-md rounded-2xl py-8">
+                <div className="flex flex-col backdrop-blur-2xl grainy/90 bg-white/70 shadow-lg rounded-2xl py-8">
                   <div className="flex  min-h-[320px] justify-center lg:justify-start items-center  lg:items-start flex-col lg:flex-row h-auto">
                     <div className="flex justify-start items-start gap-y-1 gap-x-2 mx-8">
-                      <img
+                    {guide.image ?  <img
                         src={guide?.image}
                         alt={guide.name}
                         className="rounded-full w-28 aspect-square border-4 border-white"
                       />
+                  :
+                  <div className="w-12 mr-4 text-white text-center text-xl font-bold flex justify-center items-center rounded-full aspect-square bg-green-500">
+                        {guide.name.charAt(0)}{guide.name.split("")[1] && guide.name.split(" ")[1].charAt(0)}
+                  </div>
+                  }
                     </div>
                     <div className="flex flex-col">
                       <div className="mb-4 text-gray-600">
@@ -242,18 +247,23 @@ function GetGuidesPage() {
                               className="px-3 my-2 shadow-md py-2 mr-3 min-w-64 bg-white rounded-md flex-shrink-0 flex justify-start items-start"
                             >
                               <div>
-                                <img
+                               {review.image? <img
                                   src={review.image}
                                   alt={review.name}
                                   className="w-12 mr-4 rounded-full aspect-square"
-                                />
+                                />:
+                                <div className="w-12 mr-4 text-white text-center text-xl font-bold flex justify-center items-center rounded-full aspect-square bg-green-500">
+                                    {review.name.charAt(0)}{review.name.split("")[1] && review.name.split(" ")[1].charAt(0)}
+                                </div>
+                                    
+                                }
                               </div>
                               <div>
                                 <h1 className="text-lg font-semibold">
                                   {review.name}
                                 </h1>
                                 <div className="flex">
-                                  <Star className="mr-3" />
+                                  <Star className="mr-3 text-green-500" />
                                   <p>{review.rating}/5</p>
                                 </div>
                                 <p className="font-light italic">

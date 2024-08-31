@@ -153,11 +153,16 @@ const [isOpen, setIsOpen]=useState(false)
             bookings.map((booking:any)=>(
                   <div key={booking.id} className="flex justify-center items-center min-w-[24rem] w-full  sm:w-auto max-w-[27rem] p-4 sm:m-4  my-2 border-2 rounded-lg bg-white border-slate-200 shadow-lg">
                   {/* Guide Image */}
-                  <img
+                 {booking.image? <img
                     src={booking.image}
                     alt={booking.name}
                     className="rounded-full w-16 h-16 mr-4"
                   />
+                  :
+                  <div className="w-12 mr-4 text-white text-center text-xl font-bold flex justify-center items-center rounded-full aspect-square bg-green-500">
+                        {booking.name.charAt(0)}{booking.name.split("")[1] && booking.name.split(" ")[1].charAt(0)}
+                  </div>
+                  }
                   
                   {/* Guide Details */}
                   <div className="flex flex-col flex-grow">

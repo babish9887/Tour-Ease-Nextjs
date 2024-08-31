@@ -15,8 +15,15 @@ function page() {
               className="absolute left-[calc(50%)] aspect-[1155/678] w-[48rem] -translate-x-1/2 rotate-[80deg] md:rotate-[30deg] bg-gradient-to-tr from-[#59e68f] to-[#30d3d3] opacity-70 sm:opacity-30 sm:left-[calc(20%)] sm:w-[60rem] md:w-[80rem] md:-top-12 lg:w-[120rem] lg:-top-10 "
             />
 <div className='h-screen w-full flex flex-col md:flex-row backdrop-blur-3xl overflow-hidden'>
-  <div className='w-full md:w-1/2'>
-    <div className='w-full gap-y-4 p-6 sm:p-0 text-black flex flex-col justify-center items-center h-screen '>
+  <div className='w-full md:w-1/2 flex flex-col h-screen '>
+
+
+  <div className='w-full md:w-1/2 h-1/2 justify-center items-center p-16 pt-36 md:hidden  relative'>
+  {/* <img src='/triangle.png' className='z-0 w-full rotate-[90deg]' /> */}
+  <img src='/home.png' className='relative z-10 w-full self-center sm:px-16' />
+</div>
+
+    <div className='w-full gap-y-4 p-6 md:p-4 text-black flex flex-col justify-center items-center h-screen '>
       <h1 className='font-bold text-green-600 text-5xl text-center'>Discover, Explore, and Book with Ease!</h1>
       <h3 className='text-2xl text-center'>Explore the World with a Local Guide</h3>
       <Link href={'/getguides'}>
