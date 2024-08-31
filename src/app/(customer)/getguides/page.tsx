@@ -9,61 +9,6 @@ import { Session } from "../.../../../../lib/schema";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Globe, Languages, Star } from "lucide-react";
-
-const reviews = [
-  {
-    id: "66d1662aeed076cacfe48501",
-    image:
-      "https://lh3.googleusercontent.com/a/ACg8ocKmCubRrwYnbfYOtzTuJ71Jcg-dW3TB6OIOq0XBkuhg-LRUFdUm=s96-c",
-    name: "Babish Chaudhary",
-    rating: 4,
-    review: "Very good experience",
-    tourId: "66b9e1ce55e54d37630d387b",
-    userId: "66b9e19b55e54d37630d3879",
-  },
-  {
-    id: "66d1a3c5174c805795ed95b1",
-    image:
-      "https://lh3.googleusercontent.com/a/ACg8ocKmCubRrwYnbfYOtzTuJ71Jcg-dW3TB6OIOq0XBkuhg-LRUFdUm=s96-c",
-    name: "Babish Chaudhary",
-    rating: 4,
-    review: "noice",
-    tourId: "66b9e1ce55e54d37630d387b",
-    userId: "66b9e19b55e54d37630d3879",
-  },
-  {
-    id: "66d1a3dd174c805795ed95b3",
-    image:
-      "https://lh3.googleusercontent.com/a/ACg8ocKmCubRrwYnbfYOtzTuJ71Jcg-dW3TB6OIOq0XBkuhg-LRUFdUm=s96-c",
-    name: "Babish Chaudhary",
-    rating: 4,
-    review: "It was awful",
-    tourId: "66b9e1ce55e54d37630d387b",
-    userId: "66b9e19b55e54d37630d3879",
-  },
-  {
-    id: "66d1a608174c805795ed95b5",
-    image:
-      "https://lh3.googleusercontent.com/a/ACg8ocKmCubRrwYnbfYOtzTuJ71Jcg-dW3TB6OIOq0XBkuhg-LRUFdUm=s96-c",
-    name: "Babish Chaudhary",
-    rating: 4,
-    review: "dsd",
-    tourId: "66b9e1ce55e54d37630d387b",
-    userId: "66b9e19b55e54d37630d3879",
-  },
-  {
-    id: "66d1a608174c805795ed95b5",
-    image:
-      "https://lh3.googleusercontent.com/a/ACg8ocKmCubRrwYnbfYOtzTuJ71Jcg-dW3TB6OIOq0XBkuhg-LRUFdUm=s96-c",
-    name: "Babish Chaudhary",
-    rating: 4,
-    review: "dsd",
-    tourId: "66b9e1ce55e54d37630d387b",
-    userId: "66b9e19b55e54d37630d3879",
-  },
-];
-
-// Dynamically import the Map component to avoid server-side rendering
 const Map = dynamic(
   () => import("../../../components/Map").then((mod) => mod.Map),
   {
@@ -160,7 +105,7 @@ function GetGuidesPage() {
   return (
     <>
       <div className="h-24" />
-      <div className="w-full min-h-[calc(100vh-6rem)] flex justify-center items-center backdrop-blur-3xl">
+      <div className="w-full bg-[url('/bghead2.png')] bg-contain bg-no-repeat bg-center overflow-hidden min-h-[calc(100vh-6rem)] flex justify-center items-center ">
         {/* <div
           style={{
             clipPath:
@@ -169,16 +114,16 @@ function GetGuidesPage() {
           className="absolute left-[calc(50%)] aspect-[1155/678] w-[48rem] -z-50 -translate-x-1/2 rotate-[80deg] md:rotate-[30deg] bg-gradient-to-tr from-[#59e68f] to-[#30d3bd] opacity-70 sm:opacity-30 sm:left-[calc(20%)] sm:w-[60rem] md:w-[80rem] md:-top-12 lg:w-[120rem] lg:-top-10 "
         /> */}
 
-        <div className="flex justify-center items-center max-w-[1400px] flex-col md:flex-row flex-wrap bg-transparent relative overflow-hidden">
+        <div className="flex justify-center items-center max-w-[1400px] w-full flex-col md:flex-row flex-wrap  relative overflow-hidden  bg-white/50">
           <div className="w-full flex flex-col justify-center items-center">
-            <h1 className="font-semibold text-3xl">Get Guides</h1>
-            <h2 className="my-2">
+            <h1 className="font-semibold text-3xl sm:mt-3">Get Guides</h1>
+            <h2 className="my-2 md:my-4 px-2">
               Pin on the Map where you want to visit! Then we will find nearby
               guides for you.
             </h2>
           </div>
-          <div className="backdrop-blur-3xl  min-h-[calc(100vh-12rem)] w-full flex flex-col md:flex-row justify-center items-start relative">
-            <div className="w-full md:w-1/2 h-full p-4">
+          <div className=" min-h-[calc(100vh-12rem)] w-full flex flex-col md:flex-row justify-center items-start relative">
+            <div className="w-full md:w-1/2 h-full p-4 backdrop-blur-3xl bg-white/60 rounded-2xl">
               <Map
                 setGuide={setGuide}
                 setPosition={setPosition}
@@ -191,9 +136,9 @@ function GetGuidesPage() {
                 setLoading={setLoading}
               />
             </div>
-            <div className="w-full md:w-1/2 h-full p-4 md:py-4 md:px-4">
+            <div className="w-full md:w-1/2 h-full p-4 rounded-2xl overflow-hidden">
               {guide && showGuide && (
-                <div className="flex flex-col backdrop-blur-2xl grainy/90 bg-slate-100/60 shadow-md rounded-md py-8">
+                <div className="flex flex-col backdrop-blur-2xl grainy/90 bg-white/60 shadow-md rounded-2xl py-8">
                   <div className="flex  min-h-[320px] justify-center lg:justify-start items-center  lg:items-start flex-col lg:flex-row h-auto">
                     <div className="flex justify-start items-start gap-y-1 gap-x-2 mx-8">
                       <img
@@ -275,7 +220,7 @@ function GetGuidesPage() {
                     </div>
                   </div>
 
-                  <div className="">
+                  <div className="px-3">
                     <h1 className="mb-2 mx-2 text-xl font-semibold">Reviews: </h1>
                     <div
                       style={{

@@ -50,6 +50,7 @@ function AccountPage() {
     return (
         <>
             <div className='h-24' />
+         
             {session?.user?.role === "USER" && <UserSettings />}
             {session?.user?.role === "GUIDE" && <GuideSettings />}
         </>

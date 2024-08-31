@@ -45,7 +45,7 @@ async function touristSignup(request:NextRequest){
             
             if(oldBookings.length>0){
                   return NextResponse.json(
-                        { success: false, message: "Guide is Already booked" },
+                        { success: false, message: "Guide is Already booked on that Date" },
                         { status: 200 }
                       );
             }

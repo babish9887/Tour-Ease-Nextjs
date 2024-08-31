@@ -77,7 +77,7 @@ useEffect(() => {
           </Link>}
           {session?.user?.role!=="GUIDE" ? <Link
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
-              pathName === "/mybookings" ? "text-green-600" : null
+              pathName === "/mybookings"  ? "text-green-600" : null
             }`}
             href={"/mybookings"}
           >
@@ -86,7 +86,7 @@ useEffect(() => {
           :
           <Link
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
-              pathName === "/mybookings" ? "text-green-600" : null
+              pathName === "/guide/mybookings" ? "text-green-600" : null
             }`}
             href={"/guide/mybookings"}
           >
@@ -102,11 +102,6 @@ useEffect(() => {
             />
           ) : (
             <div className="flex gap-3">
-                {/* <Button variant={"outline"} className="font-semibold" onClick={()=>signIn("google", {callbackUrl:"http://localhost:3000/newuser"})}>
-                  Sign up
-                </Button>
-
-                <Button onClick={()=>signIn("google")}>Sign in</Button> */}
 
             <Link href={"/newuser"}>
                <Button variant={"outline"} className="font-semibold">
@@ -142,7 +137,7 @@ useEffect(() => {
           </Link>}
           {session?.user?.role!=="GUIDE" ? <Link
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
-              pathName === "/mybookings" ? "text-green-600" : null
+              pathName === "/mybookings"? "text-green-600" : null
             }`}
             href={"/mybookings"}
           >
@@ -151,7 +146,7 @@ useEffect(() => {
           :
           <Link
             className={`hover:bg-gray-200/70 px-3 py-2 rounded-md ${
-              pathName === "/mybookings" ? "text-green-600" : null
+              pathName === "/guide/mybookings" ? "text-green-600" : null
             }`}
             href={"/guide/mybookings"}
           >

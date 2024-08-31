@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
@@ -20,7 +20,7 @@ import Link from "next/link";
 const AvatarComponent = ({ altName, img, list, email }:any) => {
   return (
       //@ts-ignore
-    <DropdownMenu className="w-full flex " >
+    <DropdownMenu className="w-full flex ">
       <DropdownMenuTrigger className="outline-none border-none" >
         <Avatar>
           <AvatarImage src={img} />

@@ -70,7 +70,7 @@ const UserSettings = ({ user }: any) => {
         }, [number])
 
       return (
-            <div className="w-full mx-auto p-4  h-[calc(100vh-6rem)] flex flex-col justify-center sm:w-2/3 md:w-3/6 lg:w-2/6">
+            <div className="w-full mx-auto p-4  h-[calc(100vh-6rem)] flex flex-col justify-center sm:w-2/3 md:w-3/6 lg:w-2/6 ">
                   <h2 className=" font-bold text-2xl">Update User Settings</h2>
                   <form className="bg-white p-4 rounded-lg mt-5 flex flex-col gap-y-5">
                         <div className="w-full flex flex-col gap-2">

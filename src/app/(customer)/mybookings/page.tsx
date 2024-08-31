@@ -143,15 +143,15 @@ const [isOpen, setIsOpen]=useState(false)
   
   return (
     <>
-      <div className="h-24" />
+      <div className="h-24 bg-slate-50"/>
 
-      <div className="min-h-[calc(100vh-6rem)] h-auto w-full flex flex-col justify-start items-center">
+      <div className="min-h-[calc(100vh-6rem)] h-auto w-full flex flex-col justify-start items-center  bg-slate-50 bg-[url('/bghead2.png')] bg-contain bg-no-repeat bg-center ">
         <h1 className="text-2xl lg:text-3xl font-bold mt-4">Here Are your bookings</h1>
-        <div className=" grid xl:grid-cols-3 grid-cols-1 lg:grid-cols-2 gap-y-2 p-3 max-w-[1600px]">
+        <div className=" grid xl:grid-cols-3 grid-cols-1 lg:grid-cols-2 sm:p-3 max-w-[1600px]">
           {bookings && 
           //@ts-ignore
             bookings.map((booking:any)=>(
-                  <div key={booking.id} className="flex justify-center items-center w-[26rem] p-4 m-4 border rounded-md bg-slate-100 border-slate-500">
+                  <div key={booking.id} className="flex justify-center items-center min-w-[24rem] w-full  sm:w-auto max-w-[27rem] p-4 sm:m-4  my-2 border-2 rounded-lg bg-white border-slate-200 shadow-lg">
                   {/* Guide Image */}
                   <img
                     src={booking.image}

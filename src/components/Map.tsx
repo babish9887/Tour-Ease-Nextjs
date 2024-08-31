@@ -88,8 +88,10 @@ export const Map:React.FC<MapProps> = ({  setPosition, position, handleSubmit, g
   if (!isClient) return null;
 
   return (
-    <div className='h-auto w-full overflow-hidden z-10'>
-      <MapContainer ref={mapRef} center={[27.703396, 85.315165]} zoom={13} scrollWheelZoom={true} className='z-10'>
+    <div className='h-auto w-full overflow-hidden z-10 '>
+      <div className='shadow-md overflow-hidden rounded-xl'>
+
+      <MapContainer  ref={mapRef} center={[27.703396, 85.315165]} zoom={13} scrollWheelZoom={true} className='z-10'>
         <TileLayer
           url={maptypes[maptype].url}
           attribution={maptypes[maptype].attribution}
@@ -115,8 +117,11 @@ export const Map:React.FC<MapProps> = ({  setPosition, position, handleSubmit, g
 
         <GetLocation />
       </MapContainer>
+      </div>
 
-      <div className='mt-4 mb-4 flex flex-wrap gap-y-4 gap-x-2'>
+<div className='sm:mt-4 bg-white sm:p-2 md:p-3 rounded-lg'>
+
+      <div className='mt-4 mb-4 flex flex-wrap gap-y-4 gap-x- '>
         <div className='w-full flex'>
           <div className='w-1/2'>
             <label>Lat: </label>
@@ -128,13 +133,14 @@ export const Map:React.FC<MapProps> = ({  setPosition, position, handleSubmit, g
             <input type='text' value={position.lng.toFixed(3)} style={{ color: "black" }} readOnly className='border-2 w-4/5 border-gray-200 outline-none px-2 py-1 rounded-md focus:border-gray-300' />
           </div>
         </div>
-        <Button type='button' variant="secondary" className='mx-2 text-green-600 hover:text-green-700' onClick={handleClick}>Get Current Position</Button>
-        <Button type='button' variant="secondary" onClick={() => setMaptype(maptype === 1 ? 0 : 1)} className=' text-green-600 hover:text-green-700'>
+        <Button type='button' variant="outline" className='mx-2 text-green-600 hover:text-green-700' onClick={handleClick}>Get Current Position</Button>
+        <Button type='button' variant="outline" onClick={() => setMaptype(maptype === 1 ? 0 : 1)} className=' text-green-600 hover:text-green-700'>
           Change Map Style
         </Button>
       </div>
 
-      <Button disabled={upperLoading} type='button' onClick={handleSubmit} className='bg-green-500 hover:bg-green-600'>{upperLoading? "Submitting...":"Submit"}</Button>
+      <Button disabled={upperLoading} type='button' onClick={handleSubmit} className='bg-green-500 hover:bg-green-600'>Submit</Button>
+</div>
     </div>
   );
 }

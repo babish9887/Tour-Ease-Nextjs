@@ -295,7 +295,7 @@ const Map = ({setPosition, position}:any) => {
 
       <div className="flex justify-around my-4">
         <Button
-          variant="secondary"
+          variant="outline"
           onClick={() => {
             if (maptype === 1) setMaptype(0);
             else setMaptype(1);
@@ -306,7 +306,7 @@ const Map = ({setPosition, position}:any) => {
           change Map Style
         </Button>
 
-        <Button variant="secondary" type="button" onClick={handleClick}>
+        <Button variant="outline" type="button" onClick={handleClick}>
           Get Current Position
         </Button>
       </div>
