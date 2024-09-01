@@ -240,7 +240,7 @@ function GetGuidesPage() {
                           // width: reviews.length * 110,
                         }}
                       >
-                        {guide.reviews &&
+                        {guide.reviews.length!==0 ?
                           guide.reviews.map((review) => (
                             <div
                               key={review.name}
@@ -274,7 +274,8 @@ function GetGuidesPage() {
                                 </p>
                               </div>
                             </div>
-                          ))}
+                          )):
+                          <div><h1>No Reviews to show</h1></div>}
                       </div>
                     </div>
                   </div>

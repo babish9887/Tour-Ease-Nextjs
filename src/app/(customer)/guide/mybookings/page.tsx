@@ -152,10 +152,10 @@ function MyBookingsPage() {
                   <div>Ended</div>
                 ) : (
                   <div className="flex gap-3">
-                    <Dialog open={open}>
+                    <Dialog >
                       <DialogTrigger asChild>
                         <Button
-                          onClick={() => setOpen(true)}
+                        //   onClick={() => setOpen(true)}
                           variant={"destructive"}
                           className="text-white py-0"
                           disabled={booking.cancelRequest !== undefined}

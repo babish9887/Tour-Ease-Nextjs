@@ -43,10 +43,10 @@ export const sendEmail = async({email, emailType, userId}:any) => {
 
         let message=""
         if(emailType==='VERIFY'){
-            message=`<p>Click <a href="${process.env.DOMAIN}/verifyemail?token=${hashedToken}">here</a> to Verify your Email or copy and paste the link below in your browser. <br> ${process.env.DOMAIN}/verifyemail?token=${hashedToken}
+            message=`<p>Click <a href="https://tourease-babish9887.vercel.app/verifyemail?token=${hashedToken}">here</a> to Verify your Email or copy and paste the link below in your browser. <br> https://tourease-babish9887.vercel.app/verifyemail?token=${hashedToken}
             </p>`
         } else{
-            message=`<p>Click <a href="${process.env.DOMAIN}/user/login?token=${hashedToken}">here</a> to reset your password or copy and paste the link below in your browser. <br> ${process.env.DOMAIN}/user/login?token=${hashedToken}
+            message=`<p>Click <a href="https://tourease-babish9887.vercel.app/user/login?token=${hashedToken}">here</a> to reset your password or copy and paste the link below in your browser. <br> https://tourease-babish9887.vercel.app/user/login?token=${hashedToken}
             </p>`
         }
         const mailOptions = {

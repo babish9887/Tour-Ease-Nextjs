@@ -17,6 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head><title>Tour Ease - Making Travel Easy</title></head>
       <body className={`${inter.className} scroll-smooth overflow-auto`}>
             <AuthContext>
             <ToasterContext />

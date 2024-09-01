@@ -18,6 +18,7 @@ const LoginForm = ({ user }: any) => {
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const handleSubmit = async () => {
+          if(email==="" || password==="") return toast.error("Fields cannot be empty")
         setIsLoading(true);
         const toastid = toast.loading("Logging...");
         try {
@@ -109,10 +110,11 @@ const LoginForm = ({ user }: any) => {
     }, [resetPassword, router]);
 
     return (
-        <div className="w-full mx-auto p-4 h-screen flex flex-col justify-center sm:w-2/3 md:w-3/6 lg:w-2/6">
-            <h2 className="font-bold text-2xl self-center">{!resetPassword ? "Login your Account" : "Reset Your Password"}</h2>
+        <div className="w-full mx-auto  p-4 h-screen flex flex-col justify-center sm:w-2/3 md:w-3/6 lg:w-2/6">
+            <div className="bg-gray-100 p-4 rounded-md max-w-[40rem] min-w-[25rem] shadow-lg ">
+            <h2 className="font-bold text-2xl text-center self-center">{!resetPassword ? "Login your Account" : "Reset Your Password"}</h2>
             {!resetPassword ? (
-                <form className="bg-white p-4 rounded-lg mt-5 flex flex-col gap-y-5">
+                <form className=" p-4 rounded-lg mt-5 flex flex-col gap-y-5">
                     <div className="w-full flex flex-col gap-2">
                         <label className="font-semibold">Email</label>
                         <input
@@ -144,6 +146,7 @@ const LoginForm = ({ user }: any) => {
                         onClick={() => signIn("google", { callbackUrl: "http://localhost:3000/" })}
                         disabled={loading}
                         variant="ghost"
+                        className="hover:bg-gray-200 hover:border "
                     >
                         Continue with Google
                     </Button>
@@ -196,6 +199,7 @@ const LoginForm = ({ user }: any) => {
                     </Button>
                 </form>
             )}
+            </div>
         </div>
     );
 };

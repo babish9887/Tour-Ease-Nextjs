@@ -67,7 +67,7 @@ const UserSettings = ({ user }: any) => {
             }
       
             getUser()
-        }, [number])
+        }, [])
 
       return (
             <div className="w-full mx-auto p-4  h-[calc(100vh-6rem)] flex flex-col justify-center sm:w-2/3 md:w-3/6 lg:w-2/6 ">
