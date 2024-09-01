@@ -55,7 +55,7 @@ function VerifyEmailPage() {
                    </h1>
                  
                   {verifying? 
-                  <PropagateLoader color="#6366f1" />
+                  <PropagateLoader color="#00ff0d" />
                   :
                   <Button  onClick={handleVerifyEmail}>Verify Email</Button>
             }

@@ -28,8 +28,11 @@ async function touristSignup(request:NextRequest){
             }
       })
       const res=sendEmail({email, emailType: "VERIFY", userId: user.id})
-
-      return NextResponse.json({success:true, message:"User Created Successfully", user}, {status:200})
+      console.log(res)
+      if(res){
+            return NextResponse.json({success:true, message:"User created successfully"}, {status:200})
+      }
+      return NextResponse.json({success:false, message:"Something went wrong", res}, {status:400})
      } catch (error) {
             console.log(error)
             return NextResponse.json({success:false, message:"Something went Wrong"}, {status:500})

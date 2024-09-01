@@ -73,7 +73,7 @@ const TouristForm = ({ user }: any) => {
                         .post("/api/credential/tourist", {name, email, password, contactNo: number, nationality:value })
                         .then((res) => {
                               if (res.data.success) {
-                                    toast.success("User Registered", { id: toastid });
+                                    toast.success("User Registered! Check Your Email for Verification!", { id: toastid });
                                     setTimeout(() => {
                                           router.replace("/");
                                           
@@ -81,6 +81,7 @@ const TouristForm = ({ user }: any) => {
 
                                     }, 3000);
                               } else {
+                                    console.log(res.data)
                                     toast.error(res.data.message, { id: toastid });
                                     setTimeout(() => {
                                           router.replace("/");

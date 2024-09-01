@@ -49,7 +49,6 @@ export const sendEmail = async({email, emailType, userId}:any) => {
             message=`<p>Click <a href="${process.env.DOMAIN}/user/login?token=${hashedToken}">here</a> to reset your password or copy and paste the link below in your browser. <br> ${process.env.DOMAIN}/user/login?token=${hashedToken}
             </p>`
         }
-
         const mailOptions = {
             from: 'babish@gmail.com',
             to: email,
@@ -57,8 +56,7 @@ export const sendEmail = async({email, emailType, userId}:any) => {
             html: message
         }
 
-        const mailresponse = await transporter.sendMail
-        (mailOptions);
+        const mailresponse = await transporter.sendMail(mailOptions);
         return mailresponse;
     } catch (error:any) {
       console.log(error.message)
