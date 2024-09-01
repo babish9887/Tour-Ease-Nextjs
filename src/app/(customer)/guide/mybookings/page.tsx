@@ -27,7 +27,6 @@ import { Session } from "../../../../lib/schema";
 function MyBookingsPage() {
   const [bookings, setBookings] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
 
   const { data: session }: { data: Session | null | undefined } = useSession();
 
@@ -61,7 +60,6 @@ function MyBookingsPage() {
       toast.error(error.message);
     } finally {
       setLoading(false);
-      setOpen(false);
     }
   }
 
