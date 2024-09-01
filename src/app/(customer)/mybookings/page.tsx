@@ -21,7 +21,7 @@ import toast from "react-hot-toast";
 import { PulseLoader } from "react-spinners";
 import StarRating from '@/components/StarRating'
 import { Trash2Icon } from "lucide-react";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import {Session, CancelRequest} from '../.../../../../lib/schema'
 import Link from "next/link";
@@ -126,7 +126,6 @@ function MyBookingsPage() {
       return <div className="flex justify-center items-center h-screen"><PulseLoader size={24} /></div>
   }
 
-
   if(session?.user===null || session?.user==undefined){
       return<div className="flex justify-center items-center h-screen flex-col gap-3"><h1>Sign In to Get Your Bookings</h1>
        <div className="flex gap-4">
@@ -150,7 +149,6 @@ function MyBookingsPage() {
           //@ts-ignore
             bookings.map((booking:any)=>(
                   <div key={booking.id} className="flex justify-center items-center min-w-[24rem] w-full  sm:w-auto max-w-[27rem] p-4 sm:m-4  my-2 border-2 rounded-lg bg-white border-slate-200 shadow-lg">
-                  {/* Guide Image */}
                  {booking.image? <img
                     src={booking.image}
                     alt={booking.name}
@@ -167,7 +165,6 @@ function MyBookingsPage() {
                     {/* Guide Name */}
                     <h1 className="font-bold mb-2">{booking.name}</h1>
                     
-                    {/* Booking Details */}
                     <div className="flex flex-col mb-4">
                       <p className="text-xs">Booked on: {booking.createdAt.split('T')[0]}</p>
                       <p className="text-xs">From <span>{booking.bookingDate.split('T')[0]}</span> To <span>{booking.endDate.split('T')[0]}</span></p>
@@ -183,7 +180,6 @@ function MyBookingsPage() {
               
                     </div>
                     
-                    {/* Edit Button */}
                   </div>
                     {booking.isEnded ? 
                      <Dialog>
@@ -200,7 +196,7 @@ function MyBookingsPage() {
                        <div className="grid gap-4 py-4">
                          <div className="grid grid-cols-2 items-center gap-2">
                            <Label htmlFor="name" className="text-left">
-                             How was your experience ? 
+                             How was your experience? 
                            </Label>
                          <StarRating messages={[]} className="" maxRating={5} color="green" size={24} onSetRating={setRating} defaultRating={2} />
                          </div>

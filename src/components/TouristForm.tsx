@@ -81,7 +81,6 @@ const TouristForm = ({ user }: any) => {
 
                                     }, 3000);
                               } else {
-                                    console.log(res.data)
                                     toast.error(res.data.message, { id: toastid });
                                     setTimeout(() => {
                                           router.replace("/");

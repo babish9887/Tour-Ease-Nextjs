@@ -28,7 +28,6 @@ async function touristSignup(request:NextRequest){
             }
       })
       const res=await sendEmail({email, emailType: "VERIFY", userId: user.id})
-      console.log(res)
       if(res){
             return NextResponse.json({success:true, message:"User created successfully"}, {status:200})
       }
