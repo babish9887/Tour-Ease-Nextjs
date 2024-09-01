@@ -26,7 +26,7 @@ export async function POST(request: Request){
             if(res.count===1)
                   return NextResponse.json({status:true, message:"Email Verified"},{status:200})
             else
-                  return NextResponse.json({status:false, message:"Token Expired"},{status:400})
+                  return NextResponse.json({status:false, message:"Token Expired"},{status:200})
 
       } catch(e: any){
             console.log(e.message)

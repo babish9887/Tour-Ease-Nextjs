@@ -77,7 +77,7 @@ const TouristForm = ({ user }: any) => {
                                     setTimeout(() => {
                                           router.replace("/");
                                           
-                                          window.location.reload();
+                                          // window.location.reload();
 
                                     }, 3000);
                               } else {
@@ -85,7 +85,7 @@ const TouristForm = ({ user }: any) => {
                                     toast.error(res.data.message, { id: toastid });
                                     setTimeout(() => {
                                           router.replace("/");
-                                           window.location.reload();
+                                          //  window.location.reload();
 
                                     }, 3000);
                               }

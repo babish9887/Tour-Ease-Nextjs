@@ -27,13 +27,14 @@ function VerifyEmailPage() {
                               setIsVerified(true)
                         }
                         else {
-                              toast.error("Something went wrong! Please try again")
+                              toast.error(res.data.message)
                               setVerifying(false)
                               setIsVerified(false)
                         }
                   })
                   .catch((e)=>{
-                        toast.error("Something went wrong!")
+                        console.log(e.message)
+                        toast.error(e.message)
                   }).finally(()=>{
                         setVerifying(false)
                         // setIsVerified(true)

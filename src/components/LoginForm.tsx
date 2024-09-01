@@ -30,7 +30,7 @@ const LoginForm = ({ user }: any) => {
                 router.replace('/');
                 setTimeout(() => {
                   window.location.reload();
-              }, 100);
+              }, 500);
             }
         } catch (error) {
             toast.error("Something went wrong!");
