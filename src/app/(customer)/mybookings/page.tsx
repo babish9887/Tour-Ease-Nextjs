@@ -80,9 +80,10 @@ function MyBookingsPage() {
   }
 
   async function handleSubmit(booking:any){
+        //@ts-ignore
+        const review=document.getElementById('review').value
+      if(review==="") return toast.error("Review cannot be empty")
       setLoading(true)
-       //@ts-ignore
-       const review=document.getElementById('review').value
       try {
             await axios.post("/api/guidereview", {id:booking.bookedUser, rating, review})
             .then((res) => {

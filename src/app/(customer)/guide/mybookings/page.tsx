@@ -43,9 +43,11 @@ function MyBookingsPage() {
   }, []);
 
   async function handleCancelBooking(booking: any) {
+        //@ts-ignore
+        const reason = document.getElementById("reason").value;
+      if(reason==="") return toast.error("Reason cannot be empty")
+
     setLoading(true);
-    //@ts-ignore
-    const reason = document.getElementById("reason").value;
     try {
       await axios
         .post("/api/requestcancel", { id: booking.id, reason })
