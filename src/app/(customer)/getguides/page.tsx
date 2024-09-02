@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { Session } from "../.../../../../lib/schema";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { Globe, Languages, Star } from "lucide-react";
+import { Globe, HandCoins, Languages, Star } from "lucide-react";
 const Map = dynamic(
   () => import("../../../components/Map").then((mod) => mod.Map),
   {
@@ -40,7 +40,8 @@ function GetGuidesPage() {
     rating: 0,
     description: "",
     reviews: [],
-    tours:null
+    tours:null,
+    fee:undefined
   });
   async function handleSubmit() {
       const getGuidesToast=toast.loading("Getting Guides...")
@@ -158,9 +159,13 @@ function GetGuidesPage() {
                           <h1 className="text-3xl font-bold text-gray-800">
                             {guide.name}
                           </h1>
-                          <p>Total Tours: {guide.tours || ""}</p>
+                          <p>Total Tours: {guide.tours==0 ? "No Tours yet" : guide.tours}</p>
                         </div>
                         {/* <h2>Languages: {guide.languages.join(", ")}</h2> */}
+                        <div className="flex">
+                          <HandCoins className="w-5 mx-1" />
+                          <h2>Fee per Hour: {guide.fee ? `NPR ${guide.fee}` : "Not available"}</h2>
+                        </div>
                         <div className="flex">
                           <Languages className="w-5 mx-1" />
                           <h2>Languages: {guide.languages.join(", ")}</h2>

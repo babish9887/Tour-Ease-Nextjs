@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 async function guideSignup(request:NextRequest){
       const session=await getServerSession()
-      const {contactNo, nationality, languages, lat, lng}=await request.json();
+      const {contactNo, nationality, languages, lat, lng,fee}=await request.json();
 
       try {
             
@@ -32,7 +32,8 @@ async function guideSignup(request:NextRequest){
                         role:"GUIDE",
                         languages,
                         locations:[lat, lng],
-                        emailVerified:true
+                        emailVerified:true,
+                        fee
                   }
             })
             if(guide){

@@ -13,9 +13,9 @@ async function getGuides(request:NextRequest){
 
 
             const users=await prisma.user.findMany()
-
+            console.log(users)
             const guides=users.filter((user:any)=>
-                  (user.locations[0]>minlat && user.locations[0]<maxlat) && (user.locations[1]>minlng && user.locations[1]<maxlng)
+                  (user.locations[0]>minlat && user.locations[0]<maxlat) && (user.locations[1]>minlng && user.locations[1]<maxlng) && user.emailVerified==true && user.role=="GUIDE"
             )
 
             // if(guides){

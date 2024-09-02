@@ -5,7 +5,7 @@ import { sendEmail } from "../../../../lib/mailer"
 
 import bcrypt from 'bcrypt'
 async function updataGuide(request:NextRequest){
-      const {contactNo, nationality, languages, lat, lng, name, email, password}=await request.json();
+      const {contactNo, nationality, languages, lat, lng, name, email, password, fee}=await request.json();
 
       try {
             
@@ -29,7 +29,8 @@ async function updataGuide(request:NextRequest){
                         emailVerified:false,
                         name,
                         email, 
-                        password:hash
+                        password:hash,
+                        fee
                   }
             })
             if(guide){

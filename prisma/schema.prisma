@@ -39,6 +39,7 @@ model User{
       contactNo String?
       nationality String?
       status String?
+      fee Float?
       gender String?      
 
 }

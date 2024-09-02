@@ -45,6 +45,7 @@ const GuideSettings = ({ user }: any) => {
   const [number, setNumber] = useState("");
   const router = useRouter();
   const [loading, setIsLoading] = useState(false);
+  const [fee, setFee]= useState(0)
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const [available, setAvailable]=useState(true)
@@ -69,7 +70,7 @@ const GuideSettings = ({ user }: any) => {
     const toastid = toast.loading("Updating Data...");
     try {
       const res = await axios
-        .post("/api/updateuser/guide", { contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng, isActive:available })
+        .post("/api/updateuser/guide", { contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng, isActive:available , fee})
         .then((res) => {
           if (res.data.success) {
             toast.success("Guide Updated Successfully", { id: toastid });
@@ -97,6 +98,7 @@ const GuideSettings = ({ user }: any) => {
                         setValue(res.data.user.nationality)
                         setSelectedOptions(res.data.user.languages)
                         setAvailable(res.data.user.isActive)
+                        setFee(res.data.user.fee)
                   }
             })
       }
@@ -133,6 +135,22 @@ const GuideSettings = ({ user }: any) => {
           />
         </div>
 
+
+        <div className="w-full flex flex-col gap-2 z-10">
+          <label className="font-semibold" htmlFor="">
+            Your Fee per Hour (NPR)
+          </label>
+          <input
+            type="number"
+            placeholder="Ex: 100.00"
+            onChange={(e)=>setFee(parseInt(e.target.value))}
+            value={fee}
+             className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
+            //@ts-ignore
+          />
+        </div>
+
+        
         <div className="w-full flex flex-col gap-2 z-10">
           <label className="font-semibold" htmlFor="">
             Nationality

@@ -49,6 +49,7 @@ const GuideForm = ({ user }: any) => {
   const [loading, setIsLoading] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+  const [fee, setFee] = useState(0)
   const [position, setPosition]=useState({
       lat:0,
       lng:0
@@ -78,7 +79,7 @@ const GuideForm = ({ user }: any) => {
     try {
       if(session?.user){
       const res = await axios
-        .post("/api/register/guide", { contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng })
+        .post("/api/register/guide", { contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng, fee })
         .then(async (res) => {
           if (res.data.success) {
             toast.success("Guide Registered", { id: toastid });
@@ -101,7 +102,7 @@ const GuideForm = ({ user }: any) => {
         });}
         else {
             const res = await axios
-            .post("/api/credential/guide", {name, email, password, contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng })
+            .post("/api/credential/guide", {name, email, password, contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng, fee })
             .then((res) => {
               if (res.data.success) {
                 toast.success("User Registered! Check Your Email for Verification!", { id: toastid });
@@ -249,6 +250,19 @@ const GuideForm = ({ user }: any) => {
             isMulti
             //@ts-ignore
             options={options}
+          />
+        </div>
+        <div className="w-full flex flex-col gap-2 z-10">
+          <label className="font-semibold" htmlFor="">
+            Your Fee per Hour (NPR)
+          </label>
+          <input
+            type="number"
+            placeholder="Ex: 100.00"
+            onChange={(e)=>setFee(parseInt(e.target.value))}
+            value={fee}
+             className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
+            //@ts-ignore
           />
         </div>
 

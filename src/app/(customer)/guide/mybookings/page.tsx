@@ -108,6 +108,7 @@ function MyBookingsPage() {
         <h1 className="text-2xl lg:text-3xl font-bold mt-4">
           Here are your bookings
         </h1>
+        {bookings.length===0 && <div className="w-full  text-center mt-8 text-xl">No Bookings to Show</div>}
         <div className="grid  xl:grid-cols-3 grid-cols-1 lg:grid-cols-2  sm:p-3 max-w-[1600px]  ">
           {bookings &&
             //@ts-ignore

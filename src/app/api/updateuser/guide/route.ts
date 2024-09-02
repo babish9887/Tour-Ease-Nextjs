@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 async function updateguide(request:NextRequest){
       const session=await getServerSession()
-      const {contactNo, nationality, languages, lat, lng, isActive}=await request.json();
+      const {contactNo, nationality, languages, lat, lng, isActive, fee}=await request.json();
 
       try {
             
@@ -24,7 +24,8 @@ async function updateguide(request:NextRequest){
                         nationality,
                         languages,
                         locations:[lat, lng],
-                        isActive:isActive
+                        isActive:isActive,
+                        fee
                   }
             })
             if(guide){
