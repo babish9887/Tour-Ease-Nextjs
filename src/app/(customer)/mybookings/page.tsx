@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button"
 import { Textarea} from "@/components/ui/textarea"
-
+import Category from '../../../../Categories.json'
 import {
   Dialog,
   DialogContent,
@@ -25,6 +25,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import {Session, CancelRequest} from '../.../../../../lib/schema'
 import Link from "next/link";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 
 
@@ -32,7 +33,8 @@ function MyBookingsPage() {
   const [bookings, setBookings] = useState(null);
   const [cancelRequests, setCancelRequests]= useState<CancelRequest[]>([]);
   const {data:session}:{data:Session | null | undefined}=useSession()
-
+  const [categoryPosition, setCategoryPostion] = React.useState("All");
+  var allBookings=[]
   const router=useRouter()
   if(session?.user?.role=="GUIDE")
       router.replace('/guide/mybookings')
@@ -45,9 +47,11 @@ function MyBookingsPage() {
       if(session?.user===null){
             return
       }
-      await axios.get("/api/getMyBookings").then((res) => {
+      await axios.get("/api/getMyBookings/?category=All").then((res) => {
             setBookings(res.data.bookings)
+            allBookings=res.data.bookings
             setCancelRequests(res.data.cancelRequests)
+            console.log(allBookings)
       });
     }
     getMyBookings();
@@ -122,6 +126,17 @@ function MyBookingsPage() {
   }
 }
 
+const handleValueChange=async (e)=>{
+      setCategoryPostion(e)
+      try{
+            const res=await axios.get(`/api/getMyBookings/?category=${e}`) 
+            setBookings(res.data.bookings)
+
+      } catch(e:any){
+            toast.error("Error connecting to Database")
+      }
+}
+
   if(bookings===null){
       return <div className="flex justify-center items-center h-screen"><PulseLoader size={24} /></div>
   }
@@ -138,12 +153,17 @@ function MyBookingsPage() {
       </div></div>
   }
   
+
+ 
   return (
     <>
       <div className="h-24 bg-slate-50"/>
 
       <div className="min-h-[calc(100vh-6rem)] h-auto w-full flex flex-col justify-start items-center  bg-slate-50 bg-[url('/bghead2.png')] bg-contain bg-no-repeat bg-center ">
-        <h1 className="text-2xl lg:text-3xl font-bold mt-4">Here Are your bookings</h1>
+      <div className=" flex flex-col sm:flex-row w-full justify-center gap-5 items-center mt-4 "> 
+             <h1 className="text-2xl lg:text-3xl font-bold ">Here Are your bookings</h1>
+      <CategoryDropDown categoryPosition={categoryPosition} handleValueChange={handleValueChange} />
+      </div>
             {bookings.length===0 && <div className="w-full  text-center mt-8 text-xl">No Bookings to Show</div>}
         <div className=" grid xl:grid-cols-3 grid-cols-1 lg:grid-cols-2 sm:p-3 max-w-[1600px]">
           {bookings && 
@@ -298,5 +318,26 @@ function MyBookingsPage() {
     </>
   );
 }
+
+
+function CategoryDropDown({categoryPosition, handleValueChange}:any){
+      return(
+            <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                  <Button variant="outline">{categoryPosition}</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+                  <DropdownMenuRadioGroup
+                  value={categoryPosition}
+                  onValueChange={handleValueChange}>
+                  {Category.map((category:string)=>(
+                        <DropdownMenuRadioItem key={category} value={category}>{category}</DropdownMenuRadioItem>
+                  ))}
+
+                  </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+    </DropdownMenu>
+)}
+
 
 export default MyBookingsPage;

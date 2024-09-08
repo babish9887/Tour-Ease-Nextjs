@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from '../../../db/dbconfig'
 async function getguidebookings(){
       const session=await getServerSession()
@@ -13,6 +13,9 @@ async function getguidebookings(){
                   bookedUser:user.id
             }
       })
+
+    
+      
       const usersId=bookings.map((booking:any)=>booking.bookedBy)
       const users=await prisma.user.findMany({
             where: {
@@ -45,7 +48,6 @@ async function getguidebookings(){
             const cancelRequest=cancelRequests.find((cancelRequest:any)=>cancelRequest.bookingId===booking.id)
             return{...booking, cancelRequest}
       })
-
       if(bookings){
             return NextResponse.json({success: true, mesage:"Got bookings", bookings:finalbookingwithdetails}, {status:200})
       }

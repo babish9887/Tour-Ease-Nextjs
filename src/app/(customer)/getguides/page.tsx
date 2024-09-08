@@ -73,16 +73,42 @@ function GetGuidesPage() {
     const endDate = (document.getElementById("date2") as HTMLInputElement)
       .value;
 
-    if (
-      new Date(date) < new Date(Date.now()) ||
-      new Date(endDate) < new Date(Date.now())
-    ) {
-      return toast.error("Starting Date can't be less than Today's Date");
+      console.log(date)
+
+    const date1: string = date;
+    const date2: string = endDate;
+
+      const todaysDate=new Date(Date.now())
+      const year = todaysDate.getFullYear();
+      const month = String(todaysDate.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
+      const day = String(todaysDate.getDate()).padStart(2, '0'); // Pad single-digit days with a leading zero
+
+      const formattedDate = `${year}-${month}-${day}`;
+      console.log(formattedDate)
+
+
+
+    const startDate: Date = new Date(date1);
+    const endsDate: Date = new Date(date2);
+    const currentDate:Date=new Date(formattedDate)
+    const differenceInMilliseconds: number = endsDate.getTime() - startDate.getTime();
+    const differenceInDays = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
+    console.log(differenceInDays)
+
+    const m: number = startDate.getTime() - currentDate.getTime();
+    const d = Math.floor(m / (1000 * 60 * 60 * 24));
+      if(d>14)
+            return toast.error("You can't book a guide more than 14 days in advance. Please choose a date within the next 14 days.");
+
+    if (differenceInDays>3) {
+      return toast.error("You can't book guide for  more than 3 days!");
     }
 
     if (new Date(date) > new Date(endDate)) {
       return toast.error("Starting Date can't be more than Ending Date");
     }
+
+    if(new Date(date))
     setLoading(true);
     try {
       const res = await axios.post("/api/bookguide", {

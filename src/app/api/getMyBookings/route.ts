@@ -1,13 +1,17 @@
 import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from '../../../db/dbconfig'
-async function getMyBookings(){
+async function getMyBookings(req:NextRequest){
       const session=await getServerSession()
       const user=await prisma.user.findFirst({
             where:{
                   email:session?.user?.email
             }
       })
+
+      const params=req.nextUrl.searchParams
+      const category=params.get('category')
+      console.log(category)
       const bookings=await prisma.booking.findMany({
             where:{
                   bookedBy:user.id
@@ -22,17 +26,7 @@ async function getMyBookings(){
             }
       })
 
-      // const bookingwithdetails=guides.map((guide)=>{
-      //       const booking=bookings.find(booking=>booking.booked=guide.id)
-      //       const isEnded=booking.endDate<new Date(Date.now())
-      //       return{
-      //             ...guide,
-      //             ...booking,
-      //             isEnded
-      //       }
-      // })
-
-      const bookingwithdetails = guides.map((guide:any) => {
+      let bookingwithdetails = guides.map((guide:any) => {
             const guideBookings = bookings.filter((booking:any )=> booking.bookedUser === guide.id);
             const details = guideBookings.map((booking:any )=> ({
                   ...guide,
@@ -51,11 +45,16 @@ async function getMyBookings(){
             }
       })
 
+      if(category==='Completed Bookings'){
+            bookingwithdetails=bookingwithdetails.filter(book=>book.isEnded==true)
+      } else   if(category==='Upcomming Bookings'){
+            bookingwithdetails=bookingwithdetails.filter(book=>book.isEnded==false)
+      }
+      console.log(bookingwithdetails)
       if(bookings){
             return NextResponse.json({success: true, mesage:"Got bookings", bookings:bookingwithdetails, cancelRequests}, {status:200})
       }
       return NextResponse.json({success: false, mesage:"Failed to Get bookings"}, {status:200})
-
 }
 
 export {getMyBookings as GET}
