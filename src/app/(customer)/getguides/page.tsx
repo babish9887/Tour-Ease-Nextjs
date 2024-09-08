@@ -73,7 +73,6 @@ function GetGuidesPage() {
     const endDate = (document.getElementById("date2") as HTMLInputElement)
       .value;
 
-      console.log(date)
 
     const date1: string = date;
     const date2: string = endDate;
@@ -84,7 +83,6 @@ function GetGuidesPage() {
       const day = String(todaysDate.getDate()).padStart(2, '0'); // Pad single-digit days with a leading zero
 
       const formattedDate = `${year}-${month}-${day}`;
-      console.log(formattedDate)
 
 
 
@@ -93,7 +91,6 @@ function GetGuidesPage() {
     const currentDate:Date=new Date(formattedDate)
     const differenceInMilliseconds: number = endsDate.getTime() - startDate.getTime();
     const differenceInDays = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
-    console.log(differenceInDays)
 
     const m: number = startDate.getTime() - currentDate.getTime();
     const d = Math.floor(m / (1000 * 60 * 60 * 24));

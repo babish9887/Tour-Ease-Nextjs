@@ -11,7 +11,6 @@ async function getMyBookings(req:NextRequest){
 
       const params=req.nextUrl.searchParams
       const category=params.get('category')
-      console.log(category)
       const bookings=await prisma.booking.findMany({
             where:{
                   bookedBy:user.id
@@ -50,7 +49,6 @@ async function getMyBookings(req:NextRequest){
       } else   if(category==='Upcomming Bookings'){
             bookingwithdetails=bookingwithdetails.filter(book=>book.isEnded==false)
       }
-      console.log(bookingwithdetails)
       if(bookings){
             return NextResponse.json({success: true, mesage:"Got bookings", bookings:bookingwithdetails, cancelRequests}, {status:200})
       }

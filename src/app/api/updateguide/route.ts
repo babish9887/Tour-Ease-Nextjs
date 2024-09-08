@@ -15,13 +15,7 @@ async function updataGuide(request:NextRequest){
                   }
             })
             
-            // console.log(user)
-            // if(user.role==="GUIDE"){
-            //       return NextResponse.json(
-            //             { success: false, message: "User with this email already Exists" },
-            //             { status: 200 }
-            //           );
-            // }
+        
 
             const guide =await prisma.user.update({
                   where:{

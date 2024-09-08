@@ -39,8 +39,19 @@ const TouristForm = ({ user }: any) => {
       const [value, setValue] = useState("");
 
       const handleSubmit = async () => {
-            if (number.length !== 10) return console.log("Number should be 10 digit");
+            if (number.length !== 10) return toast.error("Number should be 10 digit");
 
+            if(name=="" || value=="") return toast.error("Please fill up all the fields");
+            if (password.length < 8) {
+                  return toast.error("Password must be at least 8 characters long.");
+              }
+          
+              // Check if password contains at least one number
+              const hasNumber = /\d/; // Regular expression to check for digits
+              if (!hasNumber.test(password)) {
+                  return toast.error("Password must contain at least one number.");
+              }
+          
             setIsLoading(true);
             const toastid = toast.loading("Registering...");
             try {

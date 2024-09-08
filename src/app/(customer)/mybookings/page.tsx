@@ -51,7 +51,6 @@ function MyBookingsPage() {
             setBookings(res.data.bookings)
             allBookings=res.data.bookings
             setCancelRequests(res.data.cancelRequests)
-            console.log(allBookings)
       });
     }
     getMyBookings();
