@@ -69,7 +69,6 @@ function GetGuidesPage() {
   }
 
   async function handleBookingSubmit() {
-    setLoading(true);
     const date = (document.getElementById("date") as HTMLInputElement).value;
     const endDate = (document.getElementById("date2") as HTMLInputElement)
       .value;
@@ -84,7 +83,7 @@ function GetGuidesPage() {
     if (new Date(date) > new Date(endDate)) {
       return toast.error("Starting Date can't be more than Ending Date");
     }
-
+    setLoading(true);
     try {
       const res = await axios.post("/api/bookguide", {
         guideId: guide.id,
