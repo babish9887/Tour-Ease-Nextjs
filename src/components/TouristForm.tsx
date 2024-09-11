@@ -46,7 +46,6 @@ const TouristForm = ({ user }: any) => {
                   return toast.error("Password must be at least 8 characters long.");
               }
           
-              // Check if password contains at least one number
               const hasNumber = /\d/; // Regular expression to check for digits
               if (!hasNumber.test(password)) {
                   return toast.error("Password must contain at least one number.");
