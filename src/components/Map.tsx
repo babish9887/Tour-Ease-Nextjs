@@ -11,141 +11,141 @@ type MapProps = {
       handleSubmit: () => void;
       guides: any[];
       showGuide: boolean;
-      loading:boolean,
+      loading: boolean,
       setShowGuide: (show: boolean) => void;
       setGuide: (guide: any) => void;
       setLoading: (guide: any) => void;
 
-    };
+};
 
-export const Map:React.FC<MapProps> = ({  setPosition, position, handleSubmit, guides, showGuide, setShowGuide, setGuide, loading:upperLoading, setLoading:UpperSetLoading }: any) => {
-  const [maptype, setMaptype] = useState(0);
-  const mapRef = useRef(null);
-  const [isClient, setIsClient] = useState(false);
-  const [loading, setLoading]=useState(false)
+export const Map: React.FC<MapProps> = ({ setPosition, position, handleSubmit, guides, showGuide, setShowGuide, setGuide, loading: upperLoading, setLoading: UpperSetLoading }: any) => {
+      const [maptype, setMaptype] = useState(0);
+      const mapRef = useRef(null);
+      const [isClient, setIsClient] = useState(false);
+      const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    // This will only run on the client
-    setIsClient(true);
-  }, []);
+      useEffect(() => {
+            // This will only run on the client
+            setIsClient(true);
+      }, []);
 
-  const customIcon = new Icon({
-    iconUrl: "/pin2.png",
-    iconSize: [32, 32]
-  });
+      const customIcon = new Icon({
+            iconUrl: "/pin2.png",
+            iconSize: [32, 32]
+      });
 
-  const maptypes = [
-    {
-      name: "default",
-      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    },
-    {
-      name: "WorldImagery",
-      url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-      attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
-    },
-  ];
+      const maptypes = [
+            {
+                  name: "default",
+                  url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            },
+            {
+                  name: "WorldImagery",
+                  url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                  attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+            },
+      ];
 
-  // Function to handle click event on map to set position
-  function GetLocation() {
-     useMapEvents({
-      click: (e: any) => {
-        const { lat, lng } = e.latlng;
-        setPosition({ lat: lat + 0.0001, lng });
+      // Function to handle click event on map to set position
+      function GetLocation() {
+            useMapEvents({
+                  click: (e: any) => {
+                        const { lat, lng } = e.latlng;
+                        setPosition({ lat: lat + 0.0001, lng });
+                  }
+            });
+
+            return <Marker position={position} icon={customIcon}></Marker>;
       }
-    });
 
-    return <Marker position={position} icon={customIcon}></Marker>;
-  }
+      // Function to handle getting current geolocation
+      const handleClick = () => {
+            setLoading(true)
+            if (typeof window !== 'undefined') {
+                  navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                              setPosition({
+                                    lat: position.coords.latitude,
+                                    lng: position.coords.longitude
+                              });
+                        },
+                        (error) => {
+                              console.error('Error getting geolocation:', error);
+                        }
+                  );
+                  setLoading(false)
+            }
+      };
 
-  // Function to handle getting current geolocation
-  const handleClick = () => {
-      setLoading(true)
-    if (typeof window !== 'undefined') {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setPosition({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          });
-        },
-        (error) => {
-          console.error('Error getting geolocation:', error);
-        }
+      const handlePopupClick = (e: any, marker: any) => {
+            e.stopPropagation();
+            if (!marker.isActive) return;
+            setShowGuide(true);
+            setGuide(marker);
+      };
+
+      if (!isClient) return null;
+
+      return (
+            <div className='h-auto w-full overflow-hidden z-10 '>
+                  <div className='shadow-md overflow-hidden rounded-xl'>
+
+                        <MapContainer ref={mapRef} center={[27.703396, 85.315165]} zoom={13} scrollWheelZoom={true} className='z-10'>
+                              <TileLayer
+                                    url={maptypes[maptype].url}
+                                    attribution={maptypes[maptype].attribution}
+                              />
+
+                              <MarkerClusterGroup chunkedLoading>
+                                    {guides && guides.map((marker: any, i: number) => (
+                                          <Marker key={i} position={[marker.locations[0], marker.locations[1]]} icon={customIcon}>
+                                                <Popup>
+                                                      <div className='cursor-pointer flex justify-between items-center gap-x-3 ' onClick={(e) => handlePopupClick(e, marker)}>
+                                                            {marker.image ? <img src={marker.image} alt={marker.name} className={`w-12 aspect-square rounded-full filter ${marker.isActive ? "" : "filter grayscale"}`} />
+                                                                  :
+                                                                  <div className="w-12 mr-4 text-white text-center text-xl font-bold flex justify-center items-center rounded-full aspect-square bg-green-500">
+                                                                        {marker.name.charAt(0)}{marker.name.split("")[1] && marker.name.split(" ")[1].charAt(0)}
+                                                                  </div>
+                                                            }
+                                                            <h2 className='font-semibold text-lg'>{marker.name}</h2>
+                                                      </div>
+                                                </Popup>
+                                          </Marker>
+                                    ))}
+                              </MarkerClusterGroup>
+
+                              <Circle
+                                    center={{ lat: position.lat, lng: position.lng }}
+                                    fillColor="blue"
+                                    radius={5100} />
+
+                              <GetLocation />
+                        </MapContainer>
+                  </div>
+
+                  <div className='sm:mt-4 bg-white sm:p-2 md:p-3 rounded-lg'>
+
+                        <div className='mt-4 mb-4 flex flex-wrap gap-y-4 '>
+                              <div className='w-full flex gap-x-2 mx-1'>
+                                    <div className=' flex justify-start items-center gap-x-2'>
+                                          <label>Lat: </label>
+                                          <input type='text' value={position.lat.toFixed(3)} style={{ color: "black" }} readOnly className='border-2 w-4/5 border-gray-200 outline-none px-2 py-1 rounded-md focus:border-gray-300 flex-1 max-w-32' />
+                                    </div>
+
+                                    <div className=' flex justify-start items-center gap-x-2'>
+                                          <label>Lng: </label>
+                                          <input type='text' value={position.lng.toFixed(3)} style={{ color: "black" }} readOnly className='border-2 w-4/5 border-gray-200 outline-none px-2 py-1 rounded-md focus:border-gray-300 flex-1 max-w-32' />
+                                    </div>
+                              </div>
+                              <Button type='button' variant="outline" className='mx-2 text-green-600 hover:text-green-700' onClick={handleClick}>Get Current Location</Button>
+                              <Button type='button' variant="outline" onClick={() => setMaptype(maptype === 1 ? 0 : 1)} className=' text-green-600 hover:text-green-700'>
+                                    Change Map Style
+                              </Button>
+                        </div>
+
+                        <Button disabled={upperLoading} type='button' onClick={handleSubmit} className='bg-green-500 hover:bg-green-600 w-full lg:w-48 '>Submit</Button>
+                  </div>
+            </div>
       );
-      setLoading(false)
-    }
-  };
-
-  const handlePopupClick = (e: any, marker: any) => {
-    e.stopPropagation();
-    if(!marker.isActive) return;
-    setShowGuide(true);
-    setGuide(marker);
-  };
-
-  if (!isClient) return null;
-
-  return (
-    <div className='h-auto w-full overflow-hidden z-10 '>
-      <div className='shadow-md overflow-hidden rounded-xl'>
-
-      <MapContainer  ref={mapRef} center={[27.703396, 85.315165]} zoom={13} scrollWheelZoom={true} className='z-10'>
-        <TileLayer
-          url={maptypes[maptype].url}
-          attribution={maptypes[maptype].attribution}
-        />
-
-        <MarkerClusterGroup chunkedLoading>
-          {guides && guides.map((marker: any, i: number) => (
-            <Marker key={i} position={[marker.locations[0], marker.locations[1]]} icon={customIcon}>
-              <Popup>
-                <div className='cursor-pointer flex justify-between items-center gap-x-3 ' onClick={(e) => handlePopupClick(e, marker)}>
-                 {marker.image  ? <img src={marker.image} alt={marker.name} className={`w-12 aspect-square rounded-full filter ${marker.isActive? "": "filter grayscale"}`} />
-                 :
-                 <div className="w-12 mr-4 text-white text-center text-xl font-bold flex justify-center items-center rounded-full aspect-square bg-green-500">
-                 {marker.name.charAt(0)}{marker.name.split("")[1] && marker.name.split(" ")[1].charAt(0)}
-             </div>
-                 }
-                  <h2 className='font-semibold text-lg'>{marker.name}</h2>
-                </div>
-              </Popup>
-            </Marker>
-          ))}
-        </MarkerClusterGroup>
-
-        <Circle
-          center={{ lat: position.lat, lng: position.lng }}
-          fillColor="blue"
-          radius={5100} />
-
-        <GetLocation />
-      </MapContainer>
-      </div>
-
-<div className='sm:mt-4 bg-white sm:p-2 md:p-3 rounded-lg'>
-
-      <div className='mt-4 mb-4 flex flex-wrap gap-y-4 '>
-        <div className='w-full flex gap-x-2 mx-1'>
-          <div className=' flex justify-start items-center gap-x-2'>
-            <label>Lat: </label>
-            <input type='text' value={position.lat.toFixed(3)} style={{ color: "black" }} readOnly className='border-2 w-4/5 border-gray-200 outline-none px-2 py-1 rounded-md focus:border-gray-300 flex-1 max-w-32' />
-          </div>
-
-          <div className=' flex justify-start items-center gap-x-2'>
-            <label>Lng: </label>
-            <input type='text' value={position.lng.toFixed(3)} style={{ color: "black" }} readOnly className='border-2 w-4/5 border-gray-200 outline-none px-2 py-1 rounded-md focus:border-gray-300 flex-1 max-w-32' />
-          </div>
-        </div>
-        <Button type='button' variant="outline" className='mx-2 text-green-600 hover:text-green-700' onClick={handleClick}>Get Current Location</Button>
-        <Button type='button' variant="outline" onClick={() => setMaptype(maptype === 1 ? 0 : 1)} className=' text-green-600 hover:text-green-700'>
-          Change Map Style
-        </Button>
-      </div>
-
-      <Button disabled={upperLoading} type='button' onClick={handleSubmit} className='bg-green-500 hover:bg-green-600 w-full lg:w-48 '>Submit</Button>
-</div>
-    </div>
-  );
 }

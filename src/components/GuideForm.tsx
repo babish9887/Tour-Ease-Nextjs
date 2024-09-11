@@ -1,6 +1,5 @@
-
 "use client";
-import React, {  useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -39,28 +38,28 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { signIn, useSession } from "next-auth/react";
-import { Session  } from "@/lib/schema";
+import { Session } from "@/lib/schema";
 
 const GuideForm = ({ user }: any) => {
-// const [session, setSession]=useState(undefined)
+  // const [session, setSession]=useState(undefined)
   const animatedComponents = makeAnimated();
   const [number, setNumber] = useState("");
   const router = useRouter();
   const [loading, setIsLoading] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
-  const [fee, setFee] = useState(0)
-  const [position, setPosition]=useState({
-      lat:0,
-      lng:0
-  })
+  const [fee, setFee] = useState(0);
+  const [position, setPosition] = useState({
+    lat: 0,
+    lng: 0,
+  });
   const [sessionState, setSessionState] = useState(null);
-  const {data, update}=useSession()
-  const session:Session | null=data
+  const { data, update } = useSession();
+  const session: Session | null = data;
 
-  const [name, setName]=useState("")
-  const [email, setEmail]=useState("")
-  const [password, setPassword]=useState("")
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const [selectedOptions, setSelectedOptions] = useState([]);
   const handleLanguageChange = (selectedOptions: any) => {
@@ -72,71 +71,107 @@ const GuideForm = ({ user }: any) => {
   }));
 
   const handleSubmit = async () => {
-      if (number.length !== 10) return toast.error("Number should be 10 digit");
+    if (number.length !== 10) return toast.error("Number should be 10 digit");
 
-            if(name=="" || value=="" || position.lat==0 || selectedOptions.length==0 || fee==0 ) return toast.error("Please fill up all the fields");
-            if (password.length < 8) {
-                  return toast.error("Password must be at least 8 characters long.");
-              }
-          
-              const hasNumber = /\d/; // Regular expression to check for digits
-              if (!hasNumber.test(password)) {
-                  return toast.error("Password must contain at least one number.");
-              }
+    if (
+      name == "" ||
+      value == "" ||
+      position.lat == 0 ||
+      selectedOptions.length == 0 ||
+      fee == 0
+    )
+      return toast.error("Please fill up all the fields");
+    if (password.length < 8) {
+      return toast.error("Password must be at least 8 characters long.");
+    }
+
+    const hasNumber = /\d/; // Regular expression to check for digits
+    if (!hasNumber.test(password)) {
+      return toast.error("Password must contain at least one number.");
+    }
 
     setIsLoading(true);
     const toastid = toast.loading("Registering User...");
     try {
-      if(session?.user){
-      const res = await axios
-        .post("/api/register/guide", { contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng, fee })
-        .then(async (res) => {
-          if (res.data.success) {
-            toast.success("Guide Registered", { id: toastid });
-            await update({
-                  ...session,
-                  user:{
-                        ...session.user,
-                        role:"GUIDE"
-                  }
-            })
-            setTimeout(() => {
-              router.replace("/");
-            }, 3000);
-          } else {
-            toast.error(res.data.message, { id: toastid });
-            setTimeout(() => {
-              router.replace("/");
-            }, 3000);
-          }
-        });}
-        else {
-            const res = await axios
-            .post("/api/credential/guide", {name, email, password, contactNo: number, nationality:value,languages:selectedOptions , lat:position.lat, lng:position.lng, fee })
-            .then((res) => {
-              if (res.data.success) {
-                toast.success("User Registered! Check Your Email for Verification!", { id: toastid });
-                setTimeout(() => {
-                  router.replace("/");
-                }, 3000);
-              } else {
-                toast.error(res.data.message, { id: toastid });
-                setTimeout(() => {
-                  router.replace("/");
-                }, 3000);
-              }
-            });}
+      if (session?.user) {
+        const res = await axios
+          .post("/api/register/guide", {
+            contactNo: number,
+            nationality: value,
+            languages: selectedOptions,
+            lat: position.lat,
+            lng: position.lng,
+            fee,
+          })
+          .then(async (res) => {
+            if (res.data.success) {
+              toast.success("Guide Registered", { id: toastid });
+              await update({
+                ...session,
+                user: {
+                  ...session.user,
+                  role: "GUIDE",
+                },
+              });
+              setTimeout(() => {
+                router.replace("/");
+              }, 3000);
+            } else {
+              toast.error(res.data.message, { id: toastid });
+              setTimeout(() => {
+                router.replace("/");
+              }, 3000);
+            }
+          });
+      } else {
+        const res = await axios
+          .post("/api/credential/guide", {
+            name,
+            email,
+            password,
+            contactNo: number,
+            nationality: value,
+            languages: selectedOptions,
+            lat: position.lat,
+            lng: position.lng,
+            fee,
+          })
+          .then((res) => {
+            if (res.data.success) {
+              toast.success(
+                "User Registered! Check Your Email for Verification!",
+                { id: toastid }
+              );
+              setTimeout(() => {
+                router.replace("/");
+              }, 3000);
+            } else {
+              toast.error(res.data.message, { id: toastid });
+              setTimeout(() => {
+                router.replace("/");
+              }, 3000);
+            }
+          });
+      }
     } catch (error) {
       toast.error("Something went Wrong!", { id: toastid });
     } finally {
       setIsLoading(false);
     }
   };
-  if((session?.user && user.emailVerified!==null) && session?.user?.role!==null){
-      router.push('/')
-      return <div className="w-full mx-auto p-4  h-auto min-h-screen flex flex-col justify-center sm:w-2/3 md:w-4/6 lg:w-3/6">
-            <h1>User With The Email Already and Verified. Redirecting to Home Page</h1>
+  if (
+    session?.user &&
+    user.emailVerified !== null &&
+    session?.user?.role !== null
+  ) {
+    router.push("/");
+    return (
+      <div className="w-full mx-auto p-4  h-auto min-h-screen flex flex-col justify-center sm:w-2/3 md:w-4/6 lg:w-3/6">
+        <h1>
+          User With The Email Already and Verified. Redirecting to Home Page
+        </h1>
       </div>
+    );
   }
 
   return (
@@ -145,164 +180,174 @@ const GuideForm = ({ user }: any) => {
       <h4 className="  text-md">As a Guide</h4>
 
       <form className="bg-white w-auto p-4 rounded-lg mt-5 flex flex-col gap-y-5 gap-x-4">
-      {session?.user==null && 
-                        <>
-                        <div className="w-full flex flex-col gap-2">
-                              <label className="font-semibold" htmlFor="">
-                                    Full Name
-                              </label>
-                              <input
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    type="text"
-                                    className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
-                                    disabled={loading}
-                              />
-                        </div>
-                        <div className="w-full flex flex-col gap-2">
-                              <label className="font-semibold" htmlFor="">
-                                    Email
-                              </label>
-                              <input
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    type="text"
-                                    className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
-                                    disabled={loading}
-                              />
-                        </div>
-                        <div className="w-full flex flex-col gap-2">
-                              <label className="font-semibold" htmlFor="">
-                                    Password
-                              </label>
-                              <input
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    type="password"
-                                    className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
-                                    disabled={loading}
-                              />
-                        </div>
-                        </>
-                        }
-      <div>
-        <div className="w-full flex flex-col gap-2">
-          <label className="font-semibold" htmlFor="">
-            Contact Number
-          </label>
-          <input
-            value={number}
-            onChange={(e) => setNumber(e.target.value)}
-            type="text"
-            className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
-            disabled={loading}
-          />
-        </div>
+        {session?.user == null && (
+          <>
+            <div className="w-full flex flex-col gap-2">
+              <label className="font-semibold" htmlFor="">
+                Full Name
+              </label>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                type="text"
+                className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
+                disabled={loading}
+              />
+            </div>
+            <div className="w-full flex flex-col gap-2">
+              <label className="font-semibold" htmlFor="">
+                Email
+              </label>
+              <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
+                disabled={loading}
+              />
+            </div>
+            <div className="w-full flex flex-col gap-2">
+              <label className="font-semibold" htmlFor="">
+                Password
+              </label>
+              <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
+                disabled={loading}
+              />
+            </div>
+          </>
+        )}
+        <div>
+          <div className="w-full flex flex-col gap-2">
+            <label className="font-semibold" htmlFor="">
+              Contact Number
+            </label>
+            <input
+              value={number}
+              onChange={(e) => setNumber(e.target.value)}
+              type="text"
+              className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
+              disabled={loading}
+            />
+          </div>
 
-        <div className="w-full flex flex-col gap-2 z-10">
-          <label className="font-semibold" htmlFor="">
-            Nationality
-          </label>
-          <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                role="combobox"
-                aria-expanded={open}
-                className="w-full justify-between border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
-              >
-                {value
-                  ? Nationalities.find((nationality) => nationality === value)
-                  : "Select Nationality..."}
-                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-full p-0">
-              <Command>
-                <CommandInput placeholder="Search Nationality..." />
-                <CommandList>
-                  <CommandEmpty>No Nationality found.</CommandEmpty>
-                  <CommandGroup>
-                    {Nationalities.map((nationality, i) => (
-                      <CommandItem
-                        key={i}
-                        value={nationality}
-                        onSelect={(currentValue) => {
-                          setValue(currentValue === value ? "" : currentValue);
-                          setOpen(false);
-                        }}
-                      >
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            value === nationality ? "opacity-100" : "opacity-0"
-                          )}
-                        />
-                        {nationality}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </PopoverContent>
-          </Popover>
-        </div>
+          <div className="w-full flex flex-col gap-2 z-10">
+            <label className="font-semibold" htmlFor="">
+              Nationality
+            </label>
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  className="w-full justify-between border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
+                >
+                  {value
+                    ? Nationalities.find((nationality) => nationality === value)
+                    : "Select Nationality..."}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0">
+                <Command>
+                  <CommandInput placeholder="Search Nationality..." />
+                  <CommandList>
+                    <CommandEmpty>No Nationality found.</CommandEmpty>
+                    <CommandGroup>
+                      {Nationalities.map((nationality, i) => (
+                        <CommandItem
+                          key={i}
+                          value={nationality}
+                          onSelect={(currentValue) => {
+                            setValue(
+                              currentValue === value ? "" : currentValue
+                            );
+                            setOpen(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              value === nationality
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
+                          />
+                          {nationality}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+          </div>
 
-        <div className="w-full flex flex-col gap-2 z-10">
-          <label className="font-semibold" htmlFor="">
-            Languages You Speak
-          </label>
-          <Select
-            closeMenuOnSelect={false}
-            onChange={handleLanguageChange}
-            components={animatedComponents}
-            defaultValue={"null"}
-            isMulti
-            //@ts-ignore
-            options={options}
-          />
+          <div className="w-full flex flex-col gap-2 z-10">
+            <label className="font-semibold" htmlFor="">
+              Languages You Speak
+            </label>
+            <Select
+              closeMenuOnSelect={false}
+              onChange={handleLanguageChange}
+              components={animatedComponents}
+              defaultValue={"null"}
+              isMulti
+              //@ts-ignore
+              options={options}
+            />
+          </div>
+          <div className="w-full flex flex-col gap-2 z-10">
+            <label className="font-semibold" htmlFor="">
+              Your Fee per Hour (NPR)
+            </label>
+            <input
+              type="number"
+              placeholder="Ex: 100.00"
+              onChange={(e) => setFee(parseInt(e.target.value))}
+              value={fee}
+              className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
+              //@ts-ignore
+            />
+          </div>
         </div>
-        <div className="w-full flex flex-col gap-2 z-10">
-          <label className="font-semibold" htmlFor="">
-            Your Fee per Hour (NPR)
-          </label>
-          <input
-            type="number"
-            placeholder="Ex: 100.00"
-            onChange={(e)=>setFee(parseInt(e.target.value))}
-            value={fee}
-             className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
-            //@ts-ignore
-          />
-        </div>
-
-      </div>
 
         <div className="w-full flex flex-col gap-2 z-0">
           <label className="font-semibold" htmlFor="">
             Select Your Location
           </label>
-          <Map setPosition={setPosition} position={position}/>
+          <Map setPosition={setPosition} position={position} />
 
-          {session?.user==null && 
-                        <>
-                        <Button type="button" onClick={()=>signIn("google", {callbackUrl:"http://localhost:3000/newuser/guideSignup"})} disabled={loading} variant="ghost">
-                              Continue with Google
-                        </Button>
-                        
-            </>}
-        <Button type="button" onClick={handleSubmit} disabled={loading}>
-          Submit
-        </Button>
-        
+          {session?.user == null && (
+            <>
+              <Button
+                type="button"
+                onClick={() =>
+                  signIn("google", {
+                    callbackUrl: "http://localhost:3000/newuser/guideSignup",
+                  })
+                }
+                disabled={loading}
+                variant="ghost"
+              >
+                Continue with Google
+              </Button>
+            </>
+          )}
+          <Button type="button" onClick={handleSubmit} disabled={loading}>
+            Submit
+          </Button>
         </div>
-
       </form>
     </div>
   );
 };
 
-const Map = ({setPosition, position}:any) => {
+const Map = ({ setPosition, position }: any) => {
   const [maptype, setMaptype] = useState(0);
   const [markers, setMarkers] = useState([]);
   const mapRef = useRef(null);
@@ -313,21 +358,23 @@ const Map = ({setPosition, position}:any) => {
   });
 
   const maptypes = [
-      {
+    {
       name: "default",
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      },
-      {
-            name: "WorldImagery",
-            url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-            attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
-      },
-];
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    },
+    {
+      name: "WorldImagery",
+      url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      attribution:
+        "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+    },
+  ];
 
   function GetLocation() {
     const map = useMapEvents({
-      click: (e:any) => {
+      click: (e: any) => {
         const { lat, lng } = e.latlng;
         setPosition({ lat, lng });
       },
@@ -363,9 +410,10 @@ const Map = ({setPosition, position}:any) => {
           attribution={maptypes[maptype].attribution}
         />
         <MarkerClusterGroup chunkedLoading>
-          {markers && markers.map((marker: any, i: Number) => (
+          {markers &&
+            markers.map((marker: any, i: Number) => (
               <Marker
-              //@ts-ignore
+                //@ts-ignore
                 key={i}
                 position={[marker.geocode[0], marker.geocode[1]]}
                 icon={customIcon}
@@ -418,7 +466,6 @@ const Map = ({setPosition, position}:any) => {
         type="number"
         className="border-2 border-gray-200 outline-none p-2 rounded-md focus:border-gray-300"
       />
-       
     </div>
   );
 };
