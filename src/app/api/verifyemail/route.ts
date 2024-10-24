@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt"
 import prisma from '../../../db/dbconfig'
 import { NextResponse } from "next/server"
-import { sendEmail } from "../../../lib/mailer"
 
 export async function POST(request: Request){
       try{
